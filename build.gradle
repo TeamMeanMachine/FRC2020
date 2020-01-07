@@ -2,10 +2,10 @@ import edu.wpi.first.gradlerio.GradleRIOPlugin
 
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.10'
-    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+    id "edu.wpi.first.GradleRIO" version "2020.1.2"
 }
 
-def MAIN_CLASS = "org.team2471.BunnyBots2019.Main"
+def MAIN_CLASS = "org.team2471.FRC2020.Main"
 
 deploy {
     targets {
@@ -30,6 +30,7 @@ deploy {
 repositories {
     mavenCentral()
     maven { setUrl("http://first.wpi.edu/FRC/roborio/maven/release") }
+   maven { setUrl("https://plugins.gradle.org/m2/")}
     maven { setUrl("http://devsite.ctr-electronics.com/maven/release/") }
     maven { setUrl("http://maven.highcurrent.io/maven") }
     maven { setUrl("http://www.revrobotics.com/content/sw/max/sdk/maven/") }

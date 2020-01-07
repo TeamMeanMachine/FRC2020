@@ -1,7 +1,7 @@
-package org.team2471.BunnyBots2019.testing
+package org.team2471.FRC2020.testing
 
-import org.team2471.BunnyBots2019.Bintake
-import org.team2471.BunnyBots2019.OI
+import org.team2471.FRC2020.Bintake
+import org.team2471.FRC2020.OI
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.units.degrees
 

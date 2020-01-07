@@ -1,6 +1,6 @@
-package org.team2471.BunnyBots2019
+package org.team2471.FRC2020
 
-import org.team2471.BunnyBots2019.Bintake.animateToPose
+import org.team2471.FRC2020.Bintake.animateToPose
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2

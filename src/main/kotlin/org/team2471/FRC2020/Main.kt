@@ -1,13 +1,13 @@
 @file:JvmName("Main")
 
-package org.team2471.BunnyBots2019
+package org.team2471.FRC2020
 
 import com.revrobotics.CANSparkMax
 import com.revrobotics.CANSparkMaxLowLevel
 import com.revrobotics.ControlType
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.*
-import org.team2471.BunnyBots2019.testing.*
+import org.team2471.FRC2020.testing.*
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.coroutines.delay

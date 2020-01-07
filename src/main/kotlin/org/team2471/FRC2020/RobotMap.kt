@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package org.team2471.BunnyBots2019
+package org.team2471.FRC2020
 
 object Talons {
     const val BINTAKE_INTAKE = 14
