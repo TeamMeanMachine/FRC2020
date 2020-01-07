@@ -18,7 +18,7 @@ suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolea
 
     val pathJob = launch { Drive.driveAlongPath(path, resetOdometry = resetOdometry) }
 
-    suspendUntil { Limelight.hasValidTarget || Bintake.current > 45.0 }
+    suspendUntil { Limelight.hasValidTarget }
     pathJob.cancelAndJoin()
 
     //limelight takes over
@@ -34,7 +34,7 @@ suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolea
             Drive.drive(Vector2(0.0, -0.25), 0.0, false)
         }
 
-        if (Drive.position.y > 30.0 || Bintake.current > 45.0 ) {
+        if (Drive.position.y > 30.0 ) {
             this.stop()
         }
     }
