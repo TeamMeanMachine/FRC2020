@@ -28,6 +28,7 @@ deploy {
 
 repositories {
     mavenCentral()
+    maven { setUrl("https://frcmaven.wpi.edu/artifactory/release/")}
    maven { setUrl("https://plugins.gradle.org/m2/")}
     maven { setUrl("http://first.wpi.edu/FRC/roborio/maven/release") }
     maven { setUrl("http://devsite.ctr-electronics.com/maven/release/") }
