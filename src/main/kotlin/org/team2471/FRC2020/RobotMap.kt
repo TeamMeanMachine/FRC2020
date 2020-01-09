@@ -22,6 +22,7 @@ object Sparks {
     const val ARM_MOVEMENT = 2
     const val WRIST_MOVEMENT = 3
     const val CUBE_INTAKE = 9
+    const val SHOOTER =
 
 }
 

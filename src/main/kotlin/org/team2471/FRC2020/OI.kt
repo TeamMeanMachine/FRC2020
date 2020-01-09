@@ -29,7 +29,7 @@ object OI {
         get() = 0.0 //driverController.leftTrigger
 
     val driveRightTrigger: Double
-        get() = 0.0 //driverController.rightTrigger
+        get() = driverController.rightTrigger
 
     val operatorLeftTrigger: Double
         get() = 0.0 //operatorController.leftTrigger
