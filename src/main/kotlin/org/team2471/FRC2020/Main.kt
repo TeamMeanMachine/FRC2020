@@ -26,6 +26,7 @@ object Robot : RobotProgram {
 
     override suspend fun enable() {
         Drive.enable()
+        ControlPanel.enable()
         Drive.zeroGyro()
         Limelight.enable()
         Drive.initializeSteeringMotors()
@@ -45,10 +46,12 @@ object Robot : RobotProgram {
 
     override suspend fun test()  {
         Drive.disable()
+        ControlPanel.test()
     }
 
     override suspend fun disable() {
         Drive.disable()
+        ControlPanel.disable()
     }
 }
 
@@ -57,5 +60,6 @@ fun main() {
     Drive
     OI
     AutoChooser
+    ControlPanel
     runRobotProgram(Robot)
 }

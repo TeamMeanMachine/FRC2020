@@ -21,7 +21,7 @@ object Sparks {
 
     const val SHOOTER = 2
     const val SHOOTER2 = 6
-
+    const val CONTROL_PANEL = 9
 }
 
 object AnalogSensor {
