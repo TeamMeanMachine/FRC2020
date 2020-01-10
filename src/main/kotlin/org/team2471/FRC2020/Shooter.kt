@@ -8,9 +8,15 @@ import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
 
 object Shooter : Subsystem("Shoot") {
-    private val shootingMotor = MotorController(SparkMaxID())
+    private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER))
+    private val shootingSlave = MotorController(SparkMaxID(Sparks.SHOOTER2))
+
     private val table = NetworkTableInstance.getDefault().getTable(name)
     private val rpmTable = table.getEntry("RPM")
+
+    init {
+        shootingSlave.follow(shootingMotor)
+    }
 
     fun setPower(power: Double) {
         shootingMotor.setPercentOutput(power)
