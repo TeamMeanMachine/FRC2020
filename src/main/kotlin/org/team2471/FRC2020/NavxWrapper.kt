@@ -19,7 +19,7 @@ class NavxWrapper : Gyro {
 
     override fun reset() = navx.reset()
 
-    override fun free() = navx.free()
+    //override fun free() = navx.free()
 
     fun getNavX() = navx
 }
