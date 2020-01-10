@@ -8,7 +8,7 @@ import org.team2471.frc.lib.framework.initializeWpilib
 import org.team2471.frc.lib.framework.runRobotProgram
 import org.team2471.frc.lib.units.degrees
 
-val PDP = PowerDistributionPanel()
+//val PDP = PowerDistributionPanel()
 
 object Robot : RobotProgram {
 

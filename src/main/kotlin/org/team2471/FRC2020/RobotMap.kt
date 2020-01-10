@@ -19,10 +19,6 @@ object Sparks {
     const val STEER_BACKRIGHT = 11
     const val STEER_FRONTRIGHT = 4
 
-    const val ARM_MOVEMENT = 2
-    const val WRIST_MOVEMENT = 3
-    const val CUBE_INTAKE = 9
-
 }
 
 object AnalogSensor {
