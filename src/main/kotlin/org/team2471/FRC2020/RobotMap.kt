@@ -19,6 +19,8 @@ object Sparks {
     const val STEER_BACKRIGHT = 11
     const val STEER_FRONTRIGHT = 4
 
+    const val SHOOTER = 2
+    const val SHOOTER2 = 6
     const val CONTROL_PANEL = 9
 }
 
