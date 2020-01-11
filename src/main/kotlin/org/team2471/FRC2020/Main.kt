@@ -3,6 +3,8 @@
 package org.team2471.FRC2020
 
 import edu.wpi.first.wpilibj.*
+import org.team2471.FRC2020.testing.driveTests
+import org.team2471.FRC2020.testing.steeringTests
 import org.team2471.frc.lib.framework.RobotProgram
 import org.team2471.frc.lib.framework.initializeWpilib
 import org.team2471.frc.lib.framework.runRobotProgram
@@ -25,11 +27,12 @@ object Robot : RobotProgram {
     }
 
     override suspend fun enable() {
-        Drive.enable()
-        ControlPanel.enable()
-        Drive.zeroGyro()
-        Limelight.enable()
-        Drive.initializeSteeringMotors()
+//        Drive.enable()
+//        ControlPanel.enable()
+//        Drive.zeroGyro()
+//        Limelight.enable()
+//        Drive.initializeSteeringMotors()
+//        Shooter.enable()
 
     }
 
@@ -45,21 +48,26 @@ object Robot : RobotProgram {
     }
 
     override suspend fun test()  {
-        Drive.disable()
-        ControlPanel.test()
+        //Drive.disable()
+        //ControlPanel.test()
+
+//        Drive.steeringTests()
+//        Drive.driveTests()
     }
 
     override suspend fun disable() {
         Drive.disable()
         ControlPanel.disable()
+        Shooter.disable()
     }
 }
 
 fun main() {
     initializeWpilib()
-    Drive
-    OI
-    AutoChooser
-    ControlPanel
+//    Drive
+//    OI
+//    AutoChooser
+//    ControlPanel
+//    Shooter
     runRobotProgram(Robot)
 }

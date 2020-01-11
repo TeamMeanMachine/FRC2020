@@ -3,8 +3,6 @@
 package org.team2471.FRC2020
 
 object Talons {
-    const val BINTAKE_INTAKE = 14
-    const val BINTAKE_ROTATION = 15
 
 }
 
@@ -19,7 +17,7 @@ object Sparks {
     const val STEER_BACKRIGHT = 11
     const val STEER_FRONTRIGHT = 4
 
-    const val SHOOTER = 2
+    const val SHOOTER = 3
     const val SHOOTER2 = 6
     const val CONTROL_PANEL = 9
 }

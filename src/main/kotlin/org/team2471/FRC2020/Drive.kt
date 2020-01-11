@@ -154,7 +154,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         for (moduleCount in 0..3) {
             val module = (Drive.modules[moduleCount] as Module)
             module.turnMotor.setRawOffset(module.analogAngle)
-            println("Module: $module analogAngle: ${module.analogAngle}")
+            println("Module: $moduleCount analogAngle: ${module.analogAngle}")
         }
     }
 
