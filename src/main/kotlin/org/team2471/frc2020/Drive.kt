@@ -1,9 +1,8 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.interfaces.Gyro
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

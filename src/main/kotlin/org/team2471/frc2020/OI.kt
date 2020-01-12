@@ -1,4 +1,4 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2

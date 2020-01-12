@@ -1,9 +1,9 @@
 @file:Suppress("EXPERIMENTAL_API_USAGE")
 
-package org.team2471.FRC2020.testing
+package org.team2471.frc2020.testing
 
-import org.team2471.FRC2020.Drive
-import org.team2471.FRC2020.OI
+import org.team2471.frc2020.Drive
+import org.team2471.frc2020.OI
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use

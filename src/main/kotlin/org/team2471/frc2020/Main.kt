@@ -1,10 +1,9 @@
 @file:JvmName("Main")
 
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
-import edu.wpi.first.wpilibj.*
-import org.team2471.FRC2020.testing.driveTests
-import org.team2471.FRC2020.testing.steeringTests
+import org.team2471.frc2020.testing.driveTests
+import org.team2471.frc2020.testing.steeringTests
 import org.team2471.frc.lib.framework.RobotProgram
 import org.team2471.frc.lib.framework.initializeWpilib
 import org.team2471.frc.lib.framework.runRobotProgram
