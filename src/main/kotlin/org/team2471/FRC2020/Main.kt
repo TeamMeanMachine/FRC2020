@@ -27,12 +27,12 @@ object Robot : RobotProgram {
     }
 
     override suspend fun enable() {
-//        Drive.enable()
-//        ControlPanel.enable()
-//        Drive.zeroGyro()
-//        Limelight.enable()
-//        Drive.initializeSteeringMotors()
-//        Shooter.enable()
+        Drive.enable()
+        ControlPanel.enable()
+        Drive.zeroGyro()
+        Limelight.enable()
+        Drive.initializeSteeringMotors()
+        Shooter.enable()
 
     }
 
@@ -49,7 +49,7 @@ object Robot : RobotProgram {
 
     override suspend fun test()  {
         //Drive.disable()
-        //ControlPanel.test()
+//        ControlPanel.test()
 
 //        Drive.steeringTests()
 //        Drive.driveTests()
@@ -64,10 +64,10 @@ object Robot : RobotProgram {
 
 fun main() {
     initializeWpilib()
-//    Drive
-//    OI
-//    AutoChooser
-//    ControlPanel
-//    Shooter
+    Drive
+    OI
+    AutoChooser
+    ControlPanel
+    Shooter
     runRobotProgram(Robot)
 }
