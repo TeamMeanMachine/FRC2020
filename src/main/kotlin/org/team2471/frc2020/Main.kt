@@ -2,27 +2,25 @@
 
 package org.team2471.frc2020
 
-import org.team2471.frc2020.testing.driveTests
-import org.team2471.frc2020.testing.steeringTests
+import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.framework.RobotProgram
 import org.team2471.frc.lib.framework.initializeWpilib
-import org.team2471.frc.lib.framework.runRobotProgram
 import org.team2471.frc.lib.units.degrees
+import org.team2471.frc2020.testing.driveTests
+import org.team2471.frc2020.testing.steeringTests
 
 //val PDP = PowerDistributionPanel()
 
-object Robot : RobotProgram {
+object Robot : RobotProgram() {
+    override fun init() {
+        Drive
+        OI
+        AutoChooser
+        ControlPanel
+        Shooter
 
-    init {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
-
-        // i heard the first string + double concatenations were expensive...
-        repeat(25) {
-            println("RANDOM NUMBER: ${Math.random()}")
-        }
-        println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
-        //I swear there was a good reason for this but i honestly have no idea what that was
     }
 
     override suspend fun enable() {
@@ -32,14 +30,11 @@ object Robot : RobotProgram {
         Limelight.enable()
         Drive.initializeSteeringMotors()
         Shooter.enable()
-
     }
 
     override suspend fun autonomous() {
-        //Drive.zeroGyro()
-
+        Drive.zeroGyro()
         AutoChooser.autonomous()
-
     }
 
     override suspend fun teleop() {
@@ -47,7 +42,7 @@ object Robot : RobotProgram {
     }
 
     override suspend fun test()  {
-        //Drive.disable()
+        Drive.disable()
         ControlPanel.test()
 
         Drive.steeringTests()
@@ -62,11 +57,5 @@ object Robot : RobotProgram {
 }
 
 fun main() {
-    initializeWpilib()
-    Drive
-    OI
-    AutoChooser
-    ControlPanel
-    Shooter
-    runRobotProgram(Robot)
+    RobotBase.startRobot { Robot }
 }

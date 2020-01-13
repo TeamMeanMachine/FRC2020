@@ -25,7 +25,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
      * Coordinates of modules
      * **/
     override val modules: Array<SwerveDrive.Module> = arrayOf(
-
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
