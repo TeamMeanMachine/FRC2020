@@ -46,9 +46,12 @@ object Shooter : Subsystem("Shooter") {
 
     override suspend fun default() {
         periodic {
-
             //setPower(OI.driveRightTrigger)
-            rpm = OI.driveRightTrigger * 6000//rpmSetpointEntry.getDouble(0.0)
+            if (rpmSetpointEntry.getDouble(0.0) < 0.1) {
+                shootingMotor.stop()
+            } else {
+                rpm = rpmSetpointEntry.getDouble(0.0)
+            }
         }
     }
 }
