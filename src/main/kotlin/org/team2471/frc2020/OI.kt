@@ -26,7 +26,7 @@ object OI {
         get() = (driverController.rightThumbstickX.deadband(deadBandDriver)).cube() * 0.5 //changed from 0.6
 
     val driveLeftTrigger: Double
-        get() = 0.0 //driverController.leftTrigger
+        get() = driverController.leftTrigger
 
     val driveRightTrigger: Double
         get() = driverController.rightTrigger

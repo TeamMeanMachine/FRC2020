@@ -77,7 +77,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
 
     override val parameters: SwerveParameters = SwerveParameters(
-        gyroRateCorrection = 0.001,
+        gyroRateCorrection = 0.0,// 0.001,
         kpPosition = 0.3,
         kdPosition = 0.15,
         kPositionFeedForward = 0.05,
@@ -135,11 +135,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
+        val pdController = PDController(1.0/40.0, 0.0)
 
         periodic {
             drive(
                 OI.driveTranslation,
-                OI.driveRotation,
+                Limelight.xTranslation / 80.0,   //pdController.update(Limelight.xTranslation),//OI.driveRotation ,
                 if (Drive.gyro!=null) SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous else false,
                 Vector2(0.0,0.0),
                 0.0
