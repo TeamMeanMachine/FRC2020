@@ -1,4 +1,4 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI

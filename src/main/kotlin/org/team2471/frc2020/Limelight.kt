@@ -1,13 +1,13 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.team2471.FRC2020.Drive.gyro
-import org.team2471.FRC2020.Drive.heading
-import org.team2471.FRC2020.Limelight.rotationD
-import org.team2471.FRC2020.Limelight.rotationP
+import org.team2471.frc2020.Drive.gyro
+import org.team2471.frc2020.Drive.heading
+import org.team2471.frc2020.Limelight.rotationD
+import org.team2471.frc2020.Limelight.rotationP
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem

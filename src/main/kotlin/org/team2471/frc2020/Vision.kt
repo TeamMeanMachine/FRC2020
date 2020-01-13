@@ -1,6 +1,5 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
-import edu.wpi.first.wpilibj.Timer
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.periodic
@@ -11,8 +10,6 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion.following.stop
 import org.team2471.frc.lib.motion_profiling.Path2D
-import org.team2471.frc.lib.units.Length
-import org.team2471.frc.lib.units.asFeet
 
 suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolean = false) = use(Drive, Limelight, name = "Path then Vision") {
 

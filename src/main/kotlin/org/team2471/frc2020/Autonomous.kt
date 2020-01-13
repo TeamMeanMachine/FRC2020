@@ -1,4 +1,4 @@
-package org.team2471.FRC2020
+package org.team2471.frc2020
 
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.NetworkTableInstance
