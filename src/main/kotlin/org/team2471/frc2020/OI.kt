@@ -5,6 +5,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
+import org.team2471.frc2020.actions.shoot
 
 private val deadBandDriver = 0.1
 private val deadBandOperator = 0.1
@@ -42,6 +43,7 @@ object OI {
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
+        driverController::rightBumper.whenTrue { shoot()}
     }
 }
 

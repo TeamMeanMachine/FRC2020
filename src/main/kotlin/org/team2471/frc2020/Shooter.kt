@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
+import org.team2471.frc.lib.motion_profiling.MotionCurve
 
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER), SparkMaxID(Sparks.SHOOTER2))
@@ -15,11 +16,15 @@ object Shooter : Subsystem("Shooter") {
     private val table = NetworkTableInstance.getDefault().getTable(name)
     private val rpmEntry = table.getEntry("RPM")
     private val rpmSetpointEntry = table.getEntry("RPM Setpoint")
-
+    private val rpmCurve = MotionCurve()
 
     init {
+        //rpmCurve.StoreValue(area1, rpm1)
+        //rpmCurve.StoreValue(area1, rpm1)
+        //rpmCurve.StoreValue(area1, rpm1)
+
         shootingMotor.config {
-            feedbackCoefficient = 1.0/(42.0 * (24/18) * (5000.0/6570.0))
+            feedbackCoefficient = 1.0/(42.0 * 1.01471)
             followersInverted(true)
             pid {
                 p(1e-8)
@@ -46,7 +51,10 @@ object Shooter : Subsystem("Shooter") {
 
     override suspend fun default() {
         periodic {
-            //setPower(OI.driveRightTrigger)
+            if (Limelight.hasValidTarget) {
+                //rpm = rpmCurve.GetValue(LimeLight.area)
+            }
+
             if (rpmSetpointEntry.getDouble(0.0) < 0.1) {
                 shootingMotor.stop()
             } else {

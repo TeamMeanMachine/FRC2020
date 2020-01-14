@@ -16,6 +16,7 @@ import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
+import kotlin.math.absoluteValue
 
 private var gyroOffset = 0.0.degrees
 
@@ -75,7 +76,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     override var robotPivot = Vector2(0.0, 0.0)
 
-
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
         kpPosition = 0.3,
@@ -85,6 +85,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kdHeading = 0.005,
         kHeadingFeedForward = 0.00125
     )
+
+    private val aimPDController = PDController(1.0/40.0, 0.0)
 
     init {
         SmartDashboard.setPersistent("Use Gyro")
@@ -135,12 +137,19 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
-        val pdController = PDController(1.0/40.0, 0.0)
 
         periodic {
+            var turn = 0.0
+            if (OI.driveRotation.absoluteValue > 0.001) {
+                turn = OI.driveRotation
+            }
+//            else if (Limelight.hasValidTarget) {
+//                //turn = aimPDController.update(Limelight.xTranslation)  //
+//                turn =  Limelight.xTranslation / 80.0
+//            }
             drive(
                 OI.driveTranslation,
-                Limelight.xTranslation / 80.0,   //pdController.update(Limelight.xTranslation),//OI.driveRotation ,
+                turn,
                 if (Drive.gyro!=null) SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous else false,
                 Vector2(0.0,0.0),
                 0.0
