@@ -86,7 +86,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.00125
     )
 
-    private val aimPDController = PDController(1.0/40.0, 0.0)
+    private val aimPDController = PDController(1.0/80.0, 0.0)
 
     init {
         SmartDashboard.setPersistent("Use Gyro")
@@ -143,10 +143,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             }
-//            else if (Limelight.hasValidTarget) {
-//                //turn = aimPDController.update(Limelight.xTranslation)  //
+            else if (Limelight.hasValidTarget) {
+                turn = aimPDController.update(Limelight.xTranslation)  //
 //                turn =  Limelight.xTranslation / 80.0
-//            }
+            }
             drive(
                 OI.driveTranslation,
                 turn,
