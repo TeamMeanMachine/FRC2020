@@ -27,10 +27,10 @@ object Shooter : Subsystem("Shooter") {
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
             followersInverted(true)
             pid {
-                p(1e-8)
+                p(1.5e-8)
                 i(0.0)
                 d(0.0)
-                f(0.0001)
+                f(0.000045)
             }
         }
         rpmSetpointEntry.setDouble(0.0)
