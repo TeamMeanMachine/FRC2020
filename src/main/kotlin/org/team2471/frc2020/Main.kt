@@ -22,16 +22,17 @@ object Robot : MeanlibRobot() {
 
     override suspend fun enable() {
         Drive.enable()
-        ControlPanel.enable()
+        //ControlPanel.enable()
         Drive.zeroGyro()
-        Limelight.enable()
+        //Limelight.enable()
         Drive.initializeSteeringMotors()
-        Shooter.enable()
+        //Shooter.enable()
     }
 
     override suspend fun autonomous() {
         //Drive.zeroGyro()
-        AutoChooser.autonomous()
+//        AutoChooser.autonomous()
+        AutoChooser.trenchRun5()
     }
 
     override suspend fun teleop() {
@@ -40,7 +41,7 @@ object Robot : MeanlibRobot() {
 
     override suspend fun test()  {
         //Drive.disable()
-        ControlPanel.test()
+        //ControlPanel.test()
 
         Drive.steeringTests()
         Drive.driveTests()
@@ -57,8 +58,8 @@ object Robot : MeanlibRobot() {
             yEntry.setDouble(Drive.position.y)
         }
         Drive.disable()
-        ControlPanel.disable()
-        Shooter.disable()
+        //ControlPanel.disable()
+        //Shooter.disable()
     }
 }
 

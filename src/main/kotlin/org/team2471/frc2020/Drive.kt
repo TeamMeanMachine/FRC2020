@@ -143,10 +143,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             }
-            else if (Limelight.hasValidTarget) {
-                turn = aimPDController.update(Limelight.xTranslation)  //
-//                turn =  Limelight.xTranslation / 80.0
-            }
+//            else if (Limelight.hasValidTarget) {
+//                turn = aimPDController.update(Limelight.xTranslation)  //
+////                turn =  Limelight.xTranslation / 80.0
+//            }
             drive(
                 OI.driveTranslation,
                 turn,

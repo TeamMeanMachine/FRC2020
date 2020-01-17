@@ -30,11 +30,6 @@ private var startingSide = Side.RIGHT
 object AutoChooser {
     private val cacheFile = File("/home/lvuser/autonomi.json")
 
-    private val sideChooser = SendableChooser<Side>().apply {
-        setDefaultOption("Left", Side.LEFT)
-        addOption("Right", Side.RIGHT)
-    }
-
     private val testAutoChooser = SendableChooser<String?>().apply {
         setDefaultOption("None", null)
         addOption("20 Foot Test", "20 Foot Test")
@@ -46,12 +41,11 @@ object AutoChooser {
     }
 
     private val autonomousChooser = SendableChooser<suspend () -> Unit>().apply {
-        setDefaultOption("None", null)
+        setDefaultOption("5 Ball Trench Run", ::trenchRun5)
         addOption("Tests", ::testAuto)
     }
 
     init {
-        SmartDashboard.putData("Side", sideChooser)
         SmartDashboard.putData("Tests", testAutoChooser)
         SmartDashboard.putData("Autos", autonomousChooser)
 
@@ -83,10 +77,10 @@ object AutoChooser {
     }
 
     suspend fun autonomous() = use(Drive, name = "Autonomous") {
-        val nearSide = sideChooser.selected
-        startingSide = nearSide
+        println("Got into Auto fun autonomous. Hi. 888888888888888")
 
         val autoEntry = autonomousChooser.selected
+        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
         autoEntry.invoke()
     }
 
@@ -99,4 +93,22 @@ object AutoChooser {
         }
     }
 
+    suspend fun trenchRun5() = use(Drive){
+        println("Got into fun trenchRun5. Hi. 11111111111111111111111111111111111111")
+        val auto = autonomi["5 Ball Trench Run"]
+        if (auto != null) {
+            var path = auto["Intake 2 Cells"]
+            Drive.driveAlongPath(path, true)
+            path = auto["Shooting Position"]
+            Drive.driveAlongPath(path, false)
+        }
+    }
+
+    suspend fun test8FtStraight() = use(Drive){
+        val auto = autonomi["Tests"]
+        if (auto != null) {
+            var path = auto["8 Foot Straight"]
+            Drive.driveAlongPath(path, true)
+        }
+    }
 }
