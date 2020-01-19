@@ -24,6 +24,7 @@ object Shooter : Subsystem("Shooter") {
         //rpmCurve.StoreValue(area1, rpm1)
 
         shootingMotor.config {
+            inverted(true)
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
             followersInverted(true)
             pid {
