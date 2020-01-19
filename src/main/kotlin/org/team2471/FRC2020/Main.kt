@@ -9,6 +9,7 @@ import org.team2471.frc2020.testing.driveTests
 import org.team2471.frc2020.testing.steeringTests
 import org.team2471.frc.lib.framework.MeanlibRobot
 import org.team2471.frc.lib.motion.following.recordOdometry
+import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.degrees
 
 //val PDP = PowerDistributionPanel()
@@ -18,6 +19,8 @@ object Robot : MeanlibRobot() {
     init {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
+        AutoChooser
+        Limelight.startUp()
     }
 
     override suspend fun enable() {
@@ -31,8 +34,7 @@ object Robot : MeanlibRobot() {
 
     override suspend fun autonomous() {
         //Drive.zeroGyro()
-//        AutoChooser.autonomous()
-        AutoChooser.trenchRun5()
+        AutoChooser.autonomous()
     }
 
     override suspend fun teleop() {
@@ -43,7 +45,7 @@ object Robot : MeanlibRobot() {
         //Drive.disable()
         //ControlPanel.test()
 
-        Drive.steeringTests()
+        //Drive.steeringTests()
         //Drive.driveTests()
     }
 
