@@ -43,7 +43,10 @@ object OI {
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
-        driverController::rightBumper.whenTrue { shoot()}
+        driverController::rightBumper.whenTrue { shoot() }
+        driverController::a.whenTrue { Limelight.pipeline = 1.0 }
+        driverController::b.whenTrue { Limelight.pipeline = 0.0 }
+
     }
 }
 

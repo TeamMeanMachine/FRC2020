@@ -26,6 +26,8 @@ object Limelight : Subsystem("Limelight") {
     private val camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
+    private val currentPipelineEntry = table.getEntry("getpipe")
+    private val setPipelineEntry = table.getEntry("pipeline")
 
     val distance
         get() = ((66.7 * 1/Math.sqrt(Limelight.area) + 7.03) / 12.0).feet
@@ -80,6 +82,14 @@ object Limelight : Subsystem("Limelight") {
 
     var hasValidTarget = false
         get() = targetValidEntry.getDouble(0.0) == 1.0
+
+
+    var pipeline = 0.0
+        get() = currentPipelineEntry.getDouble(0.0)
+        set(value) {
+            setPipelineEntry.setDouble(value)
+            field = value
+        }
 
     init {
         isCamEnabled = false

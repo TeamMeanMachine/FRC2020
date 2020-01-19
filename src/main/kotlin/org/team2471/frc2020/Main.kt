@@ -24,15 +24,15 @@ object Robot : MeanlibRobot() {
         Drive.enable()
         //ControlPanel.enable()
         Drive.zeroGyro()
-        //Limelight.enable()
+        Limelight.enable()
         Drive.initializeSteeringMotors()
-        //Shooter.enable()
+        Shooter.enable()
     }
 
     override suspend fun autonomous() {
         //Drive.zeroGyro()
-//        AutoChooser.autonomous()
-        AutoChooser.trenchRun5()
+        AutoChooser.autonomous()
+        //AutoChooser.trenchRun5()
     }
 
     override suspend fun teleop() {
@@ -59,7 +59,7 @@ object Robot : MeanlibRobot() {
         }
         Drive.disable()
         //ControlPanel.disable()
-        //Shooter.disable()
+        Shooter.disable()
     }
 }
 
