@@ -30,6 +30,11 @@ private var startingSide = Side.RIGHT
 object AutoChooser {
     private val cacheFile = File("/home/lvuser/autonomi.json")
 
+    private val lyricsChooser = SendableChooser<String?>().apply {
+        setDefaultOption("Country roads", "Country roads")
+        addOption("take me home", "take me home")
+    }
+
     private val testAutoChooser = SendableChooser<String?>().apply {
         setDefaultOption("None", null)
         addOption("20 Foot Test", "20 Foot Test")
@@ -40,12 +45,14 @@ object AutoChooser {
         addOption("Hook Path", "Hook Path")
     }
 
-    private val autonomousChooser = SendableChooser<suspend () -> Unit>().apply {
+    private val autonomousChooser = SendableChooser<suspend() -> Unit>().apply {
         setDefaultOption("5 Ball Trench Run", ::trenchRun5)
         addOption("Tests", ::testAuto)
     }
 
     init {
+        println("Got into Autonomous' init. Hi. 222222222222222222222")
+        SmartDashboard.putData("Best Song Lyrics", lyricsChooser)
         SmartDashboard.putData("Tests", testAutoChooser)
         SmartDashboard.putData("Autos", autonomousChooser)
 

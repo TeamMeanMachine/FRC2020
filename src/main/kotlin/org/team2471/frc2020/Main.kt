@@ -18,6 +18,8 @@ object Robot : MeanlibRobot() {
     init {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
+        AutoChooser
+        Limelight.startUp()
     }
 
     override suspend fun enable() {
@@ -32,7 +34,6 @@ object Robot : MeanlibRobot() {
     override suspend fun autonomous() {
         //Drive.zeroGyro()
         AutoChooser.autonomous()
-        //AutoChooser.trenchRun5()
     }
 
     override suspend fun teleop() {
@@ -43,7 +44,7 @@ object Robot : MeanlibRobot() {
         //Drive.disable()
         //ControlPanel.test()
 
-        Drive.steeringTests()
+        //Drive.steeringTests()
         //Drive.driveTests()
     }
 

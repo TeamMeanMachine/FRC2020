@@ -4,16 +4,20 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.team2471.frc2020.Drive.gyro
 import org.team2471.frc2020.Drive.heading
 import org.team2471.frc2020.Limelight.rotationD
 import org.team2471.frc2020.Limelight.rotationP
 import org.team2471.frc.lib.control.PDController
+import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
+import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -28,9 +32,14 @@ object Limelight : Subsystem("Limelight") {
     private val targetValidEntry = table.getEntry("tv")
     private val currentPipelineEntry = table.getEntry("getpipe")
     private val setPipelineEntry = table.getEntry("pipeline")
+    private val areaToDistance = MotionCurve()
+    private var distanceEntry = table.getEntry("Distance")
 
-    val distance
-        get() = ((66.7 * 1/Math.sqrt(Limelight.area) + 7.03) / 12.0).feet
+    val distance : Length
+        get() = areaToDistance.getValue(area).feet
+
+
+
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")
 
     private val rotationPEntry = tempPIDTable.getEntry("Rotation P").apply {
@@ -93,6 +102,24 @@ object Limelight : Subsystem("Limelight") {
 
     init {
         isCamEnabled = false
+        areaToDistance.storeValue(4.4, 0.0)
+        areaToDistance.storeValue(3.2, 5.0)
+        areaToDistance.storeValue(2.0, 10.0)
+        areaToDistance.storeValue(1.18, 15.0)
+        areaToDistance.storeValue(0.77, 20.0)
+        areaToDistance.storeValue(0.52, 25.0)
+        areaToDistance.storeValue(0.4, 30.0)
+        areaToDistance.storeValue(0.2, 35.0)
+        areaToDistance.storeValue(0.0, 40.0)
+    }
+        fun startUp (){
+            distanceEntry = table.getEntry("Distance")
+        GlobalScope.launch(MeanlibDispatcher) {
+
+            periodic {
+                distanceEntry.setDouble(distance.asFeet)
+            }
+        }
     }
 
 
