@@ -16,6 +16,8 @@ import org.team2471.frc.lib.units.degrees
 object Robot : MeanlibRobot() {
 
     init {
+        AutoChooser
+
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
     }
