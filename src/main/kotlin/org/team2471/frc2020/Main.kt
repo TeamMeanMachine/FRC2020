@@ -9,6 +9,7 @@ import org.team2471.frc2020.testing.driveTests
 import org.team2471.frc2020.testing.steeringTests
 import org.team2471.frc.lib.framework.MeanlibRobot
 import org.team2471.frc.lib.motion.following.recordOdometry
+import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.degrees
 
 //val PDP = PowerDistributionPanel()
@@ -16,6 +17,8 @@ import org.team2471.frc.lib.units.degrees
 object Robot : MeanlibRobot() {
 
     init {
+        AutoChooser
+
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
