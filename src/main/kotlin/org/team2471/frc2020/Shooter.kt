@@ -26,7 +26,6 @@ object Shooter : Subsystem("Shooter") {
 
         shootingMotor.config {
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
-            inverted(true)
             followersInverted(true)
             pid {
                 p(1.5e-8)
@@ -54,7 +53,7 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             if (Limelight.hasValidTarget) {
-                //rpm = rpmCurve.GetValue(LimeLight.area)  // this should be based on LimeLight.distance instead
+                //rpm = rpmCurve.GetValue(LimeLight.area)
             }
 
             if (rpmSetpointEntry.getDouble(0.0) < 0.1) {

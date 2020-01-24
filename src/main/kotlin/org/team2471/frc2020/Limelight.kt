@@ -33,9 +33,6 @@ object Limelight : Subsystem("Limelight") {
     private val areaToDistance = MotionCurve()
     private var distanceEntry = table.getEntry("Distance")
 
-    private var setPipeline = table.getEntry("pipeline")
-    private var getPipeline = table.getEntry("getPipe")
-
     val distance : Length
         get() = areaToDistance.getValue(area).feet
 
@@ -91,13 +88,6 @@ object Limelight : Subsystem("Limelight") {
 
     var hasValidTarget = false
         get() = targetValidEntry.getDouble(0.0) == 1.0
-
-    var pipeline = 0.0
-        get() = getPipeline.getDouble(0.0)
-        set(value) {
-            setPipeline.setDouble(value)
-            field = value
-        }
 
     init {
         isCamEnabled = false

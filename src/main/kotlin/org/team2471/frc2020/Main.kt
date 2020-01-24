@@ -17,9 +17,6 @@ import org.team2471.frc.lib.units.degrees
 object Robot : MeanlibRobot() {
 
     init {
-        AutoChooser
-        Shooter
-
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
@@ -30,9 +27,9 @@ object Robot : MeanlibRobot() {
         Drive.enable()
         //ControlPanel.enable()
         Drive.zeroGyro()
-        Limelight.enable()
+        //Limelight.enable()
         Drive.initializeSteeringMotors()
-        Shooter.enable()
+        //Shooter.enable()
     }
 
     override suspend fun autonomous() {
@@ -64,7 +61,7 @@ object Robot : MeanlibRobot() {
         }
         Drive.disable()
         //ControlPanel.disable()
-        Shooter.disable()
+        //Shooter.disable()
     }
 }
 
