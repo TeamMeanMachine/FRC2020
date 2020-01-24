@@ -18,6 +18,7 @@ object Robot : MeanlibRobot() {
 
     init {
         AutoChooser
+        Shooter
 
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees

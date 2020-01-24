@@ -18,14 +18,15 @@ object Shooter : Subsystem("Shooter") {
     private val rpmSetpointEntry = table.getEntry("RPM Setpoint")
     private val rpmCurve = MotionCurve()
 
+
     init {
         //rpmCurve.StoreValue(area1, rpm1)
         //rpmCurve.StoreValue(area1, rpm1)
         //rpmCurve.StoreValue(area1, rpm1)
 
         shootingMotor.config {
-            inverted(true)
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
+            inverted(true)
             followersInverted(true)
             pid {
                 p(1.5e-8)
@@ -53,7 +54,7 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             if (Limelight.hasValidTarget) {
-                //rpm = rpmCurve.GetValue(LimeLight.area)
+                //rpm = rpmCurve.GetValue(LimeLight.area)  // this should be based on LimeLight.distance instead
             }
 
             if (rpmSetpointEntry.getDouble(0.0) < 0.1) {
