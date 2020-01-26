@@ -5,10 +5,12 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
+import org.team2471.frc2020.actions.autoPrepShot
 import java.io.File
 
 private lateinit var autonomi: Autonomi
@@ -46,7 +48,8 @@ object AutoChooser {
     }
 
     private val autonomousChooser = SendableChooser<suspend() -> Unit>().apply {
-        setDefaultOption("5 Ball Trench Run", ::trenchRun5)
+        addOption("5 Ball Trench Run", ::trenchRun5)
+        setDefaultOption("10 Ball Shield Generator", ::shieldGenerator10)
         addOption("Tests", ::testAuto)
     }
 
@@ -101,13 +104,36 @@ object AutoChooser {
     }
 
     suspend fun trenchRun5() = use(Drive){
-        println("Got into fun trenchRun5. Hi. 11111111111111111111111111111111111111")
+        //println("Got into fun trenchRun5. Hi. 11111111111111111111111111111111111111")
         val auto = autonomi["5 Ball Trench Run"]
         if (auto != null) {
-            var path = auto["Intake 2 Cells"]
+            var path = auto["01- Intake 2 Cells"]
             Drive.driveAlongPath(path, true)
-            path = auto["Shooting Position"]
+            path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
+        }
+    }
+
+    suspend fun shieldGenerator10() = use(Drive) {
+        val auto = autonomi["10 Ball Shield Generator"]
+        if (auto != null) {
+            var path = auto["01- Intake 2 Cells"]
+            Drive.driveAlongPath(path, true)
+            path = auto["02- Shooting Position"]
+            Drive.driveAlongPath(path, false)
+            autoPrepShot()
+            //feedMotor.setPercentOutput(0.75)
+            delay(1.0)
+            Shooter.rpm = 0.0
+            path = auto["03- Intake 3 Cells"]
+            Drive.driveAlongPath(path,false)
+            path = auto["04- Intake 2 Cells"]
+            Drive.driveAlongPath(path,false)
+            path = auto["05- Shooting Position"]
+            Drive.driveAlongPath(path,false)
+            autoPrepShot()
+            delay(2.0)
+            Shooter.rpm = 0.0
         }
     }
 

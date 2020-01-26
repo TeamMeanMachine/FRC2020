@@ -124,6 +124,15 @@ object Limelight : Subsystem("Limelight") {
 
     override fun reset() {
     }
+
+    val parallax: Angle
+    get() {
+        val frontGoalPos = Vector2(5.5, 26.0)
+        val backGoalPos = Vector2(5.5, 28.0)
+        val angle1 = (Drive.position-frontGoalPos).angle.radians
+        val angle2 = (Drive.position-backGoalPos).angle.radians
+        return angle2-angle1
+    }
 }
 
 
@@ -162,3 +171,5 @@ suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
             SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
     }
 }
+
+

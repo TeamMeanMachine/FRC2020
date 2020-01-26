@@ -14,9 +14,11 @@ object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER), SparkMaxID(Sparks.SHOOTER2))
 
     private val table = NetworkTableInstance.getDefault().getTable(name)
-    private val rpmEntry = table.getEntry("RPM")
-    private val rpmSetpointEntry = table.getEntry("RPM Setpoint")
+    val rpmEntry = table.getEntry("RPM")
+    val rpmSetpointEntry = table.getEntry("RPM Setpoint")
     private val rpmCurve = MotionCurve()
+
+    public var prepShotOn = false
 
 
     init {
@@ -26,6 +28,7 @@ object Shooter : Subsystem("Shooter") {
 
         shootingMotor.config {
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
+            inverted(true)
             followersInverted(true)
             pid {
                 p(1.5e-8)
@@ -46,9 +49,15 @@ object Shooter : Subsystem("Shooter") {
         shootingMotor.setPercentOutput(power)
     }
 
+    fun stop() {
+        shootingMotor.stop()
+    }
+
     var rpm: Double
         get() = shootingMotor.velocity
         set(value) = shootingMotor.setVelocitySetpoint(value)
+
+
 
     override suspend fun default() {
         periodic {

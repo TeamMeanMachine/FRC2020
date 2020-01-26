@@ -5,6 +5,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
+import org.team2471.frc2020.actions.teleopPrepShot
 import org.team2471.frc2020.actions.shoot
 
 private val deadBandDriver = 0.1
@@ -43,10 +44,10 @@ object OI {
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
-        driverController::rightBumper.whenTrue { shoot() }
+        driverController::leftBumper.whenTrue { teleopPrepShot() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
-
+        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
     }
 }
 
