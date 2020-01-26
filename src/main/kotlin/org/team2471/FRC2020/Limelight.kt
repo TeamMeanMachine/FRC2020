@@ -30,6 +30,8 @@ object Limelight : Subsystem("Limelight") {
     private val camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
+    private val currentPipelineEntry = table.getEntry("getpipe")
+    private val setPipelineEntry = table.getEntry("pipeline")
     private val areaToDistance = MotionCurve()
     private var distanceEntry = table.getEntry("Distance")
 
@@ -89,6 +91,14 @@ object Limelight : Subsystem("Limelight") {
     var hasValidTarget = false
         get() = targetValidEntry.getDouble(0.0) == 1.0
 
+
+    var pipeline = 0.0
+        get() = currentPipelineEntry.getDouble(0.0)
+        set(value) {
+            setPipelineEntry.setDouble(value)
+            field = value
+        }
+
     init {
         isCamEnabled = false
         areaToDistance.storeValue(4.4, 0.0)
@@ -113,6 +123,15 @@ object Limelight : Subsystem("Limelight") {
 
 
     override fun reset() {
+    }
+
+    val parallax: Angle
+    get() {
+        val frontGoalPos = Vector2(5.5, 26.0)
+        val backGoalPos = Vector2(5.5, 28.0)
+        val angle1 = (Drive.position-frontGoalPos).angle.radians
+        val angle2 = (Drive.position-backGoalPos).angle.radians
+        return angle2-angle1
     }
 }
 
@@ -152,3 +171,5 @@ suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
             SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
     }
 }
+
+
