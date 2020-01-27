@@ -19,6 +19,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.*
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -26,17 +27,21 @@ object Limelight : Subsystem("Limelight") {
     private val table = NetworkTableInstance.getDefault().getTable("limelight")
     private val thresholdTable = table.getSubTable("thresholds")
     private val xEntry = table.getEntry("tx")
+    private val yEntry = table.getEntry("ty")
     private val areaEntry = table.getEntry("ta")
     private val camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
     private val currentPipelineEntry = table.getEntry("getpipe")
     private val setPipelineEntry = table.getEntry("pipeline")
-    private val areaToDistance = MotionCurve()
+    private val heightToDistance = MotionCurve()
     private var distanceEntry = table.getEntry("Distance")
+    private var positionXEntry = table.getEntry("PositionX")
+    private var positionYEntry = table.getEntry("PositionY")
+    private var parallaxEntry = table.getEntry("Parallax")
 
     val distance : Length
-        get() = areaToDistance.getValue(area).feet
+        get() = heightToDistance.getValue(yTranslation).feet
 
 
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")
@@ -55,6 +60,9 @@ object Limelight : Subsystem("Limelight") {
         setPersistent()
         setDefaultBoolean(true)
     }
+
+    val position: Vector2
+        get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * heading.sin()), (distance.asFeet * heading.cos()))
 
     val targetAngle: Angle
             get() {
@@ -79,6 +87,9 @@ object Limelight : Subsystem("Limelight") {
     val xTranslation
         get() = xEntry.getDouble(0.0)
 
+    val yTranslation
+        get() = yEntry.getDouble(0.0)
+
     val area
         get() = areaEntry.getDouble(0.0)
 
@@ -101,22 +112,31 @@ object Limelight : Subsystem("Limelight") {
 
     init {
         isCamEnabled = false
-        areaToDistance.storeValue(4.4, 0.0)
-        areaToDistance.storeValue(3.2, 5.0)
-        areaToDistance.storeValue(2.0, 10.0)
-        areaToDistance.storeValue(1.18, 15.0)
-        areaToDistance.storeValue(0.77, 20.0)
-        areaToDistance.storeValue(0.52, 25.0)
-        areaToDistance.storeValue(0.4, 30.0)
-        areaToDistance.storeValue(0.2, 35.0)
-        areaToDistance.storeValue(0.0, 40.0)
+        heightToDistance.storeValue(33.0, 3.0)
+        heightToDistance.storeValue(22.0, 7.2)
+        heightToDistance.storeValue(9.6, 11.5)
+        heightToDistance.storeValue(-4.1, 22.2)
+        heightToDistance.storeValue(-20.0, 35.0)
+        var i = -4.1
+        while (i < 22.5) {
+            val tmpDistance = heightToDistance.getValue(i).feet
+            println("$i, ${tmpDistance.asFeet}")
+            i += 0.5
+        }
     }
-        fun startUp (){
+        fun startUp() {
             distanceEntry = table.getEntry("Distance")
+            positionXEntry = table.getEntry("PositionX")
+            positionYEntry = table.getEntry("PositionY")
+            parallaxEntry = table.getEntry("Parallax")
         GlobalScope.launch(MeanlibDispatcher) {
 
             periodic {
                 distanceEntry.setDouble(distance.asFeet)
+                val savePosition = position
+                positionXEntry.setDouble(savePosition.x)
+                positionYEntry.setDouble(savePosition.y)
+                parallaxEntry.setDouble(parallax.asDegrees)
             }
         }
     }
@@ -127,11 +147,15 @@ object Limelight : Subsystem("Limelight") {
 
     val parallax: Angle
     get() {
-        val frontGoalPos = Vector2(5.5, 26.0)
-        val backGoalPos = Vector2(5.5, 28.0)
-        val angle1 = (Drive.position-frontGoalPos).angle.radians
-        val angle2 = (Drive.position-backGoalPos).angle.radians
-        return angle2-angle1
+        val frontGoalPos = Vector2(0.0, 0.0)
+        val backGoalPos = Vector2(0.0, 2.0)
+        val frontAngle = (frontGoalPos-position).angle.radians
+        val backAngle = (backGoalPos-position).angle.radians
+        var internalParallax = frontAngle-backAngle
+        if (abs(internalParallax.asDegrees) > 4.0) {
+            internalParallax = 0.0.degrees
+        }
+        return internalParallax
     }
 }
 
@@ -153,8 +177,6 @@ suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
         val positionError = targetPoint - Drive.position
         prevTargetPoint = targetPoint
 
-        val translationControlField = Vector2(0.0, 0.0) // positionError * 0.06 * OI.driverController.leftTrigger
-
         val robotHeading = heading
         val targetHeading = if (Limelight.hasValidTarget) positionError.angle.radians else prevTargetHeading
         val headingError = (targetHeading - robotHeading).wrap()
@@ -166,7 +188,7 @@ suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
 
 
         Drive.drive(
-            OI.driveTranslation + translationControlField,
+            OI.driveTranslation,
             OI.driveRotation + turnControl,
             SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
     }

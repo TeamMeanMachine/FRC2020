@@ -48,9 +48,9 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun teleop() {
-        periodic{
-            println("parallax ${Limelight.parallax}")
-        }
+//        periodic{
+//            println("parallax ${Limelight.parallax}")
+//        }
     }
 
     override suspend fun test()  {

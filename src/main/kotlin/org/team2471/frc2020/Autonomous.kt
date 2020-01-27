@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.coroutines.delay
+import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
@@ -123,10 +124,14 @@ object AutoChooser {
             Drive.driveAlongPath(path, false)
             autoPrepShot()
             //feedMotor.setPercentOutput(0.75)
-            delay(1.0)
-            Shooter.rpm = 0.0
-            path = auto["03- Intake 3 Cells"]
-            Drive.driveAlongPath(path,false)
+            delay(2.0)
+            parallel ({
+                //feedMotor.setPercentOutput(0.0)
+                Shooter.rpm = 0.0
+            }, {
+                path = auto["03- Intake 3 Cells"]
+                Drive.driveAlongPath(path,false)
+            })
             path = auto["04- Intake 2 Cells"]
             Drive.driveAlongPath(path,false)
             path = auto["05- Shooting Position"]
