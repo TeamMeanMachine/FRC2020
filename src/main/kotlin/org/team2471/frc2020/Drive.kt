@@ -3,7 +3,6 @@ package org.team2471.frc2020
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -17,9 +16,7 @@ import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
-import org.team2471.frc2020.Limelight.distance
 import kotlin.math.absoluteValue
-import kotlin.math.sin
 
 private var gyroOffset = 0.0.degrees
 
@@ -147,7 +144,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             } else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
-                turn = aimPDController.update(Limelight.xTranslation-Limelight.parallax.asDegrees)
+                turn = aimPDController.update(Limelight.aimError)
             }
             drive(
                 OI.driveTranslation,

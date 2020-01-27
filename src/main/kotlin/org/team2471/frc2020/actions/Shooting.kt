@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
-import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.Drive
 import org.team2471.frc2020.Limelight
+import org.team2471.frc2020.Limelight.aimError
 import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 import kotlin.math.abs
@@ -24,7 +24,7 @@ suspend fun teleopPrepShot() = use(Shooter) {
         t.start()
         periodic {
             val currTime = t.get()
-            if (abs(Shooter.rpm - setpoint) < 100.0 && Limelight.hasValidTarget && abs(Limelight.xTranslation) < 0.5) {
+            if (abs(Shooter.rpm - setpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
@@ -59,7 +59,7 @@ suspend fun autoPrepShot() = use(Shooter, Drive) {
                 Shooter.rpm = Shooter.rpmSetpointEntry.getDouble(0.0)
             }
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmSetpointEntry.getDouble(0.0)) < 100.0 && Limelight.hasValidTarget && abs(Limelight.xTranslation) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmSetpointEntry.getDouble(0.0)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     this.stop()
                 }

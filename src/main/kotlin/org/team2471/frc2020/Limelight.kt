@@ -62,7 +62,7 @@ object Limelight : Subsystem("Limelight") {
     }
 
     val position: Vector2
-        get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * heading.sin()), (distance.asFeet * heading.cos()))
+        get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * (heading + xTranslation.degrees).sin()), (distance.asFeet * (heading + xTranslation.degrees).cos()))
 
     val targetAngle: Angle
             get() {
@@ -110,6 +110,9 @@ object Limelight : Subsystem("Limelight") {
             field = value
         }
 
+    val aimError: Double
+        get() = xTranslation + parallax.asDegrees
+
     init {
         isCamEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
@@ -146,16 +149,16 @@ object Limelight : Subsystem("Limelight") {
     }
 
     val parallax: Angle
-    get() {
-        val frontGoalPos = Vector2(0.0, 0.0)
-        val backGoalPos = Vector2(0.0, 2.0)
-        val frontAngle = (frontGoalPos-position).angle.radians
-        val backAngle = (backGoalPos-position).angle.radians
-        var internalParallax = frontAngle-backAngle
-        if (abs(internalParallax.asDegrees) > 4.0) {
-            internalParallax = 0.0.degrees
-        }
-        return internalParallax
+        get() {
+            val frontGoalPos = Vector2(0.0, 0.0)
+            val backGoalPos = Vector2(0.0, 2.0)
+            val frontAngle = (frontGoalPos-position).angle.radians
+            val backAngle = (backGoalPos-position).angle.radians
+            var internalParallax = backAngle-frontAngle
+            if (abs(internalParallax.asDegrees) > 4.0) {
+                internalParallax = 0.0.degrees
+            }
+            return internalParallax
     }
 }
 
