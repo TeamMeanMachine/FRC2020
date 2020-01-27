@@ -18,7 +18,7 @@ import kotlin.math.absoluteValue
 suspend fun teleopPrepShot() = use(Shooter) {
     try {
         Shooter.prepShotOn = true
-        val setpoint = 3500.0
+        val setpoint = 4600.0
         Shooter.rpm = setpoint
         val t = Timer()
         t.start()
@@ -29,6 +29,7 @@ suspend fun teleopPrepShot() = use(Shooter) {
                     OI.driverController.rumble = 0.5
                 }
             } else {
+                OI.driverController.rumble = 0.0
                 t.start()
             }
             if (!OI.driverController.leftBumper) {

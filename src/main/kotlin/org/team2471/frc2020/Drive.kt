@@ -17,7 +17,9 @@ import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
+import org.team2471.frc2020.Limelight.distance
 import kotlin.math.absoluteValue
+import kotlin.math.sin
 
 private var gyroOffset = 0.0.degrees
 
@@ -87,7 +89,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.00125
     )
 
-    public val aimPDController = PDController(0.0175, 0.022)
+    public val aimPDController = PDController(0.015, 0.005) //p= 0.0175 d= 0.022
     var lastError = 0.0
 
     init {
