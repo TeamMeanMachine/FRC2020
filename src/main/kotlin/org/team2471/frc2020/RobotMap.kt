@@ -23,9 +23,10 @@ object Sparks {
 //    const val SHOOTER2 = 6 //
 }
 
+// Analog Sensors
 object AnalogSensor {
     const val SWERVE_FRONT_LEFT = 3
-    const val SWERVE_FRONT_RIGHT = 0
-    const val SWERVE_BACK_RIGHT = 1
+    const val SWERVE_FRONT_RIGHT = 1
+    const val SWERVE_BACK_RIGHT = 0
     const val SWERVE_BACK_LEFT = 2
 }
