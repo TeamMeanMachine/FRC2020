@@ -38,7 +38,7 @@ object Robot : MeanlibRobot() {
         Drive.zeroGyro()
         Limelight.enable()
         Drive.initializeSteeringMotors()
-        Shooter.enable()
+//        Shooter.enable()
     }
 
     override suspend fun autonomous() {
@@ -57,8 +57,8 @@ object Robot : MeanlibRobot() {
         //Drive.disable()
         //ControlPanel.test()
 
-        //Drive.steeringTests()
-        //Drive.driveTests()
+        Drive.steeringTests()
+        Drive.driveTests()
     }
 
     override suspend fun disable() {
@@ -74,7 +74,7 @@ object Robot : MeanlibRobot() {
         Drive.disable()
         Limelight.disable()
         //ControlPanel.disable()
-        Shooter.disable()
+//        Shooter.disable()
     }
 }
 

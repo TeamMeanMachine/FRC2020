@@ -143,16 +143,19 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
+            } /*else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = aimPDController.update(Limelight.aimError)
-            }
+            }*/
             drive(
                 OI.driveTranslation,
                 turn,
+                true,
+/*
                 if (Drive.gyro != null) SmartDashboard.getBoolean(
                     "Use Gyro",
                     true
                 ) && !DriverStation.getInstance().isAutonomous else false,
+*/
                 Vector2(0.0, 0.0),
                 0.0
                 // 0.3 // inputDamping

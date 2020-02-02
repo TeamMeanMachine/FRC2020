@@ -11,7 +11,7 @@ import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
-import org.team2471.frc2020.actions.autoPrepShot
+//import org.team2471.frc2020.actions.autoPrepShot
 import java.io.File
 
 private lateinit var autonomi: Autonomi
@@ -122,12 +122,12 @@ object AutoChooser {
             Drive.driveAlongPath(path, true)
             path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
-            autoPrepShot()
+            //autoPrepShot()
             //feedMotor.setPercentOutput(0.75)
             delay(2.0)
             parallel ({
                 //feedMotor.setPercentOutput(0.0)
-                Shooter.rpm = 0.0
+                //Shooter.rpm = 0.0
             }, {
                 path = auto["03- Intake 3 Cells"]
                 Drive.driveAlongPath(path,false)
@@ -136,9 +136,9 @@ object AutoChooser {
             Drive.driveAlongPath(path,false)
             path = auto["05- Shooting Position"]
             Drive.driveAlongPath(path,false)
-            autoPrepShot()
+            //autoPrepShot()
             delay(2.0)
-            Shooter.rpm = 0.0
+            //Shooter.rpm = 0.0
         }
     }
 
