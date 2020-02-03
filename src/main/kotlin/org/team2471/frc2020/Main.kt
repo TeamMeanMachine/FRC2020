@@ -42,7 +42,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun autonomous() {
-        //Drive.zeroGyro()
+//        Drive.zeroGyro()
         Drive.brakeMode()
         AutoChooser.autonomous()
     }
@@ -54,9 +54,9 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test()  {
-        //Drive.disable()
-        //ControlPanel.test()
-
+//        Drive.disable()
+//        ControlPanel.test()
+//
         Drive.steeringTests()
         Drive.driveTests()
     }

@@ -89,6 +89,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     public val aimPDController = PDController(0.015, 0.005) //p= 0.0175 d= 0.022
     var lastError = 0.0
 
+
     init {
         SmartDashboard.setPersistent("Use Gyro")
 
@@ -102,24 +103,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val xEntry = table.getEntry("X")
             val yEntry = table.getEntry("Y")
 
-            val flAngleEntry = table.getEntry("Front Left Angle")
-            val frAngleEntry = table.getEntry("Front Right Angle")
-            val blAngleEntry = table.getEntry("Back Left Angle")
-            val brAngleEntry = table.getEntry("Back Right Angle")
-            val flSPEntry = table.getEntry("Front Left SP")
-            val frSPEntry = table.getEntry("Front Right SP")
-            val blSPEntry = table.getEntry("Back Left SP")
-            val brSPEntry = table.getEntry("Back Right SP")
-
             periodic {
-                flAngleEntry.setDouble(modules[0].angle.asDegrees)
-                frAngleEntry.setDouble(modules[1].angle.asDegrees)
-                blAngleEntry.setDouble(modules[2].angle.asDegrees)
-                brAngleEntry.setDouble(modules[3].angle.asDegrees)
-                flSPEntry.setDouble(modules[0].speed)
-                frSPEntry.setDouble(modules[1].speed)
-                blSPEntry.setDouble(modules[2].speed)
-                brSPEntry.setDouble(modules[3].speed)
 
                 val (x, y) = position
 
@@ -165,7 +149,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     fun initializeSteeringMotors() {
         for (moduleCount in 0..3) {
-            val module = (Drive.modules[moduleCount] as Module)
+            val module = (modules[moduleCount] as Module)
             module.turnMotor.setRawOffset(module.analogAngle)
             println("Module: $moduleCount analogAngle: ${module.analogAngle}")
         }
@@ -173,14 +157,14 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     fun brakeMode() {
         for (moduleCount in 0..3) {
-            val module = (Drive.modules[moduleCount] as Module)
+            val module = (modules[moduleCount] as Module)
             module.driveMotor.brakeMode()
         }
     }
 
     fun coastMode() {
         for (moduleCount in 0..3) {
-            val module = (Drive.modules[moduleCount] as Module)
+            val module = (modules[moduleCount] as Module)
             module.driveMotor.coastMode()
         }
     }
