@@ -5,7 +5,7 @@ package org.team2471.frc2020
 object Talons {
     const val INTAKE = 6
     const val CONTROL_PANEL = 9
-    const val CLIMBER = 14
+    const val BALANCE = 14
 }
 
 object Sparks {
@@ -24,9 +24,15 @@ object Sparks {
 }
 
 // Analog Sensors
-object AnalogSensor {
+object AnalogSensors {
     const val SWERVE_FRONT_LEFT = 3
     const val SWERVE_FRONT_RIGHT = 1
     const val SWERVE_BACK_RIGHT = 0
     const val SWERVE_BACK_LEFT = 2
 }
+
+// object Falcons {
+//const val FEEDER
+//}
+
+// object Solenoids {}

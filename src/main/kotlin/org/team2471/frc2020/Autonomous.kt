@@ -123,10 +123,10 @@ object AutoChooser {
             path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
             //autoPrepShot()
-            //feedMotor.setPercentOutput(0.75)
+            //Feeder.setPower(FEED_POWER)
             delay(2.0)
             parallel ({
-                //feedMotor.setPercentOutput(0.0)
+                //Feeder.setPower(0.0)
                 //Shooter.rpm = 0.0
             }, {
                 path = auto["03- Intake 3 Cells"]

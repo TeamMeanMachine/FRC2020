@@ -55,7 +55,7 @@ import kotlin.math.absoluteValue
 //        periodic {
 //            if (Shooter.rpmSetpointEntry.getDouble(0.0) < 0.1) {
 //                Shooter.stop()
-//            } else { //wait frick this network table crap should be in the other function aaaahhhh
+//            } else {
 //                Shooter.rpm = Shooter.rpmSetpointEntry.getDouble(0.0)
 //            }
 //            val currTime = t.get()
@@ -91,15 +91,14 @@ import kotlin.math.absoluteValue
 //}
 
 
-suspend fun shoot() /*= use(Feeder)*/ {
-    try {
-        /*
-        if (Shooter.rpm > 1000.0) {
-        feedMotor.setPercentOutput(0.75)
-        }
-        waitUntil(!OI.driverController.rightTrigger)
-         */
-    } finally {
-        /*feedMotor.setPercentOutput(0.0)*/
-    }
-}
+//suspend fun shoot() = use(Feeder)
+// {
+//    try {
+//        if (Shooter.rpm > 1000.0) {
+//        Feeder.setPower(FEED_POWER)
+//        }
+//        waitUntil(!OI.driverController.rightTrigger)
+//    } finally {
+//        feederMotor.setPercentOutput(0.0)
+//    }
+//}

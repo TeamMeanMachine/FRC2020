@@ -2,7 +2,6 @@ package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.AnalogInput
-import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -18,8 +17,6 @@ import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
 import kotlin.math.absoluteValue
 
-private var gyroOffset = 0.0.degrees
-
 object Drive : Subsystem("Drive"), SwerveDrive {
 
     /**
@@ -31,34 +28,36 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
             Vector2(-7.0, 7.5),
             (-315.0).degrees,
-            AnalogSensor.SWERVE_FRONT_LEFT
+            AnalogSensors.SWERVE_FRONT_LEFT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTRIGHT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTRIGHT)),
             Vector2(7.0, 7.5),
             (-225.0).degrees,
-            AnalogSensor.SWERVE_FRONT_RIGHT
+            AnalogSensors.SWERVE_FRONT_RIGHT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_BACKRIGHT)),
             MotorController(SparkMaxID(Sparks.STEER_BACKRIGHT)),
             Vector2(7.0, -7.5),
             (-135.0).degrees,
-            AnalogSensor.SWERVE_BACK_RIGHT
+            AnalogSensors.SWERVE_BACK_RIGHT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_BACKLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_BACKLEFT)),
             Vector2(-7.0, -7.5),
             (-45.0).degrees,
-            AnalogSensor.SWERVE_BACK_LEFT
+            AnalogSensors.SWERVE_BACK_LEFT
         )
     )
 
     //    val gyro: Gyro? = null
 //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
     val gyro: NavxWrapper? = NavxWrapper()
+
+    private var gyroOffset = 0.0.degrees
 
     override var heading: Angle
         get() = gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())

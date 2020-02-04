@@ -5,15 +5,18 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
-//import org.team2471.frc2020.actions.teleopPrepShot
-import org.team2471.frc2020.actions.shoot
 
-private val deadBandDriver = 0.1
-private val deadBandOperator = 0.1
+//import org.team2471.frc2020.actions.intake
+//import org.team2471.frc2020.actions.teleopPrepShot
+//import org.team2471.frc2020.actions.shoot
 
 object OI {
     val driverController = XboxController(0)
     val operatorController = XboxController(1)
+
+    private val deadBandDriver = 0.1
+    private val deadBandOperator = 0.1
+
 
     private val driveTranslationX: Double
         get() = driverController.leftThumbstickX.deadband(deadBandDriver).squareWithSign()
@@ -47,7 +50,9 @@ object OI {
 //        driverController::leftBumper.whenTrue { teleopPrepShot() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
-        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
+//        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
+//        ({ driverController.leftTrigger > 0.1 }).whileTrue{ intake() }
+
     }
 }
 
