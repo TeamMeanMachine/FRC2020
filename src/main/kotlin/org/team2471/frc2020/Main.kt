@@ -38,7 +38,7 @@ object Robot : MeanlibRobot() {
         Drive.zeroGyro()
         Limelight.enable()
         Drive.initializeSteeringMotors()
-//        Shooter.enable()
+        Shooter.enable()
     }
 
     override suspend fun autonomous() {
@@ -70,11 +70,12 @@ object Robot : MeanlibRobot() {
 
             xEntry.setDouble(Drive.position.x)
             yEntry.setDouble(Drive.position.y)
+            //println("analog 2 ${Drive.modules[2].angle}" )
         }
         Drive.disable()
         Limelight.disable()
         //ControlPanel.disable()
-//        Shooter.disable()
+        Shooter.disable()
     }
 }
 

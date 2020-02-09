@@ -19,8 +19,8 @@ object Sparks {
     const val STEER_BACKRIGHT = 4 //
     const val STEER_FRONTRIGHT = 11 //
 
-//    const val SHOOTER = 3 //
-//    const val SHOOTER2 = 6 //
+    const val SHOOTER = 2 //
+    const val SHOOTER2 = 13 //
 }
 
 // Analog Sensors
