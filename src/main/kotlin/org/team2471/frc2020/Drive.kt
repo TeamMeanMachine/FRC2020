@@ -26,28 +26,28 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
-            Vector2(-7.0, 7.5),
+            Vector2(-11.5,14.0),
             (-315.0).degrees,
             AnalogSensors.SWERVE_FRONT_LEFT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTRIGHT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTRIGHT)),
-            Vector2(7.0, 7.5),
+            Vector2(11.5, 14.0),
             (-225.0).degrees,
             AnalogSensors.SWERVE_FRONT_RIGHT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_BACKRIGHT)),
             MotorController(SparkMaxID(Sparks.STEER_BACKRIGHT)),
-            Vector2(7.0, -7.5),
+            Vector2(11.5, -14.0),
             (-135.0).degrees,
             AnalogSensors.SWERVE_BACK_RIGHT
         ),
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_BACKLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_BACKLEFT)),
-            Vector2(-7.0, -7.5),
+            Vector2(-11.5, -14.0),
             (-45.0).degrees,
             AnalogSensors.SWERVE_BACK_LEFT
         )
