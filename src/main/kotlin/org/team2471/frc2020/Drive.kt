@@ -113,7 +113,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun zeroGyro() = gyro?.reset()
+    fun  zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
 
