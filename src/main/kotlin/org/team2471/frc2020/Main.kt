@@ -41,6 +41,7 @@ object Robot : MeanlibRobot() {
         Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
+        Sensors.enable()
     }
 
     override suspend fun autonomous() {
@@ -61,7 +62,8 @@ object Robot : MeanlibRobot() {
 //
 //        Drive.steeringTests()
 //        Drive.driveTests()
-        Feeder.test()
+        //Feeder.test()
+        Sensors.test()
     }
 
     override suspend fun disable() {
