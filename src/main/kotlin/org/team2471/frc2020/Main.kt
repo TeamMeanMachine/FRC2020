@@ -13,6 +13,7 @@ import org.team2471.frc.lib.motion.following.recordOdometry
 import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.units.radians
+import org.team2471.frc2020.testing.test
 
 //val PDP = PowerDistributionPanel()
 
@@ -39,6 +40,7 @@ object Robot : MeanlibRobot() {
         Limelight.enable()
         Drive.initializeSteeringMotors()
         Shooter.enable()
+        Feeder.enable()
     }
 
     override suspend fun autonomous() {
@@ -57,8 +59,9 @@ object Robot : MeanlibRobot() {
 //        Drive.disable()
 //        ControlPanel.test()
 //
-        Drive.steeringTests()
-        Drive.driveTests()
+//        Drive.steeringTests()
+//        Drive.driveTests()
+        Feeder.test()
     }
 
     override suspend fun disable() {
@@ -76,6 +79,7 @@ object Robot : MeanlibRobot() {
         Limelight.disable()
         //ControlPanel.disable()
         Shooter.disable()
+        Feeder.disable()
     }
 }
 

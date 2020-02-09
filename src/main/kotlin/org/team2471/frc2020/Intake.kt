@@ -9,6 +9,7 @@ import org.team2471.frc2020.Talons
 object Intake: Subsystem("Shooter") {
     val intakeMotor = MotorController(TalonID(Talons.INTAKE))
 /*    private val extensionSolenoid = Solenoid(INTAKE_EXTENDER)
+    private val extensionSolenoid2 = S
 
     private val INTAKE_POWER =
 */

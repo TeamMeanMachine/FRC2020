@@ -31,8 +31,9 @@ object AnalogSensors {
     const val SWERVE_BACK_LEFT = 2
 }
 
-// object Falcons {
-//const val FEEDER
-//}
+object Falcons {
+const val FEEDER = 1
+}
 
-// object Solenoids {}
+/* object Solenoids {
+} */
