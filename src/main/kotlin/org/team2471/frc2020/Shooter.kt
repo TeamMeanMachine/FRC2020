@@ -16,15 +16,20 @@ object Shooter : Subsystem("Shooter") {
     private val table = NetworkTableInstance.getDefault().getTable(name)
     val rpmEntry = table.getEntry("RPM")
     val rpmSetpointEntry = table.getEntry("RPM Setpoint")
-    private val rpmCurve = MotionCurve()
+    val rpmCurve = MotionCurve()
 
     public var prepShotOn = false
 
 
     init {
-        //rpmCurve.StoreValue(area1, rpm1)
-        //rpmCurve.StoreValue(area1, rpm1)
-        //rpmCurve.StoreValue(area1, rpm1)
+//        rpmCurve.StoreValue(125, 4600)
+//        rpmCurve.StoreValue(130, 5000)
+//        rpmCurve.StoreValue(135, 5400)
+//        rpmCurve.StoreValue(143, 4800)
+//        rpmCurve.StoreValue(175, 4100)
+//        rpmCurve.StoreValue(219, 4000)
+//        rpmCurve.StoreValue(265, 4900)
+
 
         shootingMotor.config {
             feedbackCoefficient = 1.0/(42.0 * 1.01471)
@@ -57,6 +62,7 @@ object Shooter : Subsystem("Shooter") {
         get() = shootingMotor.velocity
         set(value) = shootingMotor.setVelocitySetpoint(value)
 
+    var current = shootingMotor.current
 
 
     override suspend fun default() {

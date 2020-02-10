@@ -41,7 +41,7 @@ object Limelight : Subsystem("Limelight") {
     private var parallaxEntry = table.getEntry("Parallax")
 
     val distance : Length
-        get() = heightToDistance.getValue(yTranslation).feet
+        get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
 
 
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")

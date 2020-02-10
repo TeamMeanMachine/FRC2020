@@ -85,7 +85,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.00125
     )
 
-    public val aimPDController = PDController(0.015, 0.005) //p= 0.0175 d= 0.022
+    public val aimPDController = PDController(0.02, 0.05)
     var lastError = 0.0
 
 
@@ -102,6 +102,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val xEntry = table.getEntry("X")
             val yEntry = table.getEntry("Y")
 
+            val aimPEntry = table.getEntry("p")
+            val aimDEntry = table.getEntry("d")
+
+//            aimPEntry.setDouble(0.015)
+//            aimDEntry.setDouble(0.005)
+
             periodic {
 
                 val (x, y) = position
@@ -109,6 +115,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 xEntry.setDouble(x)
                 yEntry.setDouble(y)
                 headingEntry.setDouble(heading.asDegrees)
+//                aimPDController.p = aimPEntry.getDouble(0.015)
+//                aimPDController.d = aimDEntry.getDouble(0.005)
             }
         }
     }
@@ -126,9 +134,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } /*else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
+            } else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = aimPDController.update(Limelight.aimError)
-            }*/
+                println("LimeLightAimError=${Limelight.aimError}")
+            }
             drive(
                 OI.driveTranslation,
                 turn,

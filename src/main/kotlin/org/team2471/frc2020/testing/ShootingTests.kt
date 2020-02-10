@@ -5,13 +5,11 @@ import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.Feeder
 import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
+import org.team2471.frc2020.Shooter.rpm
 
-suspend fun Feeder.test() = use(this, Shooter) {
-    var feederPower = 0.0
+suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
     periodic {
-        Shooter.rpm = Shooter.rpmSetpointEntry.getDouble(0.0)
-        feederPower = OI.driveRightTrigger
-        Feeder.setPower(feederPower)
-        println(feederPower)
+        rpm = rpmSetpointEntry.getDouble(0.0)
+        Feeder.setPower(OI.driveRightTrigger)
     }
 }
