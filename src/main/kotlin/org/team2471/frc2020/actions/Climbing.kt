@@ -10,7 +10,7 @@ import org.team2471.frc2020.Shooter
 
 suspend fun climb() = use(Intake, EndGame, Shooter) {
     try {
-        Intake.intakeIsExtending = true
+        Intake.extend = true
         delay(0.1)
         EndGame.climbIsExtending = true
         periodic {
@@ -21,6 +21,6 @@ suspend fun climb() = use(Intake, EndGame, Shooter) {
         }
     } finally {
         EndGame.brakeIsExtending = true
-        Intake.intakeIsExtending = false
+        Intake.extend = false
     }
 }

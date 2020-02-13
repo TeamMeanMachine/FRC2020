@@ -6,9 +6,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
-import org.team2471.frc2020.actions.intake
-import org.team2471.frc2020.actions.shoot
-import org.team2471.frc2020.actions.teleopPrepShot
+import org.team2471.frc2020.actions.shootMode
 
 //import org.team2471.frc2020.actions.intake
 //import org.team2471.frc2020.actions.teleopPrepShot
@@ -51,7 +49,7 @@ object OI {
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
-        driverController::leftBumper.whenTrue { teleopPrepShot() }
+        driverController::leftBumper.whenTrue { shootMode() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
 //        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }

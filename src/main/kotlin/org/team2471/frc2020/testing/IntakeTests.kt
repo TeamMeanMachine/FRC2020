@@ -17,15 +17,15 @@ suspend fun Intake.motorTest() = use(this) {
 }
 
 suspend fun Intake.solenoidTest() = use(this) {
-    intakeIsExtending = false
+    extend = false
     periodic {
         if(OI.driverController.a) {
-            intakeIsExtending = false
+            extend = false
         }
         if(OI.driverController.b) {
-            intakeIsExtending = true
+            extend = true
         }
-        println(intakeIsExtending)
+        println(extend)
     }
 }
 
@@ -33,7 +33,7 @@ suspend fun Intake.intakeFeedAndShootTest() = use(this, Feeder, Shooter) {
     parallel({
         Feeder.test()
     },{
-        Intake.intakeIsExtending = true
+        Intake.extend = true
         periodic {
             println(brakeIsExtending)
             setPower(OI.driveLeftTrigger)

@@ -14,23 +14,31 @@ import org.team2471.frc2020.Limelight.hasValidTarget
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-suspend fun teleopPrepShot() = use(Shooter) {
+suspend fun shootMode() = use(Shooter, Feeder, Intake) {
     try {
         Shooter.prepShotOn = true
-        //val setpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
-        val setpoint = Shooter.rpmSetpointEntry.getDouble(0.0)
-        Shooter.rpm = setpoint
+        Shooter.rpm = Shooter.rpmSetpoint
         val t = Timer()
         t.start()
         periodic {
+            Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - setpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
             } else {
                 OI.driverController.rumble = 0.0
                 t.start()
+            }
+
+            if(OI.driverController.rightTrigger > 0.1) {
+                Feeder.setPower(OI.driveRightTrigger * 0.80)
+                Intake.setPower(OI.driveRightTrigger * 0.80)
+                Intake.extend = true
+            } else {
+                Feeder.setPower(0.0)
+                Intake.setPower(0.0)
             }
             if (!OI.driverController.leftBumper) {
                 this.stop()
@@ -41,6 +49,9 @@ suspend fun teleopPrepShot() = use(Shooter) {
         OI.driverController.rumble = 0.0
         Shooter.rpm = 0.0
         Shooter.prepShotOn = false
+        Feeder.setPower(0.0)
+        Intake.setPower(0.0)
+        Intake.extend = false
     }
 }
 

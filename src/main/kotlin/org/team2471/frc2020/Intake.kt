@@ -21,11 +21,10 @@ object Intake: Subsystem("Intake") {
         }
     }
 
-    var intakeIsExtending: Boolean
+    var extend: Boolean
         get() = extensionSolenoid.get()
-        set(value) {
-        extensionSolenoid.set(value)
-        }
+        set(value) = extensionSolenoid.set(value)
+
 
         /*fun setPower(power: Double) {
             intakeMotor.setPercentOutput(power)

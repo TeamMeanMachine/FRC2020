@@ -10,6 +10,6 @@ import org.team2471.frc2020.Shooter.rpm
 suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
     periodic {
         rpm = rpmSetpointEntry.getDouble(0.0)
-        Feeder.setPower(OI.driveRightTrigger)
+        Feeder.setPower(OI.driveRightTrigger )
     }
 }

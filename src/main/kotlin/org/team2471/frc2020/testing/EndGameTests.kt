@@ -10,7 +10,7 @@ import org.team2471.frc2020.Shooter
 
 suspend fun EndGame.climbSolenoidTest() = use(EndGame, Shooter, Intake) {
     EndGame.brakeIsExtending = false
-    Intake.intakeIsExtending = true
+    Intake.extend = true
     delay(2.0)
     Shooter.setPower(0.25)
     delay(1.0)
@@ -28,7 +28,7 @@ suspend fun EndGame.brakeSolenoidTest() = use(EndGame) {
 
 suspend fun EndGame.climbTest() = use(EndGame) {
     EndGame.brakeIsExtending = false
-    Intake.intakeIsExtending = true
+    Intake.extend = true
     climbIsExtending = true
     periodic {
         Shooter.setPower(OI.operatorLeftY * 0.5)
