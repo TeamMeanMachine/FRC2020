@@ -37,6 +37,12 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve.storeValue(26.0, 4100.0)
         rpmCurve.storeValue(34.0, 4450.0)
 
+        var dist = 11.0
+        while (dist<=34.0) {
+            println("$dist ${rpmCurve.getValue(dist)}")
+            dist += 0.1
+        }
+
         shootingMotor.config {
             feedbackCoefficient = 1.0 / (42.0 * 1.01471)
             inverted(true)
@@ -78,7 +84,9 @@ object Shooter : Subsystem("Shooter") {
     var rpmSetpoint: Double = 0.0
         get() {
             if (Limelight.hasValidTarget) {
-                return rpmFromDistance(Limelight.distance)
+                val rpm2 = rpmFromDistance(Limelight.distance)
+                rpmSetpointEntry.setDouble(rpm2)
+                return rpm2
             } else {
                 return rpmSetpointEntry.value.double
             }
