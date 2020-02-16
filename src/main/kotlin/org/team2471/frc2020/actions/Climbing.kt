@@ -1,5 +1,7 @@
 package org.team2471.frc2020.actions
 
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
@@ -17,12 +19,13 @@ suspend fun climb() = use(Intake, EndGame, Shooter) {
         periodic {
             EndGame.brakeIsExtending = OI.operatorLeftY.absoluteValue < 0.1
             Shooter.setPower(OI.operatorLeftY * -0.5)
-            if(OI.operatorController.rightBumper) {
-                this.stop()
-            }
         }
     } finally {
         EndGame.brakeIsExtending = true
+        EndGame.climbIsExtending = false
+        withContext(NonCancellable) {
+            delay(0.5)
+        }
         Intake.extend = false
     }
 }

@@ -1,6 +1,7 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -56,7 +57,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-    val gyro: NavxWrapper? = NavxWrapper()
+    // val gyro: NavxWrapper? = NavxWrapper()
+    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
 

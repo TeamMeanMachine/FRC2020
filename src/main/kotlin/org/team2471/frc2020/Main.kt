@@ -59,8 +59,8 @@ object Robot : MeanlibRobot() {
 //        Drive.disable()
 //        ControlPanel.test()
 //
-        Drive.steeringTests()
-        Drive.driveTests()
+//        Drive.steeringTests()
+//        Drive.driveTests()
 //        Feeder.test()
 //        Intake.solenoidTest()
 //        ControlPanel.motorTest()
@@ -69,7 +69,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-//        Shooter.distance2RpmTest()
+        Shooter.distance2RpmTest()
     }
 
 
