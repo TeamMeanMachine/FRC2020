@@ -61,7 +61,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     private var gyroOffset = 0.0.degrees
 
     override var heading: Angle
-        get() = (gyro?.angle ?: 0.0).degrees //gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())
+        get() = gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())
         set(value) {
             gyroOffset = value
             gyro?.reset()

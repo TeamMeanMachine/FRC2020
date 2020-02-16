@@ -1,11 +1,11 @@
 package org.team2471.frc2020
 
-//import org.team2471.FRC2020.actions.climb
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
+import org.team2471.frc2020.actions.climb
 import org.team2471.frc2020.actions.intake
 import org.team2471.frc2020.actions.shootMode
 
@@ -51,12 +51,12 @@ object OI {
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
-        driverController::rightBumper.whenTrue { intake() }
+ //       driverController::rightBumper.whenTrue { intake() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
 //        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
 //        ({ driverController.leftTrigger > 0.1 }).whileTrue{ intake() }
-//        driverController::rightBumper.whenTrue { climb() }
+        operatorController::rightBumper.whenTrue { climb() }
 
     }
 }

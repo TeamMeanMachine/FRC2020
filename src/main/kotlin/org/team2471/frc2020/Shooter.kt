@@ -40,7 +40,7 @@ object Shooter : Subsystem("Shooter") {
         var dist = 11.0
         while (dist<=34.0) {
             println("$dist ${rpmCurve.getValue(dist)}")
-            dist += 0.1
+            dist += 0.2
         }
 
         shootingMotor.config {
