@@ -5,15 +5,13 @@ package org.team2471.frc2020
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
-import org.team2471.frc2020.testing.driveTests
-import org.team2471.frc2020.testing.steeringTests
 import org.team2471.frc.lib.framework.MeanlibRobot
-import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.recordOdometry
-import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.degrees
-import org.team2471.frc.lib.units.radians
-import org.team2471.frc2020.testing.test
+import org.team2471.frc2020.testing.*
+//import org.team2471.frc2020.testing.intakeFeedAndShootTest
+
+//import org.team2471.frc2020.testing.solenoidTest
 
 //val PDP = PowerDistributionPanel()
 
@@ -35,13 +33,14 @@ object Robot : MeanlibRobot() {
 
     override suspend fun enable() {
         Drive.enable()
-        //ControlPanel.enable()
+        ControlPanel.enable()
         Drive.zeroGyro()
         Limelight.enable()
         Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
-        Sensors.enable()
+        Intake.enable()
+        EndGame.enable()
     }
 
     override suspend fun autonomous() {
@@ -60,13 +59,28 @@ object Robot : MeanlibRobot() {
 //        Drive.disable()
 //        ControlPanel.test()
 //
-//        Drive.steeringTests()
-//        Drive.driveTests()
-        //Feeder.test()
-        Sensors.test()
+        Drive.steeringTests()
+        Drive.driveTests()
+//        Feeder.test()
+//        Intake.solenoidTest()
+//        ControlPanel.motorTest()
+//        ControlPanel.soleniodTest()
+//        Intake.intakeFeedAndShootTest()
+//        EndGame.climbSolenoidTest()
+//        EndGame.brakeSolenoidTest()
+//        EndGame.climbTest()
+//        Shooter.distance2RpmTest()
     }
 
+
     override suspend fun disable() {
+        Drive.disable()
+        Limelight.disable()
+        ControlPanel.disable()
+        Shooter.disable()
+        Feeder.disable()
+        Intake.disable()
+        EndGame.disable()
         val table = NetworkTableInstance.getDefault().getTable(Drive.name)
         val xEntry = table.getEntry("X")
         val yEntry = table.getEntry("Y")
@@ -77,11 +91,6 @@ object Robot : MeanlibRobot() {
             yEntry.setDouble(Drive.position.y)
             //println("analog 2 ${Drive.modules[2].angle}" )
         }
-        Drive.disable()
-        Limelight.disable()
-        //ControlPanel.disable()
-        Shooter.disable()
-        Feeder.disable()
     }
 }
 

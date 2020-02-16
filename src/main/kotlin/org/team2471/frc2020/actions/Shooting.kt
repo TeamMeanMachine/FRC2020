@@ -3,31 +3,42 @@ package org.team2471.frc2020.actions
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.coroutines.periodic
+import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
 import org.team2471.frc2020.Limelight.aimError
+import org.team2471.frc2020.Limelight.hasValidTarget
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-suspend fun teleopPrepShot() = use(Shooter) {
+suspend fun shootMode() = use(Shooter, Feeder, Intake) {
     try {
         Shooter.prepShotOn = true
-        val setpoint = 4600.0
-        Shooter.rpm = setpoint
+        Shooter.rpm = Shooter.rpmSetpoint
         val t = Timer()
         t.start()
         periodic {
+            Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - setpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
             } else {
                 OI.driverController.rumble = 0.0
                 t.start()
+            }
+
+            if(OI.driverController.rightTrigger > 0.1) {
+                Feeder.setPower(OI.driveRightTrigger * 0.80)
+                Intake.setPower(OI.driveRightTrigger * 0.80)
+                Intake.extend = true
+            } else {
+                Feeder.setPower(0.0)
+                Intake.setPower(0.0)
             }
             if (!OI.driverController.leftBumper) {
                 this.stop()
@@ -38,6 +49,9 @@ suspend fun teleopPrepShot() = use(Shooter) {
         OI.driverController.rumble = 0.0
         Shooter.rpm = 0.0
         Shooter.prepShotOn = false
+        Feeder.setPower(0.0)
+        Intake.setPower(0.0)
+        Intake.extend = false
     }
 }
 
@@ -53,10 +67,10 @@ suspend fun autoPrepShot() = use(Shooter, Drive) {
             if (Shooter.rpmSetpointEntry.getDouble(0.0) < 0.1) {
                 Shooter.stop()
             } else {
-                Shooter.rpm = Shooter.rpmSetpointEntry.getDouble(0.0)
+                Shooter.rpm = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
             }
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmSetpointEntry.getDouble(0.0)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(Limelight.distance.asInches)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     this.stop()
                 }
@@ -87,15 +101,15 @@ suspend fun autoPrepShot() = use(Shooter, Drive) {
     }
 }
 
-//
-//suspend fun shoot() = use(Feeder)
-// {
-//    try {
-//        if (Shooter.rpm > 1000.0) {
-//        Feeder.setPower(FEED_POWER)
-//        }
-//        waitUntil(!OI.driverController.rightTrigger)
-//    } finally {
-//        feederMotor.setPercentOutput(0.0)
-//    }
-//}
+
+suspend fun shoot() = use(Feeder)
+ {
+    try {
+        if (Shooter.rpm > 1000.0) {
+        Feeder.setPower(Feeder.FEED_POWER)
+        }
+        suspendUntil(20, { OI.driverController.rightTrigger == 0.0 })
+    } finally {
+        Feeder.setPower(0.0)
+    }
+}

@@ -35,5 +35,9 @@ object Falcons {
 const val FEEDER = 1
 }
 
-/* object Solenoids {
-} */
+ object Solenoids {
+     const val BRAKE = 7
+     const val CLIMB = 6
+     const val INTAKE = 5
+     const val CONTROL_PANEL = 4
+}
