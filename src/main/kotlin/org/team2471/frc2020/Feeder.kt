@@ -7,7 +7,7 @@ import org.team2471.frc.lib.framework.Subsystem
 object Feeder: Subsystem("Feeder") {
  private val feederMotor = MotorController(FalconID(Falcons.FEEDER))
 
-//private val FEED_POWER =
+ val FEED_POWER = 1.0
 
     init {
         feederMotor.config {
