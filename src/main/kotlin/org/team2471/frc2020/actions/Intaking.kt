@@ -39,9 +39,8 @@ import org.team2471.frc2020.OI
 
 suspend fun intake() = use(Intake){
     try {
-        println("YEET")
         Intake.extend = true
-        Intake.setPower(INTAKE_POWER)
+        Intake.setPower(OI.driverController.rightTrigger)
         halt()
     } finally {
         Intake.extend = false
@@ -50,4 +49,14 @@ suspend fun intake() = use(Intake){
         }
         Intake.setPower(0.0)
     }
+}
+
+suspend fun autoIntakeStart() = use(Intake) {
+        Intake.extend = true
+        Intake.setPower(INTAKE_POWER)
+}
+
+suspend fun autoIntakeStop() = use(Intake) {
+    Intake.extend = false
+    Intake.setPower(0.0)
 }

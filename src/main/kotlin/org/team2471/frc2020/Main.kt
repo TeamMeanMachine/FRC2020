@@ -27,11 +27,12 @@ object Robot : MeanlibRobot() {
 
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
-        AutoChooser
+//        AutoChooser
         Limelight.startUp()
     }
 
     override suspend fun enable() {
+        println("uwu uw u wuwu")
         Drive.enable()
         ControlPanel.enable()
         Drive.zeroGyro()
@@ -41,6 +42,7 @@ object Robot : MeanlibRobot() {
         Feeder.enable()
         Intake.enable()
         EndGame.enable()
+        println("owo owo owo")
     }
 
     override suspend fun autonomous() {

@@ -11,6 +11,7 @@ import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
+import org.team2471.frc2020.actions.*
 //import org.team2471.frc2020.actions.autoPrepShot
 import java.io.File
 
@@ -28,7 +29,6 @@ enum class Side {
 }
 
 private var startingSide = Side.RIGHT
-
 
 object AutoChooser {
     private val cacheFile = File("/home/lvuser/autonomi.json")
@@ -49,9 +49,9 @@ object AutoChooser {
     }
 
     private val autonomousChooser = SendableChooser<suspend() -> Unit>().apply {
-        addOption("5 Ball Trench Run", ::trenchRun5)
-        setDefaultOption("10 Ball Shield Generator", ::shieldGenerator10)
         addOption("Tests", ::testAuto)
+        addOption("5 Ball Trench Run", ::trenchRun5)
+        addOption("10 Ball Shield Generator", ::shieldGenerator10)
     }
 
     init {
@@ -100,45 +100,42 @@ object AutoChooser {
         if (testPath != null) {
             val testAutonomous = autonomi["Tests"]
             val path = testAutonomous[testPath]
-            Drive.driveAlongPath(path, true, 0.0)
+            Drive.driveAlongPath(path, true)
         }
     }
 
     suspend fun trenchRun5() = use(Drive){
-        //println("Got into fun trenchRun5. Hi. 11111111111111111111111111111111111111")
         val auto = autonomi["5 Ball Trench Run"]
         if (auto != null) {
+            autoIntakeStart()
             var path = auto["01- Intake 2 Cells"]
             Drive.driveAlongPath(path, true)
+            autoIntakeStop()
             path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
+            autoPrepShot()
         }
     }
 
     suspend fun shieldGenerator10() = use(Drive) {
         val auto = autonomi["10 Ball Shield Generator"]
         if (auto != null) {
+            autoIntakeStart()
             var path = auto["01- Intake 2 Cells"]
             Drive.driveAlongPath(path, true)
+            autoIntakeStop()
             path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
-            //autoPrepShot()
-            //Feeder.setPower(FEED_POWER)
-            delay(2.0)
-            parallel ({
-                //Feeder.setPower(0.0)
-                //Shooter.rpm = 0.0
-            }, {
-                path = auto["03- Intake 3 Cells"]
-                Drive.driveAlongPath(path,false)
-            })
+            autoPrepShot()
+            autoIntakeStart()
+            path = auto["03- Intake 3 Cells"]
+            Drive.driveAlongPath(path, true)
             path = auto["04- Intake 2 Cells"]
             Drive.driveAlongPath(path,false)
+            autoIntakeStop()
             path = auto["05- Shooting Position"]
             Drive.driveAlongPath(path,false)
-            //autoPrepShot()
-            delay(2.0)
-            //Shooter.rpm = 0.0
+            autoPrepShot()
         }
     }
 

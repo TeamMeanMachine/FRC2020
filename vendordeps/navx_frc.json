@@ -1,7 +1,7 @@
 {
     "fileName": "navx_frc.json",
     "name": "KauaiLabs_navX_FRC",
-    "version": "3.1.409",
+    "version": "3.1.401",
     "uuid": "cb311d09-36e9-4143-a032-55bb2b94443b",
     "mavenUrls": [
         "https://repo1.maven.org/maven2/"

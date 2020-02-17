@@ -2,6 +2,7 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
@@ -35,7 +36,6 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
             if(OI.driverController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.driveRightTrigger * 0.80)
                 Intake.setPower(OI.driveRightTrigger * 0.80)
-                Intake.extend = true
             } else {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
@@ -56,19 +56,16 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
 }
 
 
-suspend fun autoPrepShot() = use(Shooter, Drive) {
+suspend fun autoPrepShot() = use(Shooter, Drive, Intake, Feeder) {
     try {
         Shooter.prepShotOn = true
+        Intake.setPower(Intake.INTAKE_POWER)
         val totalT = Timer()
         totalT.start()
         val t = Timer()
         t.start()
         periodic {
-            if (Shooter.rpmSetpointEntry.getDouble(0.0) < 0.1) {
-                Shooter.stop()
-            } else {
-                Shooter.rpm = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
-            }
+            Shooter.rpm = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
             val currTime = t.get()
             if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(Limelight.distance.asInches)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
@@ -95,21 +92,25 @@ suspend fun autoPrepShot() = use(Shooter, Drive) {
                 ) && !DriverStation.getInstance().isAutonomous else false
             )
         }
+        Feeder.setPower(Feeder.FEED_POWER)
+        delay(6.0)
     } finally {
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
-    }
-}
-
-
-suspend fun shoot() = use(Feeder)
- {
-    try {
-        if (Shooter.rpm > 1000.0) {
-        Feeder.setPower(Feeder.FEED_POWER)
-        }
-        suspendUntil(20, { OI.driverController.rightTrigger == 0.0 })
-    } finally {
         Feeder.setPower(0.0)
+        Intake.setPower(0.0)
     }
 }
+
+
+//suspend fun shoot() = use(Feeder)
+// {
+//    try {
+//        if (Shooter.rpm > 1000.0) {
+//        Feeder.setPower(Feeder.FEED_POWER)
+//        }
+//        suspendUntil(20, { OI.driverController.rightTrigger == 0.0 })
+//    } finally {
+//        Feeder.setPower(0.0)
+//    }
+//}
