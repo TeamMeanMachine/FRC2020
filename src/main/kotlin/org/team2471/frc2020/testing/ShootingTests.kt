@@ -14,3 +14,15 @@ suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
     }
 
 }
+
+suspend fun Shooter.seeRpmDipsTest() = use(this, Feeder) {
+    var rpmSetpoint = 4100.0
+    rpm = rpmSetpoint
+    periodic {
+        if(rpmSetpoint - rpm < 100 && OI.driveRightTrigger > 0.1) {
+            Feeder.setPower(Feeder.FEED_POWER)
+        } else {
+            Feeder.setPower(0.0)
+        }
+    }
+}

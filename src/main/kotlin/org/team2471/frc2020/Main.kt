@@ -32,7 +32,6 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun enable() {
-        println("uwu uw u wuwu")
         Drive.enable()
         ControlPanel.enable()
         Drive.zeroGyro()
@@ -42,7 +41,6 @@ object Robot : MeanlibRobot() {
         Feeder.enable()
         Intake.enable()
         EndGame.enable()
-        println("owo owo owo")
     }
 
     override suspend fun autonomous() {
@@ -73,7 +71,8 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-        Shooter.distance2RpmTest()
+//        Shooter.distance2RpmTest()
+        Shooter.seeRpmDipsTest()
     }
 
 
