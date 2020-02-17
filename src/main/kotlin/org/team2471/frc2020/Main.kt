@@ -47,6 +47,8 @@ object Robot : MeanlibRobot() {
 
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
+        EndGame.brakeIsExtending = true
+
         Drive.brakeMode()
         AutoChooser.autonomous()
     }

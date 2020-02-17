@@ -48,10 +48,10 @@ object AutoChooser {
         addOption("Hook Path", "Hook Path")
     }
 
-    private val autonomousChooser = SendableChooser<suspend() -> Unit>().apply {
+    private val autonomousChooser = SendableChooser<suspend () -> Unit>().apply {
         addOption("Tests", ::testAuto)
         addOption("5 Ball Trench Run", ::trenchRun5)
-        addOption("10 Ball Shield Generator", ::shieldGenerator10)
+        setDefaultOption("10 Ball Shield Generator", ::shieldGenerator10)
     }
 
     init {
@@ -104,10 +104,10 @@ object AutoChooser {
         }
     }
 
-    suspend fun trenchRun5() = use(Drive){
+    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder) {
         val auto = autonomi["5 Ball Trench Run"]
         if (auto != null) {
-            autoIntakeStart()
+            Intake.setPower(Intake.INTAKE_POWER)
             var path = auto["01- Intake 2 Cells"]
             Drive.driveAlongPath(path, true)
             autoIntakeStop()
@@ -117,29 +117,39 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive) {
-        val auto = autonomi["10 Ball Shield Generator"]
-        if (auto != null) {
-            autoIntakeStart()
-            var path = auto["01- Intake 2 Cells"]
-            Drive.driveAlongPath(path, true)
-            autoIntakeStop()
-            path = auto["02- Shooting Position"]
-            Drive.driveAlongPath(path, false)
-            autoPrepShot()
-            autoIntakeStart()
-            path = auto["03- Intake 3 Cells"]
-            Drive.driveAlongPath(path, true)
-            path = auto["04- Intake 2 Cells"]
-            Drive.driveAlongPath(path,false)
-            autoIntakeStop()
-            path = auto["05- Shooting Position"]
-            Drive.driveAlongPath(path,false)
-            autoPrepShot()
+    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder) {
+        try {
+            val auto = autonomi["10 Ball Shield Generator"]
+            if (auto != null) {
+                Intake.setPower(Intake.INTAKE_POWER)
+                Intake.extend = true
+                var path = auto["01- Intake 2 Cells"]
+                Drive.driveAlongPath(path, true)
+                delay(0.25)
+                path = auto["02- Shooting Position"]
+                Drive.driveAlongPath(path, false)
+                Intake.extend = false
+                autoPrepShot()
+                Intake.extend = true
+                path = auto["03- Intake 3 Cells"]
+                Drive.driveAlongPath(path, false)
+                path = auto["04- Intake 2 Cells"]
+                Drive.driveAlongPath(path, false)
+                Intake.extend = false
+                path = auto["05- Shooting Position"]
+                Drive.driveAlongPath(path, false)
+                autoPrepShot()
+            }
+        } finally {
+            Shooter.stop()
+            Shooter.rpmSetpoint = 0.0
+            Feeder.setPower(0.0)
+            Intake.extend = false
+            Intake.setPower(0.0)
         }
     }
 
-    suspend fun test8FtStraight() = use(Drive){
+    suspend fun test8FtStraight() = use(Drive) {
         val auto = autonomi["Tests"]
         if (auto != null) {
             var path = auto["8 Foot Straight"]

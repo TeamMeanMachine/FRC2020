@@ -61,11 +61,9 @@ object OI {
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
-//        driverController::rightBumper.toggleWhenTrue { intake() }
+        driverController::rightBumper.toggleWhenTrue { intake() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
-//        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
-        ({ driverController.leftTrigger > 0.1 }).whileTrue{ intake() }
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
 

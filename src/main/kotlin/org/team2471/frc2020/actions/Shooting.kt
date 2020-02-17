@@ -93,12 +93,11 @@ suspend fun autoPrepShot() = use(Shooter, Drive, Intake, Feeder) {
             )
         }
         Feeder.setPower(Feeder.FEED_POWER)
-        delay(6.0)
+        delay(3.5)
     } finally {
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
-        Intake.setPower(0.0)
     }
 }
 

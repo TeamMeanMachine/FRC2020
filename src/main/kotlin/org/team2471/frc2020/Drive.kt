@@ -140,7 +140,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(Limelight.aimError)
                 println("LimeLightAimError=${Limelight.aimError}")
             }
-            println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
             drive(
                 OI.driveTranslation,
                 turn,

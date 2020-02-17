@@ -98,7 +98,6 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-
         }
     }
 }
