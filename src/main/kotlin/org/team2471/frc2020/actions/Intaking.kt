@@ -1,5 +1,9 @@
 package org.team2471.frc2020.actions
 
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.withContext
+import org.team2471.frc.lib.coroutines.delay
+import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.input.whenTrue
@@ -35,16 +39,24 @@ import org.team2471.frc2020.OI
 
 suspend fun intake() = use(Intake){
     try {
-        println("YEET")
         Intake.extend = true
         Intake.setPower(INTAKE_POWER)
-        periodic {
-            if(!OI.driverController::rightBumper.get()) {
-                this.stop()
-            }
-        }
+        halt()
     } finally {
-        Intake.setPower(0.0)
         Intake.extend = false
+        withContext(NonCancellable) {
+            delay(0.7)
+        }
+        Intake.setPower(0.0)
     }
+}
+
+suspend fun autoIntakeStart() = use(Intake) {
+        Intake.extend = true
+        Intake.setPower(INTAKE_POWER)
+}
+
+suspend fun autoIntakeStop() = use(Intake) {
+    Intake.extend = false
+    Intake.setPower(0.0)
 }

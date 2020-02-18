@@ -12,4 +12,5 @@ suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
         rpm = rpmSetpointEntry.getDouble(0.0)
         Feeder.setPower(OI.driveRightTrigger )
     }
+
 }

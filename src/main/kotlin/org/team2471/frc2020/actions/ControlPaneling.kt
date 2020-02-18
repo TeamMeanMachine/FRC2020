@@ -1,23 +1,31 @@
 package org.team2471.frc2020.actions
 
+import org.team2471.frc.lib.coroutines.delay
+import org.team2471.frc.lib.coroutines.halt
+import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.ControlPanel
+import org.team2471.frc2020.OI
 
-//suspend fun controlPanel1() = use(ControlPanel){
-//    try{
-//          ControlPanel.isExtending = true
-//          /*var startingColor = sensor stuff*/
-//          ControlPanel.setPower(0.2)
-//          delay(5.0)
-//          /*suspendUntil(sensor == startingColor)
-//          suspendUntil(sensor == startingColor)
-//          suspendUntil(sensor == startingColor)*/
-//    } finally {
-//          ControlPanel.isExtending = false
-//          ControlPanel.setPower(0.0)
-//    }
-//}
-//
+suspend fun controlPanel1() = use(ControlPanel) {
+    try {
+        ControlPanel.isExtending = true
+        /*var startingColor = sensor stuff*/
+        periodic {
+            ControlPanel.setPower(OI.operatorLeftX)
+
+
+        }
+        /*suspendUntil(sensor == startingColor)
+        suspendUntil(sensor == startingColor)
+        suspendUntil(sensor == startingColor)*/
+    } finally {
+        delay(0.5)
+        ControlPanel.isExtending = false
+        ControlPanel.setPower(0.0)
+    }
+}
+
 //suspend fun controlPanel2() = use(ControlPanel) {
 //    try{
 //          ControlPanel.isExtending = true

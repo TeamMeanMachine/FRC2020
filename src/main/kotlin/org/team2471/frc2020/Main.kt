@@ -27,11 +27,12 @@ object Robot : MeanlibRobot() {
 
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
-        AutoChooser
+//        AutoChooser
         Limelight.startUp()
     }
 
     override suspend fun enable() {
+        println("uwu uw u wuwu")
         Drive.enable()
         ControlPanel.enable()
         Drive.zeroGyro()
@@ -41,10 +42,13 @@ object Robot : MeanlibRobot() {
         Feeder.enable()
         Intake.enable()
         EndGame.enable()
+        println("owo owo owo")
     }
 
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
+        EndGame.brakeIsExtending = true
+
         Drive.brakeMode()
         AutoChooser.autonomous()
     }
@@ -59,8 +63,8 @@ object Robot : MeanlibRobot() {
 //        Drive.disable()
 //        ControlPanel.test()
 //
-        Drive.steeringTests()
-        Drive.driveTests()
+//        Drive.steeringTests()
+//        Drive.driveTests()
 //        Feeder.test()
 //        Intake.solenoidTest()
 //        ControlPanel.motorTest()
@@ -69,7 +73,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-//        Shooter.distance2RpmTest()
+        Shooter.distance2RpmTest()
     }
 
 

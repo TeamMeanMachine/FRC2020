@@ -33,14 +33,15 @@ object Shooter : Subsystem("Shooter") {
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
         rpmCurve.storeValue(11.0, 5000.0)
-        rpmCurve.storeValue(19.0, 4500.0)
+        rpmCurve.storeValue(13.0, 4200.0)
+        rpmCurve.storeValue(19.0, 3950.0)
         rpmCurve.storeValue(26.0, 4100.0)
-        rpmCurve.storeValue(34.0, 4450.0)
-
+        rpmCurve.storeValue(34.5, 4450.0)
+        rpmCurve.storeValue(35.5, 4500.0)
         var dist = 11.0
         while (dist<=34.0) {
             println("$dist ${rpmCurve.getValue(dist)}")
-            dist += 0.1
+            dist += 0.2
         }
 
         shootingMotor.config {
@@ -97,7 +98,6 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-
         }
     }
 }

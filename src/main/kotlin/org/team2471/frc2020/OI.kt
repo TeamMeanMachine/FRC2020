@@ -1,11 +1,12 @@
 package org.team2471.frc2020
 
-//import org.team2471.FRC2020.actions.climb
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
+import org.team2471.frc2020.actions.climb
+import org.team2471.frc2020.actions.controlPanel1
 import org.team2471.frc2020.actions.intake
 import org.team2471.frc2020.actions.shootMode
 
@@ -45,18 +46,26 @@ object OI {
     val operatorLeftY: Double
         get() = operatorController.leftThumbstickY.deadband(0.2)
 
+    val operatorLeftX: Double
+        get() = operatorController.leftThumbstickX.deadband(0.2)
+
     val operatorRightTrigger: Double
         get() = 0.0 //operatorController.rightTrigger
+
+    val operatorRightX: Double
+        get() = operatorController.rightThumbstickX.deadband(0.2)
+
+    val operatorRightY: Double
+        get() = operatorController.rightThumbstickY.deadband(0.2)
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
-        driverController::rightBumper.whenTrue { intake() }
+        driverController::rightBumper.toggleWhenTrue { intake() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
-//        ({ driverController.rightTrigger > 0.1 }).whileTrue{ shoot() }
-//        ({ driverController.leftTrigger > 0.1 }).whileTrue{ intake() }
-//        driverController::rightBumper.whenTrue { climb() }
+        operatorController::rightBumper.toggleWhenTrue { climb() }
+        operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
 
     }
 }

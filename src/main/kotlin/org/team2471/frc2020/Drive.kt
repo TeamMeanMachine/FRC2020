@@ -1,6 +1,7 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -56,12 +57,13 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-    val gyro: NavxWrapper? = NavxWrapper()
+    // val gyro: NavxWrapper? = NavxWrapper()
+    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
 
     override var heading: Angle
-        get() = (gyro?.angle ?: 0.0).degrees //gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())
+        get() = gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())
         set(value) {
             gyroOffset = value
             gyro?.reset()
@@ -108,11 +110,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
-
             periodic {
 
                 val (x, y) = position
-
                 xEntry.setDouble(x)
                 yEntry.setDouble(y)
                 headingEntry.setDouble(heading.asDegrees)
@@ -122,9 +122,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun zeroGyro() = gyro?.reset()
+    fun  zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
+        println("doo doo doo")
 
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight")
         val xEntry = limelightTable.getEntry("tx")
@@ -240,7 +241,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             }
             driveMotor.config {
                 brakeMode()
-                feedbackCoefficient = 1.0 / 282.0
+                feedbackCoefficient = 1.0 / 246.0
                 currentLimit(30, 0, 0)
                 openLoopRamp(0.15)
             }
