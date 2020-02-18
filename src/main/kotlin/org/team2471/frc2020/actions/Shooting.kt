@@ -56,7 +56,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
 }
 
 
-suspend fun autoPrepShot() = use(Shooter, Drive, Intake, Feeder) {
+suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder) {
     try {
         Shooter.prepShotOn = true
         Intake.setPower(Intake.INTAKE_POWER)
@@ -65,7 +65,8 @@ suspend fun autoPrepShot() = use(Shooter, Drive, Intake, Feeder) {
         val t = Timer()
         t.start()
         periodic {
-            Shooter.rpm = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            Shooter.rpm = rpmSetpoint
             val currTime = t.get()
             if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(Limelight.distance.asInches)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
@@ -93,13 +94,43 @@ suspend fun autoPrepShot() = use(Shooter, Drive, Intake, Feeder) {
             )
         }
         Feeder.setPower(Feeder.FEED_POWER)
-        delay(3.5)
+        t.start()
+        var ballsShot = 0
+        var shootingBall = false
+        periodic(0.015) {
+            var rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            Shooter.rpm = rpmSetpoint
+            var currTime = t.get()
+            if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
+                ballsShot++
+                shootingBall = true
+            }
+            if(shootingBall && Math.abs(rpmSetpoint - Shooter.rpm) < 0.05 * rpmSetpoint) {
+                shootingBall = false
+            }
+            if(ballsShot > ballsIntaken - 1 || t.get() > 3.5) {
+                this.stop()
+            }
+        }
     } finally {
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
     }
 }
+//var ballsShot = 0
+//var shootingBall = false
+//periodic(0.015) {
+//    var currTime = t.get()
+//    if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
+//        ballsShot++
+//        shootingBall = true
+//    }
+//    if(shootingBall && Math.abs(rpmSetpoint - Shooter.rpm) < 0.05 * rpmSetpoint) {
+//        shootingBall = false
+//    }
+//    println("Balls shot: $ballsShot. Hi.")
+//}
 
 
 //suspend fun shoot() = use(Feeder)

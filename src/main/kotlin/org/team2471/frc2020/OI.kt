@@ -1,5 +1,7 @@
 package org.team2471.frc2020
 
+import org.team2471.frc.lib.coroutines.periodic
+import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
@@ -41,7 +43,7 @@ object OI {
         get() = driverController.rightTrigger
 
     val operatorLeftTrigger: Double
-        get() = 0.0 //operatorController.leftTrigger
+        get() = operatorController.leftTrigger
 
     val operatorLeftY: Double
         get() = operatorController.leftThumbstickY.deadband(0.2)
@@ -50,7 +52,7 @@ object OI {
         get() = operatorController.leftThumbstickX.deadband(0.2)
 
     val operatorRightTrigger: Double
-        get() = 0.0 //operatorController.rightTrigger
+        get() = operatorController.rightTrigger
 
     val operatorRightX: Double
         get() = operatorController.rightThumbstickX.deadband(0.2)
@@ -61,12 +63,20 @@ object OI {
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
+//        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
         driverController::a.whenTrue { Limelight.pipeline = 1.0 }
         driverController::b.whenTrue { Limelight.pipeline = 0.0 }
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
-
+//        driverController::x.whenTrue { triggerTest() }
     }
+
+//    suspend fun triggerTest() {
+//        println("Got into triggerTest. Hi.")
+//        suspendUntil{driverController.leftTrigger > 0.1}
+//        println("Driver left trigger pressed. Hi.")
+//        shootMode()
+//    }
 }
 

@@ -12,7 +12,6 @@ import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
-//import org.team2471.frc2020.actions.autoPrepShot
 import java.io.File
 
 private lateinit var autonomi: Autonomi
@@ -39,19 +38,20 @@ object AutoChooser {
     }
 
     private val testAutoChooser = SendableChooser<String?>().apply {
-        setDefaultOption("None", null)
+        addOption("None", null)
         addOption("20 Foot Test", "20 Foot Test")
         addOption("8 Foot Straight", "8 Foot Straight")
         addOption("2 Foot Circle", "2 Foot Circle")
         addOption("4 Foot Circle", "4 Foot Circle")
         addOption("8 Foot Circle", "8 Foot Circle")
         addOption("Hook Path", "Hook Path")
+        setDefaultOption("90 Degree Turn", "90 Degree Turn")
     }
 
     private val autonomousChooser = SendableChooser<suspend () -> Unit>().apply {
-        addOption("Tests", ::testAuto)
+        setDefaultOption("Tests", ::testAuto)
         addOption("5 Ball Trench Run", ::trenchRun5)
-        setDefaultOption("10 Ball Shield Generator", ::shieldGenerator10)
+        addOption("10 Ball Shield Generator", ::shieldGenerator10)
     }
 
     init {
@@ -89,10 +89,12 @@ object AutoChooser {
 
     suspend fun autonomous() = use(Drive, name = "Autonomous") {
         println("Got into Auto fun autonomous. Hi. 888888888888888")
-
-        val autoEntry = autonomousChooser.selected
-        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
-        autoEntry.invoke()
+//
+//        var autoEntry = autonomousChooser.selected
+//        autoEntry = ::shieldGenerator10 //delete this line after 2/18/2020
+//        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
+//        autoEntry.invoke()
+        test90DegreeTurn() //delete this line
     }
 
     suspend fun testAuto() {
@@ -113,33 +115,52 @@ object AutoChooser {
             autoIntakeStop()
             path = auto["02- Shooting Position"]
             Drive.driveAlongPath(path, false)
-            autoPrepShot()
+            autoPrepShot(5)
         }
     }
 
     suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder) {
         try {
+            println("In sheildGenerator auto. Hi.")
             val auto = autonomi["10 Ball Shield Generator"]
-            if (auto != null) {
+            println(auto == null)
+            if (true){//auto != null) {
+                println()
                 Intake.setPower(Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
                 Drive.driveAlongPath(path, true)
                 delay(0.25)
-                path = auto["02- Shooting Position"]
-                Drive.driveAlongPath(path, false)
                 Intake.extend = false
-                autoPrepShot()
-                Intake.extend = true
-                path = auto["03- Intake 3 Cells"]
-                Drive.driveAlongPath(path, false)
-                path = auto["04- Intake 2 Cells"]
-                Drive.driveAlongPath(path, false)
-                Intake.extend = false
-                path = auto["05- Shooting Position"]
-                Drive.driveAlongPath(path, false)
-                autoPrepShot()
-            }
+                parallel ({
+                    delay(path.duration * 0.75)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+                    Shooter.rpm = rpmSetpoint
+                }, {
+                    path = auto["02- Shooting Position"]
+                    Drive.driveAlongPath(path, false)
+                })
+//                parallel ({
+//                    autoPrepShot(7)
+//                }, {
+//                    delay(2.0)
+                    autoPrepShot(5)
+                    Intake.extend = true
+                    path = auto["03- Intake 3 Cells"]
+                    Drive.driveAlongPath(path, false)
+//                })
+                    parallel ({
+                        path = auto["04- Intake 2 Cells"]
+                        Drive.driveAlongPath(path, false)
+                    }, {
+                        delay(path.duration * 0.9)
+                        Intake.extend = true
+                    })
+                    Intake.extend = false
+                    path = auto["05- Shooting Position"]
+                    Drive.driveAlongPath(path, false)
+                    autoPrepShot(5)
+                }
         } finally {
             Shooter.stop()
             Shooter.rpmSetpoint = 0.0
@@ -154,6 +175,21 @@ object AutoChooser {
         if (auto != null) {
             var path = auto["8 Foot Straight"]
             Drive.driveAlongPath(path, true)
+        }
+    }
+
+    suspend fun test8FtCircle() = use(Drive) {
+        val auto = autonomi["Tests"]
+        if (auto != null) {
+            var path = auto["8 Foot Circle"]
+            Drive.driveAlongPath(path, true)
+        }
+    }
+
+    suspend fun test90DegreeTurn() = use(Drive) {
+        val auto = autonomi["Tests"]
+        if (auto != null) {
+            Drive.driveAlongPath( auto["90 Degree Turn"], true, 2.0)
         }
     }
 }

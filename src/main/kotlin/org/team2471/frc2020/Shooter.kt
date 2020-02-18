@@ -48,6 +48,7 @@ object Shooter : Subsystem("Shooter") {
             feedbackCoefficient = 1.0 / (42.0 * 1.01471)
             inverted(true)
             followersInverted(true)
+            brakeMode()
             pid {
                 p(1.5e-8) //1.5e-8)
                 i(0.0)
@@ -92,6 +93,7 @@ object Shooter : Subsystem("Shooter") {
                 return rpmSetpointEntry.value.double
             }
         }
+
 
     var current = shootingMotor.current
 

@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
+import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.recordOdometry
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
@@ -45,10 +46,11 @@ object Robot : MeanlibRobot() {
 
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
+        println("Got into Main.autonomous. Hi.")
         EndGame.brakeIsExtending = true
-
-        Drive.brakeMode()
         AutoChooser.autonomous()
+        Drive.brakeMode()
+        println("Ended Main.autonomous. Hi.")
     }
 
     override suspend fun teleop() {
@@ -72,7 +74,8 @@ object Robot : MeanlibRobot() {
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
 //        Shooter.distance2RpmTest()
-        Shooter.seeRpmDipsTest()
+//        Shooter.countBallsShotTest()
+        Drive.tuneDrivePositionController()
     }
 
 

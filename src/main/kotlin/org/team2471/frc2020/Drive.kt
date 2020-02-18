@@ -80,12 +80,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
-        kpPosition = 0.3,
-        kdPosition = 0.15,
-        kPositionFeedForward = 0.05,
-        kpHeading = 0.004,
-        kdHeading = 0.005,
-        kHeadingFeedForward = 0.00125
+        kpPosition = 0.4,
+        kdPosition = 1.0,
+        kPositionFeedForward = 0.0, //075,
+        kpHeading = 0.012,
+        kdHeading = 0.02,
+        kHeadingFeedForward = 0.001
     )
 
     public val aimPDController = PDController(0.02, 0.05)
