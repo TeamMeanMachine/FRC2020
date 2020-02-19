@@ -80,11 +80,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
-        kpPosition = 0.4,
-        kdPosition = 1.0,
+        kpPosition = 0.32,
+        kdPosition = 0.6,
         kPositionFeedForward = 0.0, //075,
-        kpHeading = 0.012,
-        kdHeading = 0.02,
+        kpHeading = 0.008,
+        kdHeading = 0.01,
         kHeadingFeedForward = 0.001
     )
 

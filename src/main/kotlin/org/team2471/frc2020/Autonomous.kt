@@ -94,7 +94,7 @@ object AutoChooser {
 //        autoEntry = ::shieldGenerator10 //delete this line after 2/18/2020
 //        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
 //        autoEntry.invoke()
-        test90DegreeTurn() //delete this line
+        shieldGenerator10() //delete this line
     }
 
     suspend fun testAuto() {
@@ -129,7 +129,7 @@ object AutoChooser {
                 Intake.setPower(Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
-                Drive.driveAlongPath(path, true)
+                Drive.driveAlongPath(path, true, 0.125)
                 delay(0.25)
                 Intake.extend = false
                 parallel ({

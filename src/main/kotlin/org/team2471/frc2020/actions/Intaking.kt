@@ -45,9 +45,8 @@ suspend fun intake() = use(Intake){
     } finally {
         Intake.extend = false
         withContext(NonCancellable) {
-            delay(0.7)
+            delay(1.7)
         }
-        delay(2.0)
         Intake.setPower(0.0)
     }
 }
