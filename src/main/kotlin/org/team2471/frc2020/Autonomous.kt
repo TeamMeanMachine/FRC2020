@@ -3,6 +3,7 @@ package org.team2471.frc2020
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
+import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.coroutines.delay
@@ -13,6 +14,7 @@ import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
 import java.io.File
+import javax.print.DocFlavor
 
 private lateinit var autonomi: Autonomi
 
@@ -48,10 +50,10 @@ object AutoChooser {
         setDefaultOption("90 Degree Turn", "90 Degree Turn")
     }
 
-    private val autonomousChooser = SendableChooser<suspend () -> Unit>().apply {
-        setDefaultOption("Tests", ::testAuto)
-        addOption("5 Ball Trench Run", ::trenchRun5)
-        addOption("10 Ball Shield Generator", ::shieldGenerator10)
+    private val autonomousChooser = SendableChooser<String?>().apply {
+        setDefaultOption("Tests", "testAuto")
+        addOption("5 Ball Trench Run", "trenchRun5")
+        addOption("10 Ball Shield Generator", "shieldGenerator10")
     }
 
     init {
@@ -89,16 +91,24 @@ object AutoChooser {
 
     suspend fun autonomous() = use(Drive, name = "Autonomous") {
         println("Got into Auto fun autonomous. Hi. 888888888888888")
-//
+        val selAuto = SmartDashboard.getString("Autos/selected", "no auto selected")
+        println("Selected Auto = *****************   $selAuto ****************************")
+        when (selAuto) {
+            "Tests" -> testAuto()
+            "5 Ball Trench Run" -> trenchRun5()
+            "10 Ball Shield Generator" -> shieldGenerator10()
+            else -> println("No function found for ---->$selAuto<-----")
+        }
+
 //        var autoEntry = autonomousChooser.selected
 //        autoEntry = ::shieldGenerator10 //delete this line after 2/18/2020
 //        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
 //        autoEntry.invoke()
-        shieldGenerator10() //delete this line
+    //    shieldGenerator10() //delete this line
     }
 
     suspend fun testAuto() {
-        val testPath = testAutoChooser.selected
+        val testPath = SmartDashboard.getString("Tests/selected", "no test selected") // testAutoChooser.selected
         if (testPath != null) {
             val testAutonomous = autonomi["Tests"]
             val path = testAutonomous[testPath]
