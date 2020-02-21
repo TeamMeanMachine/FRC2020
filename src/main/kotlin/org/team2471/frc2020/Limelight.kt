@@ -123,7 +123,7 @@ object Limelight : Subsystem("Limelight") {
         var i = -4.1
         while (i < 22.5) {
             val tmpDistance = heightToDistance.getValue(i).feet
-            println("$i, ${tmpDistance.asFeet}")
+            //println("$i, ${tmpDistance.asFeet}")
             i += 0.5
         }
     }

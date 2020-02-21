@@ -6,10 +6,11 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
-import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.recordOdometry
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
+import java.net.NetworkInterface
+
 //import org.team2471.frc2020.testing.intakeFeedAndShootTest
 
 //import org.team2471.frc2020.testing.solenoidTest
@@ -17,12 +18,27 @@ import org.team2471.frc2020.testing.*
 //val PDP = PowerDistributionPanel()
 
 object Robot : MeanlibRobot() {
-
+    var isCompBot = true
     init {
+        val networkInterfaces =  NetworkInterface.getNetworkInterfaces()
+        for (iFace in networkInterfaces) {
+                   if (iFace.name == "eth0") {
+                   println("NETWORK NAME--->${iFace.name}<----")
+                   var macString = ""
+                   for (byteVal in iFace.hardwareAddress){
+                    macString += String.format("%s", byteVal)
+                }
+                println("FORMATTED---->$macString<-----")
+
+            isCompBot = (macString != "0-128472587-69")
+            println("Comp Bot = $isCompBot")
+           }
+        }
+
 
         // i heard the first string + double concatenations were expensive...
         repeat(25) {
-            println("RANDOM NUMBER: ${Math.random()}")
+            //println("RANDOM NUMBER: ${Math.random()}")
         }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
 
@@ -103,4 +119,5 @@ object Robot : MeanlibRobot() {
 
 fun main() {
     RobotBase.startRobot { Robot }
+
 }

@@ -40,7 +40,7 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve.storeValue(35.5, 4500.0)
         var dist = 11.0
         while (dist<=34.0) {
-            println("$dist ${rpmCurve.getValue(dist)}")
+            //println("$dist ${rpmCurve.getValue(dist)}")
             dist += 0.2
         }
 
@@ -55,6 +55,7 @@ object Shooter : Subsystem("Shooter") {
                 d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.000045)
             }
+            burnSettings()
         }
 
 

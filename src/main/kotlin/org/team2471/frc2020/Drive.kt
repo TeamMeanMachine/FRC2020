@@ -9,6 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
+import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
@@ -238,12 +239,15 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                     p(0.000075)
                     d(0.00025)
                 }
+                burnSettings()
             }
+
             driveMotor.config {
                 brakeMode()
                 feedbackCoefficient = 1.0 / 246.0
                 currentLimit(30, 0, 0)
                 openLoopRamp(0.15)
+                burnSettings()
             }
 
             GlobalScope.launch {
