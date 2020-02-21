@@ -2,6 +2,7 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
@@ -56,19 +57,17 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
 }
 
 
-suspend fun autoPrepShot() = use(Shooter, Drive) {
+suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder) {
     try {
         Shooter.prepShotOn = true
+        Intake.setPower(Intake.INTAKE_POWER)
         val totalT = Timer()
         totalT.start()
         val t = Timer()
         t.start()
         periodic {
-            if (Shooter.rpmSetpointEntry.getDouble(0.0) < 0.1) {
-                Shooter.stop()
-            } else {
-                Shooter.rpm = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
-            }
+            val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            Shooter.rpm = rpmSetpoint
             val currTime = t.get()
             if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(Limelight.distance.asInches)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
@@ -95,21 +94,28 @@ suspend fun autoPrepShot() = use(Shooter, Drive) {
                 ) && !DriverStation.getInstance().isAutonomous else false
             )
         }
+        Feeder.setPower(Feeder.FEED_POWER)
+        t.start()
+        var ballsShot = 0
+        var shootingBall = false
+        periodic(0.015) {
+            var rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            Shooter.rpm = rpmSetpoint
+            var currTime = t.get()
+            if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
+                ballsShot++
+                shootingBall = true
+            }
+            if(shootingBall && Math.abs(rpmSetpoint - Shooter.rpm) < 0.05 * rpmSetpoint) {
+                shootingBall = false
+            }
+            if(ballsShot > ballsIntaken - 1 || t.get() > 3.5) {
+                this.stop()
+            }
+        }
     } finally {
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
-    }
-}
-
-
-suspend fun shoot() = use(Feeder)
- {
-    try {
-        if (Shooter.rpm > 1000.0) {
-        Feeder.setPower(Feeder.FEED_POWER)
-        }
-        suspendUntil(20, { OI.driverController.rightTrigger == 0.0 })
-    } finally {
         Feeder.setPower(0.0)
     }
 }

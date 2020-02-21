@@ -9,17 +9,34 @@ import org.team2471.frc.lib.framework.MeanlibRobot
 import org.team2471.frc.lib.motion.following.recordOdometry
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
+import java.net.NetworkInterface
+
 //import org.team2471.frc2020.testing.intakeFeedAndShootTest
 
 //import org.team2471.frc2020.testing.solenoidTest
 
 //val PDP = PowerDistributionPanel()
 
-val isCompBotIHateEverything = true
+var isCompBotIHateEverything = true
 
 object Robot : MeanlibRobot() {
 
     init {
+        val networkInterfaces =  NetworkInterface.getNetworkInterfaces()
+        for (iFace in networkInterfaces) {
+                   if (iFace.name == "eth0") {
+                   println("NETWORK NAME--->${iFace.name}<----")
+                   var macString = ""
+                   for (byteVal in iFace.hardwareAddress){
+                    macString += String.format("%s", byteVal)
+                }
+                println("FORMATTED---->$macString<-----")
+
+            isCompBotIHateEverything = (macString != "0-128472587-69")
+            println("Comp Bot = $isCompBotIHateEverything")
+           }
+        }
+
 
         // i heard the first string + double concatenations were expensive...
         repeat(25) {
@@ -72,6 +89,9 @@ object Robot : MeanlibRobot() {
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
 //        Shooter.distance2RpmTest()
+//        Shooter.countBallsShotTest()
+//        Drive.tuneDrivePositionController()
+            ControlPanel.soleniodTest()
     }
 
 
@@ -91,7 +111,7 @@ object Robot : MeanlibRobot() {
 
             xEntry.setDouble(Drive.position.x)
             yEntry.setDouble(Drive.position.y)
-//            println("analog 2 ${Drive.modules[2].angle}" )
+            //println("analog 2 ${Drive.modules[2].angle}" )
         }
     }
 }

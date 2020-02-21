@@ -123,7 +123,7 @@ object Limelight : Subsystem("Limelight") {
         var i = -4.1
         while (i < 22.5) {
             val tmpDistance = heightToDistance.getValue(i).feet
-            println("$i, ${tmpDistance.asFeet}")
+            //println("$i, ${tmpDistance.asFeet}")
             i += 0.5
         }
     }
@@ -198,3 +198,39 @@ suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
 }
 
 
+
+suspend fun feederVision() = use(Drive, Limelight, name = "Vision Drive") {
+    Limelight.isCamEnabled = true
+    val timer = Timer()
+    var prevTargetHeading = Limelight.targetAngle
+    var prevTargetPoint = Limelight.targetPoint
+    var prevTime = 0.0
+    timer.start()
+    val rotationPDController = PDController(rotationP, rotationD)
+
+    periodic {
+        val t = timer.get()
+        val dt = t - prevTime
+
+        // position error
+        val targetPoint = Limelight.targetPoint * 0.5 + prevTargetPoint * 0.5
+        val positionError = targetPoint - Drive.position
+        prevTargetPoint = targetPoint
+
+        val robotHeading = heading
+        val targetHeading = 0.0.degrees
+        val headingError = (targetHeading - robotHeading).wrap()
+        prevTargetHeading = targetHeading
+
+        val translationControl = positionError * OI.driverController.leftTrigger * 0.6
+        val turnControl = rotationPDController.update(headingError.asDegrees )
+
+        // send it
+
+
+        Drive.drive(
+            OI.driveTranslation + translationControl,
+            OI.driveRotation + turnControl,
+            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
+    }
+}

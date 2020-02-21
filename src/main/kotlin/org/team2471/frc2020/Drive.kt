@@ -9,6 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
+import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
@@ -80,12 +81,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
-        kpPosition = 0.3,
-        kdPosition = 0.15,
-        kPositionFeedForward = 0.05,
-        kpHeading = 0.004,
-        kdHeading = 0.005,
-        kHeadingFeedForward = 0.00125
+        kpPosition = 0.32,
+        kdPosition = 0.6,
+        kPositionFeedForward = 0.0, //075,
+        kpHeading = 0.008,
+        kdHeading = 0.01,
+        kHeadingFeedForward = 0.001
     )
 
     public val aimPDController = PDController(0.02, 0.05)
@@ -110,11 +111,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
-
             periodic {
 
                 val (x, y) = position
-
                 xEntry.setDouble(x)
                 yEntry.setDouble(y)
                 headingEntry.setDouble(heading.asDegrees)
@@ -127,6 +126,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     fun  zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
+        println("doo doo doo")
 
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight")
         val xEntry = limelightTable.getEntry("tx")
@@ -239,12 +239,15 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                     p(0.000075)
                     d(0.00025)
                 }
+                burnSettings()
             }
+
             driveMotor.config {
                 brakeMode()
-                feedbackCoefficient = 1.0 / 282.0
+                feedbackCoefficient = 1.0 / 246.0
                 currentLimit(30, 0, 0)
                 openLoopRamp(0.15)
+                burnSettings()
             }
 
             GlobalScope.launch {

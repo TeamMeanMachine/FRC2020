@@ -40,7 +40,7 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve.storeValue(35.5, 4500.0)
         var dist = 11.0
         while (dist<=34.0) {
-            println("$dist ${rpmCurve.getValue(dist)}")
+            //println("$dist ${rpmCurve.getValue(dist)}")
             dist += 0.2
         }
 
@@ -48,12 +48,14 @@ object Shooter : Subsystem("Shooter") {
             feedbackCoefficient = 1.0 / (42.0 * 1.01471)
             inverted(true)
             followersInverted(true)
+            brakeMode()
             pid {
                 p(1.5e-8) //1.5e-8)
                 i(0.0)
                 d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.000045)
             }
+            burnSettings()
         }
 
 
@@ -95,12 +97,12 @@ object Shooter : Subsystem("Shooter") {
             }
         }
 
+
     var current = shootingMotor.current
 
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-
         }
     }
 }

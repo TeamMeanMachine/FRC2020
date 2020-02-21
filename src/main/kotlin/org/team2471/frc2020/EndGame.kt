@@ -39,7 +39,7 @@ object EndGame: Subsystem("EndGame") {
     override suspend fun default() {
         periodic {
             climbIsExtending = false
-            brakeIsExtending = false
+            brakeIsExtending = true
         }
     }
 }

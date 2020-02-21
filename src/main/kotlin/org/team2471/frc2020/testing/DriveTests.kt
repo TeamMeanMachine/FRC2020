@@ -7,7 +7,9 @@ import org.team2471.frc2020.OI
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
+import org.team2471.frc.lib.motion.following.tuneDrivePositionController
 import org.team2471.frc.lib.units.degrees
 
 suspend fun Drive.steeringTests() = use(this) {
@@ -37,4 +39,7 @@ suspend fun Drive.fullTest() = use(this) {
     }
 }
 
+suspend fun Drive.tuneDrivePositionController() = use(this) {
+    tuneDrivePositionController(OI.driverController)
+}
 
