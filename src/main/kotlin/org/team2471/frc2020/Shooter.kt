@@ -58,12 +58,12 @@ object Shooter : Subsystem("Shooter") {
 
 
         rpmSetpointEntry.setDouble(0.0)
-        GlobalScope.launch(MeanlibDispatcher) {
-            periodic {
-                rpmEntry.setDouble(rpm)
-                rpmErrorEntry.setDouble(rpmSetpoint - rpm)
-            }
-        }
+//        GlobalScope.launch(MeanlibDispatcher) {
+//            periodic {
+//                rpmEntry.setDouble(rpm)
+//                rpmErrorEntry.setDouble(rpmSetpoint - rpm)
+//            }
+//        }
     }
 
     fun setPower(power: Double) {
@@ -88,8 +88,10 @@ object Shooter : Subsystem("Shooter") {
                 val rpm2 = rpmFromDistance(Limelight.distance)
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
+            /*} else if(rpmSetpointEntry.value.double > 0.0) {
+                return rpmSetpointEntry.value.double */
             } else {
-                return rpmSetpointEntry.value.double
+                return 3950.0
             }
         }
 

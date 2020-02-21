@@ -8,6 +8,11 @@ object Talons {
     const val BALANCE = 14
 }
 
+object Victors { //practice bot only aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagh
+    const val CONTROL_PANEL = 9
+    const val BALANCE = 14
+}
+
 object Sparks {
     const val DRIVE_FRONTLEFT = 12 //
     const val DRIVE_BACKLEFT = 3 //

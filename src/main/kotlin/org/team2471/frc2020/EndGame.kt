@@ -3,13 +3,15 @@ package org.team2471.frc2020
 import edu.wpi.first.wpilibj.Solenoid
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
+import org.team2471.frc.lib.actuators.VictorID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc2020.Solenoids.BRAKE
 import org.team2471.frc2020.Solenoids.CLIMB
 
 object EndGame: Subsystem("EndGame") {
-    private val balanceMotor = MotorController(TalonID(Talons.BALANCE))
+    val balanceMotor = if (isCompBotIHateEverything) MotorController(VictorID(Victors.BALANCE)) else MotorController(TalonID(Talons.BALANCE))
+
 
     private val climbSolenoid = Solenoid(CLIMB)
     private val brakeSolenoid = Solenoid(BRAKE)

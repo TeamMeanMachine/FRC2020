@@ -49,8 +49,8 @@ object AutoChooser {
     }
 
     private val autonomousChooser = SendableChooser<suspend() -> Unit>().apply {
-        addOption("5 Ball Trench Run", ::trenchRun5)
-        setDefaultOption("10 Ball Shield Generator", ::shieldGenerator10)
+        setDefaultOption("5 Ball Trench Run", ::trenchRun5)
+        addOption("10 Ball Shield Generator", ::shieldGenerator10)
         addOption("Tests", ::testAuto)
     }
 
@@ -118,10 +118,8 @@ object AutoChooser {
     suspend fun shieldGenerator10() = use(Drive) {
         val auto = autonomi["10 Ball Shield Generator"]
         if (auto != null) {
-            var path = auto["01- Intake 2 Cells"]
-            Drive.driveAlongPath(path, true)
-            path = auto["02- Shooting Position"]
-            Drive.driveAlongPath(path, false)
+            Drive.driveAlongPath(auto["01- Intake 2 Cells"], true)
+            Drive.driveAlongPath(auto["02- Shooting Position"], false)
             //autoPrepShot()
             //Feeder.setPower(FEED_POWER)
             delay(2.0)
@@ -129,13 +127,10 @@ object AutoChooser {
                 //Feeder.setPower(0.0)
                 //Shooter.rpm = 0.0
             }, {
-                path = auto["03- Intake 3 Cells"]
-                Drive.driveAlongPath(path,false)
+                Drive.driveAlongPath(auto["03- Intake 3 Cells"],false)
             })
-            path = auto["04- Intake 2 Cells"]
-            Drive.driveAlongPath(path,false)
-            path = auto["05- Shooting Position"]
-            Drive.driveAlongPath(path,false)
+            Drive.driveAlongPath(auto["04- Intake 2 Cells"],false)
+            Drive.driveAlongPath(auto["05- Shooting Position"],false)
             //autoPrepShot()
             delay(2.0)
             //Shooter.rpm = 0.0

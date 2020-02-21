@@ -57,8 +57,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-    // val gyro: NavxWrapper? = NavxWrapper()
-    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
+     val gyro: NavxWrapper? = NavxWrapper()
+//    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
 

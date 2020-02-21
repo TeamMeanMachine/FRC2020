@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro
 class NavxWrapper : Gyro {
     private val navx = AHRS(SPI.Port.kMXP)
 
-    override fun getAngle(): Double = -navx.yaw.toDouble()
+    override fun getAngle(): Double = navx.yaw.toDouble()
 
     override fun getRate(): Double = navx.rawGyroZ.toDouble()
 

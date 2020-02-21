@@ -35,7 +35,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
             if(OI.driverController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.driveRightTrigger * 0.80)
                 Intake.setPower(OI.driveRightTrigger * 0.80)
-                Intake.extend = true
+                Intake.extend = false
             } else {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)

@@ -15,6 +15,8 @@ import org.team2471.frc2020.testing.*
 
 //val PDP = PowerDistributionPanel()
 
+val isCompBotIHateEverything = true
+
 object Robot : MeanlibRobot() {
 
     init {
@@ -69,7 +71,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-        Shooter.distance2RpmTest()
+//        Shooter.distance2RpmTest()
     }
 
 
@@ -89,7 +91,7 @@ object Robot : MeanlibRobot() {
 
             xEntry.setDouble(Drive.position.x)
             yEntry.setDouble(Drive.position.y)
-            //println("analog 2 ${Drive.modules[2].angle}" )
+//            println("analog 2 ${Drive.modules[2].angle}" )
         }
     }
 }
