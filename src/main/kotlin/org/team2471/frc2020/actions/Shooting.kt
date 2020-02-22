@@ -8,7 +8,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
-import org.team2471.frc2020.BackLimelight.aimError
+import org.team2471.frc2020.FrontLimelight.aimError
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 

@@ -53,6 +53,7 @@ object Robot : MeanlibRobot() {
         ControlPanel.enable()
         Drive.zeroGyro()
         BackLimelight.enable()
+        FrontLimelight.enable()
         Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
@@ -95,6 +96,7 @@ object Robot : MeanlibRobot() {
     override suspend fun disable() {
         Drive.disable()
         BackLimelight.disable()
+        FrontLimelight.disable()
         ControlPanel.disable()
         Shooter.disable()
         Feeder.disable()

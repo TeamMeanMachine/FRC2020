@@ -70,7 +70,10 @@ object OI {
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
 //        driverController::x.whenTrue { triggerTest() }
-        ({ driverController.leftTrigger > 0.1 }).whileTrue{ feederStationVision() }
+        ({ driverController.leftTrigger > 0.1 }).whileTrue{
+            println("Left trigger is being pulled. Hi.")
+            feederStationVision()
+        }
     }
 
 //    suspend fun triggerTest() {

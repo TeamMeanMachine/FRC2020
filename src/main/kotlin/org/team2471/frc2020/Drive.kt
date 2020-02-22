@@ -126,7 +126,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     override suspend fun default() {
         println("doo doo doo")
 
-        val limelightTable = NetworkTableInstance.getDefault().getTable("limelight")
+        val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
