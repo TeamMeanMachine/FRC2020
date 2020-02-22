@@ -55,7 +55,7 @@ object Shooter : Subsystem("Shooter") {
                 d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.000045)
             }
-            burnSettings()
+//            burnSettings()
         }
 
 

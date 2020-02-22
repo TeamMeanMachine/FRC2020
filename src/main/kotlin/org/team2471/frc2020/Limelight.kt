@@ -24,7 +24,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 object Limelight : Subsystem("Limelight") {
-    private val table = NetworkTableInstance.getDefault().getTable("limelight")
+    private val table = NetworkTableInstance.getDefault().getTable("limelight-front")
     private val thresholdTable = table.getSubTable("thresholds")
     private val xEntry = table.getEntry("tx")
     private val yEntry = table.getEntry("ty")

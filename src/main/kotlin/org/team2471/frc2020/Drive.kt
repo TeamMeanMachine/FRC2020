@@ -239,7 +239,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                     p(0.000075)
                     d(0.00025)
                 }
-                burnSettings()
+//                burnSettings()
             }
 
             driveMotor.config {
@@ -247,7 +247,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 feedbackCoefficient = 1.0 / 246.0
                 currentLimit(30, 0, 0)
                 openLoopRamp(0.15)
-                burnSettings()
+//                burnSettings()
             }
 
             GlobalScope.launch {
