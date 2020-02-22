@@ -8,8 +8,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc2020.Drive.gyro
 import org.team2471.frc2020.Drive.heading
-import org.team2471.frc2020.Limelight.rotationD
-import org.team2471.frc2020.Limelight.rotationP
+import org.team2471.frc2020.FrontLimelight.rotationD
+import org.team2471.frc2020.FrontLimelight.rotationP
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.periodic
@@ -23,7 +23,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
-object Limelight : Subsystem("Limelight") {
+object FrontLimelight : Subsystem("Front Limelight") {
     private val table = NetworkTableInstance.getDefault().getTable("limelight-front")
     private val thresholdTable = table.getSubTable("thresholds")
     private val xEntry = table.getEntry("tx")
@@ -65,9 +65,9 @@ object Limelight : Subsystem("Limelight") {
         get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * (heading + xTranslation.degrees).sin()), (distance.asFeet * (heading + xTranslation.degrees).cos()))
 
     val targetAngle: Angle
-            get() {
-                return -gyro!!.angle.degrees + xTranslation.degrees
-            } //verify that this changes? or is reasonablej
+        get() {
+            return -gyro!!.angle.degrees + xTranslation.degrees
+        } //verify that this changes? or is reasonablej
 
     val targetPoint
         get() = Vector2(distance.asFeet * sin(targetAngle.asRadians), distance.asFeet * cos(targetAngle.asRadians)) + Drive.position
@@ -127,11 +127,12 @@ object Limelight : Subsystem("Limelight") {
             i += 0.5
         }
     }
-        fun startUp() {
-            distanceEntry = table.getEntry("Distance")
-            positionXEntry = table.getEntry("PositionX")
-            positionYEntry = table.getEntry("PositionY")
-            parallaxEntry = table.getEntry("Parallax")
+
+    fun startUp() {
+        distanceEntry = table.getEntry("Distance")
+        positionXEntry = table.getEntry("PositionX")
+        positionYEntry = table.getEntry("PositionY")
+        parallaxEntry = table.getEntry("Parallax")
         GlobalScope.launch(MeanlibDispatcher) {
 
             periodic {
@@ -159,78 +160,40 @@ object Limelight : Subsystem("Limelight") {
                 internalParallax = 0.0.degrees
             }
             return internalParallax
-    }
+        }
 }
 
 
-suspend fun visionDrive() = use(Drive, Limelight, name = "Vision Drive") {
-    Limelight.isCamEnabled = true
-    val timer = Timer()
-    var prevTargetHeading = Limelight.targetAngle
-    var prevTargetPoint = Limelight.targetPoint
-    var prevTime = 0.0
-    timer.start()
-    val rotationPDController = PDController(rotationP, rotationD)
-    periodic {
-        val t = timer.get()
-        val dt = t - prevTime
-
-        // position error
-        val targetPoint = Limelight.targetPoint * 0.5 + prevTargetPoint * 0.5
-        val positionError = targetPoint - Drive.position
-        prevTargetPoint = targetPoint
-
-        val robotHeading = heading
-        val targetHeading = if (Limelight.hasValidTarget) positionError.angle.radians else prevTargetHeading
-        val headingError = (targetHeading - robotHeading).wrap()
-        prevTargetHeading = targetHeading
-
-        val turnControl = rotationPDController.update(headingError.asDegrees )
-
-        // send it
-
-
-        Drive.drive(
-            OI.driveTranslation,
-            OI.driveRotation + turnControl,
-            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
-    }
-}
-
-
-
-suspend fun feederVision() = use(Drive, Limelight, name = "Vision Drive") {
-    Limelight.isCamEnabled = true
-    val timer = Timer()
-    var prevTargetHeading = Limelight.targetAngle
-    var prevTargetPoint = Limelight.targetPoint
-    var prevTime = 0.0
-    timer.start()
-    val rotationPDController = PDController(rotationP, rotationD)
-
-    periodic {
-        val t = timer.get()
-        val dt = t - prevTime
-
-        // position error
-        val targetPoint = Limelight.targetPoint * 0.5 + prevTargetPoint * 0.5
-        val positionError = targetPoint - Drive.position
-        prevTargetPoint = targetPoint
-
-        val robotHeading = heading
-        val targetHeading = 0.0.degrees
-        val headingError = (targetHeading - robotHeading).wrap()
-        prevTargetHeading = targetHeading
-
-        val translationControl = positionError * OI.driverController.leftTrigger * 0.6
-        val turnControl = rotationPDController.update(headingError.asDegrees )
-
-        // send it
-
-
-        Drive.drive(
-            OI.driveTranslation + translationControl,
-            OI.driveRotation + turnControl,
-            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
-    }
-}
+//suspend fun visionDrive() = use(Drive, FrontLimelight, name = "Vision Drive") {
+//    FrontLimelight.isCamEnabled = true
+//    val timer = Timer()
+//    var prevTargetHeading = FrontLimelight.targetAngle
+//    var prevTargetPoint = FrontLimelight.targetPoint
+//    var prevTime = 0.0
+//    timer.start()
+//    val rotationPDController = PDController(rotationP, rotationD)
+//    periodic {
+//        val t = timer.get()
+//        val dt = t - prevTime
+//
+//        // position error
+//        val targetPoint = FrontLimelight.targetPoint * 0.5 + prevTargetPoint * 0.5
+//        val positionError = targetPoint - Drive.position
+//        prevTargetPoint = targetPoint
+//
+//        val robotHeading = heading
+//        val targetHeading = if (BackLimelight.hasValidTarget) positionError.angle.radians else prevTargetHeading
+//        val headingError = (targetHeading - robotHeading).wrap()
+//        prevTargetHeading = targetHeading
+//
+//        val turnControl = rotationPDController.update(headingError.asDegrees )
+//
+//        // send it
+//
+//
+//        Drive.drive(
+//            OI.driveTranslation,
+//            OI.driveRotation + turnControl,
+//            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
+//    }
+//}

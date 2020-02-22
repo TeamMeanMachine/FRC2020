@@ -65,11 +65,15 @@ object OI {
         driverController::leftBumper.whenTrue { shootMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
-        driverController::a.whenTrue { Limelight.pipeline = 1.0 }
-        driverController::b.whenTrue { Limelight.pipeline = 0.0 }
+//        driverController::a.whenTrue { FrontLimelight.pipeline = 1.0 }
+//        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
 //        driverController::x.whenTrue { triggerTest() }
+        ({ driverController.leftTrigger > 0.1 }).whileTrue{
+            println("Left trigger is being pulled. Hi.")
+            feederStationVision()
+        }
     }
 
 //    suspend fun triggerTest() {

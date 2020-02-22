@@ -2,11 +2,8 @@
 
 package org.team2471.frc2020
 
-import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotBase
-import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
-import org.team2471.frc.lib.motion.following.recordOdometry
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
 import java.net.NetworkInterface
@@ -47,14 +44,16 @@ object Robot : MeanlibRobot() {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
-        Limelight.startUp()
+        BackLimelight.startUp()
+        FrontLimelight.startUp()
     }
 
     override suspend fun enable() {
         Drive.enable()
         ControlPanel.enable()
         Drive.zeroGyro()
-        Limelight.enable()
+        BackLimelight.enable()
+        FrontLimelight.enable()
         Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
@@ -82,7 +81,7 @@ object Robot : MeanlibRobot() {
 //        Drive.driveTests()
 //        Feeder.test()
 //        Intake.solenoidTest()
-//        ControlPanel.motorTest()
+        ControlPanel.motorTest()
 //        ControlPanel.soleniodTest()
 //        Intake.intakeFeedAndShootTest()
 //        EndGame.climbSolenoidTest()
@@ -91,28 +90,28 @@ object Robot : MeanlibRobot() {
 //        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
 //        Drive.tuneDrivePositionController()
-            ControlPanel.soleniodTest()
     }
 
 
     override suspend fun disable() {
         Drive.disable()
-        Limelight.disable()
+        BackLimelight.disable()
+        FrontLimelight.disable()
         ControlPanel.disable()
         Shooter.disable()
         Feeder.disable()
         Intake.disable()
         EndGame.disable()
-        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-        val xEntry = table.getEntry("X")
-        val yEntry = table.getEntry("Y")
-        periodic {
-            Drive.recordOdometry()
-
-            xEntry.setDouble(Drive.position.x)
-            yEntry.setDouble(Drive.position.y)
-            //println("analog 2 ${Drive.modules[2].angle}" )
-        }
+//        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
+//        val xEntry = table.getEntry("X")
+//        val yEntry = table.getEntry("Y")
+//        periodic {
+//            Drive.recordOdometry()
+//
+//            xEntry.setDouble(Drive.position.x)
+//            yEntry.setDouble(Drive.position.y)
+//            //println("analog 2 ${Drive.modules[2].angle}" )
+//        }
     }
 }
 
