@@ -5,20 +5,24 @@ import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.ControlPanel
+import org.team2471.frc2020.EndGame
 import org.team2471.frc2020.OI
 
 suspend fun controlPanel1() = use(ControlPanel) {
+    if (EndGame.climbIsExtending) {
+        EndGame.climbIsExtending = false
+        delay(0.5)
+    }
+
     try {
         ControlPanel.isExtending = true
         /*var startingColor = sensor stuff*/
         periodic {
             ControlPanel.setPower(OI.operatorLeftX)
-
-
         }
         /*suspendUntil(sensor == startingColor)
-        suspendUntil(sensor == startingColor)
-        suspendUntil(sensor == startingColor)*/
+           suspendUntil(sensor == startingColor)
+           suspendUntil(sensor == startingColor)*/
     } finally {
         delay(0.5)
         ControlPanel.isExtending = false
