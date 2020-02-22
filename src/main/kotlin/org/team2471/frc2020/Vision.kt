@@ -11,22 +11,22 @@ import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion.following.stop
 import org.team2471.frc.lib.motion_profiling.Path2D
 
-suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolean = false) = use(Drive, Limelight, name = "Path then Vision") {
+suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolean = false) = use(Drive, BackLimelight /*Which Limelight?*/, name = "Path then Vision") {
 
     val pathJob = launch { Drive.driveAlongPath(path, resetOdometry = resetOdometry) }
 
-    suspendUntil { Limelight.hasValidTarget }
+    suspendUntil { BackLimelight.hasValidTarget }
     pathJob.cancelAndJoin()
 
     //limelight takes over
-    Limelight.isCamEnabled = true
+    BackLimelight.isCamEnabled = true
 
     periodic {
-        if (Limelight.hasValidTarget) {
+        if (BackLimelight.hasValidTarget) {
             // send it
             Drive.drive(
-                Vector2(-Limelight.xTranslation/320.0, -0.5), 0.0, false)
-            println(Limelight.xTranslation/320.0)
+                Vector2(-BackLimelight.xTranslation/320.0, -0.5), 0.0, false)
+            println(BackLimelight.xTranslation/320.0)
         } else {
             Drive.drive(Vector2(0.0, -0.25), 0.0, false)
         }

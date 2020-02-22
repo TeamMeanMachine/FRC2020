@@ -3,7 +3,6 @@ package org.team2471.frc2020
 import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.Sendable
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.coroutines.delay
@@ -14,7 +13,6 @@ import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
 import java.io.File
-import javax.print.DocFlavor
 
 private lateinit var autonomi: Autonomi
 
@@ -145,7 +143,7 @@ object AutoChooser {
                 Intake.extend = false
                 parallel ({
                     delay(path.duration * 0.75)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 }, {
                     path = auto["02- Shooting Position"]

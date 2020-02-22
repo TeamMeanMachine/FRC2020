@@ -1,7 +1,6 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -9,7 +8,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
-import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
@@ -137,9 +135,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
-                turn = aimPDController.update(Limelight.aimError)
-                println("LimeLightAimError=${Limelight.aimError}")
+            } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+                turn = aimPDController.update(FrontLimelight.aimError)
+                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
             drive(
                 OI.driveTranslation,

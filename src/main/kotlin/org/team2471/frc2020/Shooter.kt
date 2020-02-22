@@ -5,14 +5,9 @@ import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.PowerDistributionPanel
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
-import org.team2471.frc.lib.units.feet
 
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER), SparkMaxID(Sparks.SHOOTER2))
@@ -86,8 +81,8 @@ object Shooter : Subsystem("Shooter") {
 
     var rpmSetpoint: Double = 0.0
         get() {
-            if (Limelight.hasValidTarget) {
-                val rpm2 = rpmFromDistance(Limelight.distance)
+            if (BackLimelight.hasValidTarget) {
+                val rpm2 = rpmFromDistance(BackLimelight.distance)
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
             /*} else if(rpmSetpointEntry.value.double > 0.0) {

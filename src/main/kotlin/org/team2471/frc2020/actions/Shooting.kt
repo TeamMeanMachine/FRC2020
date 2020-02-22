@@ -2,16 +2,13 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
-import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
-import org.team2471.frc2020.Limelight.aimError
-import org.team2471.frc2020.Limelight.hasValidTarget
+import org.team2471.frc2020.BackLimelight.aimError
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
@@ -24,7 +21,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && BackLimelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
@@ -66,10 +63,10 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         val t = Timer()
         t.start()
         periodic {
-            val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            val rpmSetpoint = Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(Limelight.distance.asInches)) < 100.0 && Limelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)) < 100.0 && BackLimelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     this.stop()
                 }
@@ -82,8 +79,8 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (Limelight.hasValidTarget && Shooter.prepShotOn) {
-                turn = Drive.aimPDController.update(Limelight.xTranslation-Limelight.parallax.asDegrees)
+            } else if (BackLimelight.hasValidTarget && Shooter.prepShotOn) {
+                turn = Drive.aimPDController.update(BackLimelight.xTranslation-BackLimelight.parallax.asDegrees)
             }
             Drive.drive(
                 Vector2(0.0, 0.0),
@@ -99,7 +96,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         var ballsShot = 0
         var shootingBall = false
         periodic(0.015) {
-            var rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+            var rpmSetpoint = Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             var currTime = t.get()
             if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
