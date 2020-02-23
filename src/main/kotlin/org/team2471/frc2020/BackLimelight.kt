@@ -76,7 +76,7 @@ object BackLimelight : Subsystem("Back Limelight") {
             ledModeEntry.setDouble(if (value) 0.0 else 1.0)
         }
 
-    val xTranslation
+    val  xTranslation
         get() = xEntry.getDouble(0.0)
 
     val yTranslation
@@ -145,9 +145,11 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
 
             val translationControl = if(BackLimelight.hasValidTarget)
                 Vector2(BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger,
-                    OI.driverController.leftTrigger * 0.4 * (if (area < 7) (1/ area) else 0.2)) else
+                    OI.driverController.leftTrigger * 0.4 * (if (area < 7) (1/ area) else 0.2))
+                else
                 Vector2(0.0, OI.driverController.leftTrigger) //im sorry mom
 
+            println("tx: ${BackLimelight.xTranslation} x: ${BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger}. Hi.")
             val turnControl = rotationPDController.update(headingError.asDegrees)
             println(headingError)
             // send it

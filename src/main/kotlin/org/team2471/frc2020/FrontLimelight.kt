@@ -100,7 +100,9 @@ object FrontLimelight : Subsystem("Front Limelight") {
         get() = rotationDEntry.getDouble(0.1)
 
     var hasValidTarget = false
-        get() = targetValidEntry.getDouble(0.0) == 1.0
+        get(){
+            return targetValidEntry.getDouble(0.0) == 1.0
+        }
 
 
     var pipeline = 0.0

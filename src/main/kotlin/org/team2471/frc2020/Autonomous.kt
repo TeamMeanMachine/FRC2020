@@ -31,7 +31,7 @@ private var startingSide = Side.RIGHT
 
 
 object AutoChooser {
-    private val cacheFile = File("/home/lvuser/autonomi.json")
+    var cacheFile : File? = null
 
     private val lyricsChooser = SendableChooser<String?>().apply {
         setDefaultOption("Country roads", "Country roads")
@@ -63,8 +63,14 @@ object AutoChooser {
         SmartDashboard.putData("Autos", autonomousChooser)
 
         try {
-            autonomi = Autonomi.fromJsonString(cacheFile.readText())
-            println("Autonomi cache loaded.")
+
+            cacheFile = File("/home/lvuser/autonomi.json")
+            if (cacheFile  != null) {
+                autonomi = Autonomi.fromJsonString(cacheFile?.readText())
+                println("Autonomi cache loaded.")
+            } else {
+                println("Autonomi failed to load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! RESTART ROBOT!!!!!!")
+            }
         } catch (_: Throwable) {
             DriverStation.reportError("Autonomi cache could not be found", false)
             autonomi = Autonomi()
@@ -79,8 +85,7 @@ object AutoChooser {
                         autonomi = Autonomi.fromJsonString(json)
                     }
                     println("Loaded autonomi in $t seconds")
-
-                    cacheFile.writeText(json)
+                    cacheFile?.writeText(json)
                     println("New autonomi written to cache")
                 } else {
                     autonomi = Autonomi()

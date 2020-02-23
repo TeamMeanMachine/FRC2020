@@ -32,11 +32,11 @@ object Shooter : Subsystem("Shooter") {
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
         rpmCurve.storeValue(11.0, 5000.0)
-        rpmCurve.storeValue(13.0, 4200.0)
-        rpmCurve.storeValue(19.0, 3950.0)
-        rpmCurve.storeValue(26.0, 4100.0)
-        rpmCurve.storeValue(34.5, 4450.0)
-        rpmCurve.storeValue(35.5, 4500.0)
+        rpmCurve.storeValue(13.0, 4500.0)
+        rpmCurve.storeValue(19.0, 4120.0)
+        rpmCurve.storeValue(26.0, 4200.0)
+        rpmCurve.storeValue(34.5, 4850.0)
+        rpmCurve.storeValue(35.5, 4900.0)
         var dist = 11.0
         while (dist<=34.0) {
             //println("$dist ${rpmCurve.getValue(dist)}")
@@ -88,14 +88,14 @@ object Shooter : Subsystem("Shooter") {
 
     var rpmSetpoint: Double = 0.0
         get() {
-            if (BackLimelight.hasValidTarget) {
+            if (FrontLimelight.hasValidTarget) {
                 val rpm2 = rpmFromDistance(FrontLimelight.distance)
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
             /*} else if(rpmSetpointEntry.value.double > 0.0) {
                 return rpmSetpointEntry.value.double */
             } else {
-                return 3950.0
+                return 4050.0
             }
         }
 

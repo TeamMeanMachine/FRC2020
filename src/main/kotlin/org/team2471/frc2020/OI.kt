@@ -7,6 +7,7 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
+import org.team2471.frc2020.Feeder.reverseFeeder
 import org.team2471.frc2020.actions.climb
 import org.team2471.frc2020.actions.controlPanel1
 import org.team2471.frc2020.actions.intake
@@ -70,6 +71,6 @@ object OI {
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
         ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }
-        ({ operatorController.rightTrigger > 0.1}).whileTrue { Feeder.reverseFeeder() }
+//        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
     }
 }
