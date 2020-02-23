@@ -82,7 +82,7 @@ object Shooter : Subsystem("Shooter") {
     var rpmSetpoint: Double = 0.0
         get() {
             if (BackLimelight.hasValidTarget) {
-                val rpm2 = rpmFromDistance(BackLimelight.distance)
+                val rpm2 = rpmFromDistance(FrontLimelight.distance)
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
             /*} else if(rpmSetpointEntry.value.double > 0.0) {

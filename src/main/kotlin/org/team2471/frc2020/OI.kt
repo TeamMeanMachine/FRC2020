@@ -55,10 +55,10 @@ object OI {
         get() = operatorController.rightTrigger
 
     val operatorRightX: Double
-        get() = operatorController.rightThumbstickX.deadband(0.2)
+        get() = operatorController.rightThumbstickX.deadband(0.25)
 
     val operatorRightY: Double
-        get() = operatorController.rightThumbstickY.deadband(0.2)
+        get() = operatorController.rightThumbstickY.deadband(0.25)
 
     init {
         driverController::back.whenTrue { Drive.zeroGyro() }
@@ -70,7 +70,7 @@ object OI {
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
 //        driverController::x.whenTrue { triggerTest() }
-        ({ driverController.leftTrigger > 0.1 }).whileTrue{
+        ({ driverController.leftTrigger > 0.1 }).whenTrue{
             println("Left trigger is being pulled. Hi.")
             feederStationVision()
         }

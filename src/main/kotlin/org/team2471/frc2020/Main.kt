@@ -44,7 +44,6 @@ object Robot : MeanlibRobot() {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
-        BackLimelight.startUp()
         FrontLimelight.startUp()
     }
 
