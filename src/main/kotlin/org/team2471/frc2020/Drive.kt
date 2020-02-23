@@ -93,11 +93,13 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
 
     init {
+        println("drive init")
         SmartDashboard.setPersistent("Use Gyro")
 
         //SmartDashboard.putData("Gyro", gyro!!.getNavX())
 
         GlobalScope.launch(MeanlibDispatcher) {
+            println("in drive global scope")
             val table = NetworkTableInstance.getDefault().getTable(name)
 
             val headingEntry = table.getEntry("Heading")
@@ -133,6 +135,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val table = NetworkTableInstance.getDefault().getTable(name)
 
         periodic {
+//            println("drive default")
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
@@ -152,6 +155,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 0.0
                 // 0.3 // inputDamping
             )
+//            println("oooooweeeeeeeee")
         }
     }
 

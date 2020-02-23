@@ -3,6 +3,7 @@ package org.team2471.frc2020.actions
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.withContext
 import org.team2471.frc.lib.coroutines.delay
+import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.EndGame
@@ -13,13 +14,15 @@ import org.team2471.frc2020.Shooter
 import kotlin.math.absoluteValue
 
 suspend fun climb() = use(Intake, EndGame, Shooter) {
-    if (ControlPanel.isExtending) {
-        ControlPanel.isExtending = false
-        delay(0.5)
-    }
     try {
-        Intake.extend = true
-        delay(0.3)
+        parallel ({
+            if (ControlPanel.isExtending) {
+                ControlPanel.isExtending = false
+            }
+        }, {
+            Intake.extend = true
+            delay(0.5)
+        })
         EndGame.climbIsExtending = true
         periodic {
             EndGame.brakeIsExtending = OI.operatorRightY.absoluteValue < 0.1
