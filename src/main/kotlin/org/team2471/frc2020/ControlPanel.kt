@@ -1,5 +1,6 @@
 package org.team2471.frc2020
 
+import edu.wpi.first.wpilibj.SerialPort
 import edu.wpi.first.wpilibj.Solenoid
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
@@ -17,8 +18,9 @@ import java.awt.image.renderable.ContextualRenderedImageFactory
 //import org.team2471.frc.lib.framework.use
 //
 object ControlPanel : Subsystem("Control Panel") {
-     val controlMotor = if (isCompBotIHateEverything) MotorController(VictorID(Victors.CONTROL_PANEL)) else MotorController(TalonID(Talons.CONTROL_PANEL))
-     private val extensionSolenoid = Solenoid(CONTROL_PANEL)
+    val controlMotor = if (isCompBotIHateEverything) MotorController(VictorID(Victors.CONTROL_PANEL)) else MotorController(TalonID(Talons.CONTROL_PANEL))
+    private val extensionSolenoid = Solenoid(CONTROL_PANEL)
+//    val serialPort = SerialPort(9600, SerialPort.Port.kUSB)
 //    suspend fun test() = use(ControlPanel) {
 //        periodic {
 //            controlMotor.setPercentOutput(OI.driverController.leftTrigger)
@@ -35,9 +37,13 @@ var isExtending: Boolean
     }
 
     override suspend fun default() {
-        periodic {
-            isExtending = false
-        }
+        println("Made it to default!")
+//        periodic {
+////            isExtending = false
+//            serialPort.writeString("?")
+//            val str = serialPort.readString()
+//            println("USB: '$str'")
+//        }
 //        periodic {
 //            spin(OI.driveLeftTrigger)
 //            //setRPM(1000.0)
