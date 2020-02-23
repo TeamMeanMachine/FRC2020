@@ -61,26 +61,19 @@ object OI {
         get() = operatorController.rightThumbstickY.deadband(0.2)
 
     init {
+        //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
 //        driverController::a.whenTrue { FrontLimelight.pipeline = 1.0 }
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
+
+
+        //Operator: Justine
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
-//        driverController::x.whenTrue { triggerTest() }
-        ({ driverController.leftTrigger > 0.1 }).whileTrue{
-            println("Left trigger is being pulled. Hi.")
-            feederStationVision()
-        }
+        ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }
+        ({ operatorController.rightTrigger > 0.1}).whileTrue { Feeder.reverseFeeder() }
     }
-
-//    suspend fun triggerTest() {
-//        println("Got into triggerTest. Hi.")
-//        suspendUntil{driverController.leftTrigger > 0.1}
-//        println("Driver left trigger pressed. Hi.")
-//        shootMode()
-//    }
 }
-

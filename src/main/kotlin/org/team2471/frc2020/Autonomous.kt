@@ -53,6 +53,7 @@ object AutoChooser {
         setDefaultOption("Tests", "testAuto")
         addOption("5 Ball Trench Run", "trenchRun5")
         addOption("10 Ball Shield Generator", "shieldGenerator10")
+        addOption("8 Ball Trench Run", "trenchRun8")
     }
 
     init {
@@ -96,6 +97,7 @@ object AutoChooser {
             "Tests" -> testAuto()
             "5 Ball Trench Run" -> trenchRun5()
             "10 Ball Shield Generator" -> shieldGenerator10()
+            "8 Ball Trench Run" -> trenchRun8()
             else -> println("No function found for ---->$selAuto<-----")
         }
 
@@ -190,17 +192,26 @@ object AutoChooser {
                     Drive.driveAlongPath(path, true)
                 }, {
                     delay(path.duration * 0.5)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 })
                 autoPrepShot(4)
                 path = auto["Collect 4 Cells"]
                 Drive.driveAlongPath(path, false)
                 path = auto["Shoot 4 Cells"]
-                Drive.driveAlongPath(path, false)
+                parallel ({
+                    Drive.driveAlongPath(path, false)
+                }, {
+                    Intake.extend = false
+                })
+                autoPrepShot(4)
             }
         } finally {
-
+            Shooter.stop()
+            Shooter.rpmSetpoint = 0.0
+            Feeder.setPower(0.0)
+            Intake.extend = false
+            Intake.setPower(0.0)
         }
     }
 

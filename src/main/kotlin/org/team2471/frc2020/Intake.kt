@@ -3,6 +3,7 @@ package org.team2471.frc2020
 import edu.wpi.first.wpilibj.Solenoid
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc2020.Solenoids.INTAKE
 import org.team2471.frc2020.Talons
@@ -32,6 +33,11 @@ object Intake: Subsystem("Intake") {
 */
     fun setPower(power: Double) {
         intakeMotor.setPercentOutput(power)
+    }
+
+    suspend fun stopMotorAfterIntaking() {
+        delay(1.7)
+        setPower(0.0)
     }
 
 //    override suspend fun default() {

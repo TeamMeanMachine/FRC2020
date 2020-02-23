@@ -49,6 +49,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun enable() {
+        println("starting enable")
         Drive.enable()
         ControlPanel.enable()
         Drive.zeroGyro()
@@ -59,6 +60,7 @@ object Robot : MeanlibRobot() {
         Feeder.enable()
         Intake.enable()
         EndGame.enable()
+        println("ending enable")
     }
 
     override suspend fun autonomous() {
@@ -68,6 +70,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun teleop() {
+        println("telop begin")
 //        periodic{
 //            println("parallax ${Limelight.parallax}")
 //        }
@@ -81,7 +84,7 @@ object Robot : MeanlibRobot() {
 //        Drive.driveTests()
 //        Feeder.test()
 //        Intake.solenoidTest()
-        ControlPanel.motorTest()
+//        ControlPanel.motorTest()
 //        ControlPanel.soleniodTest()
 //        Intake.intakeFeedAndShootTest()
 //        EndGame.climbSolenoidTest()
