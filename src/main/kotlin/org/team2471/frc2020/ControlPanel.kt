@@ -55,5 +55,4 @@ var isExtending: Boolean
 //            //setRPM(1000.0)
 //            // setRPM(rpmTable.getDouble(0.0))
 //        }
-        }
-    }
+      }
