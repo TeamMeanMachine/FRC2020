@@ -190,7 +190,7 @@ object AutoChooser {
                     Drive.driveAlongPath(path, true)
                 }, {
                     delay(path.duration * 0.5)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 })
                 autoPrepShot(4)
