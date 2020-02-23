@@ -88,7 +88,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.001
     )
 
-    public val aimPDController = PDController(0.02, 0.05)
+    val aimPDController = PDController(0.02, 0.05)
     var lastError = 0.0
 
 

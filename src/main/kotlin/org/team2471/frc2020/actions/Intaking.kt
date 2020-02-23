@@ -11,7 +11,6 @@ import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.Intake
 import org.team2471.frc2020.Intake.INTAKE_POWER
 import org.team2471.frc2020.Intake.intakeMotor
-import org.team2471.frc2020.Intake.stopMotorAfterIntaking
 import org.team2471.frc2020.OI
 
 //suspend fun intake() = use(Intake){

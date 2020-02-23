@@ -13,7 +13,6 @@ suspend fun controlPanel1() = use(ControlPanel) {
         EndGame.climbIsExtending = false
         delay(0.5)
     }
-
     try {
         ControlPanel.isExtending = true
         /*var startingColor = sensor stuff*/

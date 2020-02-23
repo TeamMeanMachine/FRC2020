@@ -19,6 +19,8 @@ import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.*
+import org.team2471.frc2020.BackLimelight.area
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
@@ -35,13 +37,9 @@ object BackLimelight : Subsystem("Back Limelight") {
     private val currentPipelineEntry = table.getEntry("getpipe")
     private val setPipelineEntry = table.getEntry("pipeline")
     private val heightToDistance = MotionCurve()
-    private var distanceEntry = table.getEntry("Distance")
     private var positionXEntry = table.getEntry("PositionX")
     private var positionYEntry = table.getEntry("PositionY")
     private var parallaxEntry = table.getEntry("Parallax")
-
-    val distance : Length
-        get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
 
 
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")
@@ -61,16 +59,10 @@ object BackLimelight : Subsystem("Back Limelight") {
         setDefaultBoolean(true)
     }
 
-    val position: Vector2
-        get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * (heading + xTranslation.degrees).sin()), (distance.asFeet * (heading + xTranslation.degrees).cos()))
-
     val targetAngle: Angle
             get() {
                 return -gyro!!.angle.degrees + xTranslation.degrees
             } //verify that this changes? or is reasonablej
-
-    val targetPoint
-        get() = Vector2(distance.asFeet * sin(targetAngle.asRadians), distance.asFeet * cos(targetAngle.asRadians)) + Drive.position
 
     var isCamEnabled = false
         set(value) {
@@ -94,10 +86,10 @@ object BackLimelight : Subsystem("Back Limelight") {
         get() = areaEntry.getDouble(0.0)
 
     val rotationP
-        get() = rotationPEntry.getDouble(0.012)
+        get() = rotationPEntry.getDouble(0.0)//0.0001)
 
     val rotationD
-        get() = rotationDEntry.getDouble(0.1)
+        get() = rotationDEntry.getDouble(0.0)
 
     var hasValidTarget = false
         get() = targetValidEntry.getDouble(0.0) == 1.0
@@ -109,9 +101,6 @@ object BackLimelight : Subsystem("Back Limelight") {
             setPipelineEntry.setDouble(value)
             field = value
         }
-
-    val aimError: Double
-        get() = xTranslation + parallax.asDegrees
 
     init {
         isCamEnabled = false
@@ -127,112 +116,53 @@ object BackLimelight : Subsystem("Back Limelight") {
             i += 0.5
         }
     }
-        fun startUp() {
-            distanceEntry = table.getEntry("Distance")
-            positionXEntry = table.getEntry("PositionX")
-            positionYEntry = table.getEntry("PositionY")
-            parallaxEntry = table.getEntry("Parallax")
-        GlobalScope.launch(MeanlibDispatcher) {
-
-            periodic {
-                distanceEntry.setDouble(distance.asFeet)
-                val savePosition = position
-                positionXEntry.setDouble(savePosition.x)
-                positionYEntry.setDouble(savePosition.y)
-                parallaxEntry.setDouble(parallax.asDegrees)
-            }
-        }
-    }
 
 
     override fun reset() {
     }
 
-    val parallax: Angle
-        get() {
-            val frontGoalPos = Vector2(0.0, 0.0)
-            val backGoalPos = Vector2(0.0, 2.0)
-            val frontAngle = (frontGoalPos-position).angle.radians
-            val backAngle = (backGoalPos-position).angle.radians
-            var internalParallax = backAngle-frontAngle
-            if (abs(internalParallax.asDegrees) > 4.0) {
-                internalParallax = 0.0.degrees
-            }
-            return internalParallax
-    }
 }
 
-
-suspend fun visionDrive() = use(Drive, BackLimelight, name = "Vision Drive") {
-    BackLimelight.isCamEnabled = true
-    val timer = Timer()
-    var prevTargetHeading = BackLimelight.targetAngle
-    var prevTargetPoint = BackLimelight.targetPoint
-    var prevTime = 0.0
-    timer.start()
-    val rotationPDController = PDController(rotationP, rotationD)
-    periodic {
-        val t = timer.get()
-        val dt = t - prevTime
-
-        // position error
-        val targetPoint = BackLimelight.targetPoint * 0.5 + prevTargetPoint * 0.5
-        val positionError = targetPoint - Drive.position
-        prevTargetPoint = targetPoint
-
-        val robotHeading = heading
-        val targetHeading = if (BackLimelight.hasValidTarget) positionError.angle.radians else prevTargetHeading
-        val headingError = (targetHeading - robotHeading).wrap()
-        prevTargetHeading = targetHeading
-
-        val turnControl = rotationPDController.update(headingError.asDegrees )
-
-        // send it
-
-
-        Drive.drive(
-            OI.driveTranslation,
-            OI.driveRotation + turnControl,
-            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
-    }
-}
-
-
-
-suspend fun feederStationVision() = use(Drive, BackLimelight, name = "Vision Drive") {
+suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vision Drive") {
     println("Got into feederStationVision(). Hi.")
     BackLimelight.isCamEnabled = true
     val timer = Timer()
-    var prevTargetHeading = BackLimelight.targetAngle
-    var prevTargetPoint = BackLimelight.targetPoint
     var prevTime = 0.0
     timer.start()
-    val rotationPDController = PDController(rotationP, rotationD)
+    val rotationPDController = PDController(0.005, 0.0)
+    try {
+        Intake.extend = true
+        Intake.setPower (0.4)
 
-    periodic {
-        println("In feederStationVision() periodic. Hi.")
-        val t = timer.get()
-        val dt = t - prevTime
-
-        // position error
-        val targetPoint = BackLimelight.targetPoint * 0.5 + prevTargetPoint * 0.5
-        val positionError = targetPoint - Drive.position
-        prevTargetPoint = targetPoint
-
-        val robotHeading = heading
-        val targetHeading = 0.0.degrees
-        val headingError = (targetHeading - robotHeading).wrap()
-        prevTargetHeading = targetHeading
-
-        val translationControl = positionError * OI.driverController.leftTrigger * 0.6
-        val turnControl = rotationPDController.update(headingError.asDegrees )
-
-        // send it
+        periodic {
+            println("In feederStationVision() periodic. Hi.")
+            val t = timer.get()
 
 
-        Drive.drive(
-            OI.driveTranslation + translationControl,
-            OI.driveRotation + turnControl,
-            SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous)
+            val robotHeading = heading
+            val targetHeading = 0.0.degrees
+            val headingError = (targetHeading - robotHeading).wrap()
+
+            val translationControl = if(BackLimelight.hasValidTarget)
+                Vector2(BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger,
+                    OI.driverController.leftTrigger * 0.4 * (if (area < 7) (1/ area) else 0.2)) else
+                Vector2(0.0, OI.driverController.leftTrigger) //im sorry mom
+
+            val turnControl = rotationPDController.update(headingError.asDegrees)
+            println(headingError)
+            // send it
+
+
+            Drive.drive(
+                OI.driveTranslation - translationControl,
+                OI.driveRotation + turnControl,
+                SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous
+            )
+
+            if(OI.operatorController.rightBumper) this.stop()
+        }
+    } finally {
+        Intake.extend = false
+        Intake.setPower(0.0)
     }
 }
