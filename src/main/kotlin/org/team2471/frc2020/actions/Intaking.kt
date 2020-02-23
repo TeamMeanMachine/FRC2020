@@ -44,10 +44,7 @@ suspend fun intake() = use(Intake){
         halt()
     } finally {
         Intake.extend = false
-        withContext(NonCancellable) {
-            delay(0.7)
-        }
-        Intake.setPower(0.0)
+        Intake.stopMotorAfterIntaking()
     }
 }
 
