@@ -35,10 +35,6 @@ object Intake: Subsystem("Intake") {
         intakeMotor.setPercentOutput(power)
     }
 
-    suspend fun stopMotorAfterIntaking() {
-        delay(1.7)
-        setPower(0.0)
-    }
 
 //    override suspend fun default() {
 ////        intakeIsExtending = true //climb testing

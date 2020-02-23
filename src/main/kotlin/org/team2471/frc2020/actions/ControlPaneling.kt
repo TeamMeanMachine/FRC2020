@@ -9,11 +9,11 @@ import org.team2471.frc2020.EndGame
 import org.team2471.frc2020.OI
 
 suspend fun controlPanel1() = use(ControlPanel) {
-    if (EndGame.climbIsExtending) {
-        EndGame.climbIsExtending = false
-        delay(0.5)
-    }
     try {
+        if (EndGame.climbIsExtending) {
+            EndGame.climbIsExtending = false
+            delay(0.5)
+        }
         ControlPanel.isExtending = true
         /*var startingColor = sensor stuff*/
         periodic {
@@ -23,7 +23,6 @@ suspend fun controlPanel1() = use(ControlPanel) {
            suspendUntil(sensor == startingColor)
            suspendUntil(sensor == startingColor)*/
     } finally {
-        delay(0.5)
         ControlPanel.isExtending = false
         ControlPanel.setPower(0.0)
     }
