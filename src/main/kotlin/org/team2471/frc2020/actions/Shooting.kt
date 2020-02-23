@@ -63,10 +63,10 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         val t = Timer()
         t.start()
         periodic {
-            val rpmSetpoint = Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)
+            val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)) < 100.0 && BackLimelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)) < 100.0 && BackLimelight.hasValidTarget && abs(aimError) < 0.5) {
                 if (currTime > 0.1) {
                     this.stop()
                 }
@@ -80,7 +80,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             } else if (BackLimelight.hasValidTarget && Shooter.prepShotOn) {
-                turn = Drive.aimPDController.update(BackLimelight.xTranslation-BackLimelight.parallax.asDegrees)
+                turn = Drive.aimPDController.update(BackLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
             }
             Drive.drive(
                 Vector2(0.0, 0.0),
@@ -96,7 +96,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         var ballsShot = 0
         var shootingBall = false
         periodic(0.015) {
-            var rpmSetpoint = Shooter.rpmCurve.getValue(BackLimelight.distance.asInches)
+            var rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             var currTime = t.get()
             if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
