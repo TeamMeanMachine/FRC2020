@@ -49,10 +49,10 @@ object Shooter : Subsystem("Shooter") {
             followersInverted(true)
             brakeMode()
             pid {
-                p(0.0)//p(1.5e-8) //1.5e-8)
+                p(0.4e-8) //1.5e-8)
                 i(0.0)//i(0.0)
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
-                f(0.000045)
+                f(0.000042) //0.000045
             }
 //            burnSettings()
         }

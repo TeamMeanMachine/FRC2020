@@ -37,20 +37,23 @@ import org.team2471.frc2020.OI
 //    }
 //}
 
-suspend fun intake() = use(Intake){
+suspend fun intake() = use(Intake) {
     try {
         Intake.extend = true
         Intake.setPower(INTAKE_POWER)
         halt()
     } finally {
         Intake.extend = false
-        Intake.stopMotorAfterIntaking()
+        withContext(NonCancellable) {
+            delay(0.7)
+            Intake.setPower(0.0)
+        }
     }
 }
 
 suspend fun autoIntakeStart() = use(Intake) {
-        Intake.extend = true
-        Intake.setPower(INTAKE_POWER)
+    Intake.extend = true
+    Intake.setPower(INTAKE_POWER)
 }
 
 suspend fun autoIntakeStop() = use(Intake) {

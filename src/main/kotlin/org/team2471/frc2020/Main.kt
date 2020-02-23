@@ -3,6 +3,7 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.wpilibj.RobotBase
+import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
@@ -71,7 +72,7 @@ object Robot : MeanlibRobot() {
     override suspend fun teleop() {
         println("telop begin")
 //        periodic{
-//            println("parallax ${Limelight.parallax}")
+//            println("parallax ${FrontLimelight.parallax}")
 //        }
     }
 
@@ -118,5 +119,6 @@ object Robot : MeanlibRobot() {
 }
 
 fun main() {
+    println("start robot")
     RobotBase.startRobot { Robot }
 }

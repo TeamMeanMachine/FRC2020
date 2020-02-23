@@ -50,4 +50,10 @@ var isExtending: Boolean
 ////            // setRPM(rpmTable.getDouble(0.0))
 ////        }
 //        }
+//        periodic {
+//            spin(OI.driveLeftTrigger)
+//            //setRPM(1000.0)
+//            // setRPM(rpmTable.getDouble(0.0))
+//        }
+        }
     }

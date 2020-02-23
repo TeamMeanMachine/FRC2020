@@ -9,6 +9,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
+import org.team2471.frc.lib.control.PDConstantFController
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
@@ -88,7 +89,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.001
     )
 
-    val aimPDController = PDController(0.02, 0.05)
+    val aimPDController = PDConstantFController(0.016, 0.032, 0.011) //0.01, 0.03, 0.0
     var lastError = 0.0
 
 
@@ -109,6 +110,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
             val aimPEntry = table.getEntry("p")
             val aimDEntry = table.getEntry("d")
+            val aimErrorEntry = table.getEntry("Aim Error")
 
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
@@ -118,6 +120,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 xEntry.setDouble(x)
                 yEntry.setDouble(y)
                 headingEntry.setDouble(heading.asDegrees)
+                aimErrorEntry.setDouble(FrontLimelight.aimError)
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
             }
@@ -133,16 +136,20 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
-
         periodic {
-//            println("drive default")
+            println("help")
             var turn = 0.0
             println("Between var turn and if statement. Hi.")
             if (OI.driveRotation.absoluteValue > 0.001) {
+                println("ooweeeee")
                 turn = OI.driveRotation
+                println("ok boomer")
             } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+                println("surprised pikachu")
                 turn = aimPDController.update(FrontLimelight.aimError)
+                println("crab rave")
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
+                println("doo doo doot")
             }
             drive(
                 OI.driveTranslation,
@@ -156,7 +163,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 0.0
                 // 0.3 // inputDamping
             )
-//            println("oooooweeeeeeeee")
         }
     }
 

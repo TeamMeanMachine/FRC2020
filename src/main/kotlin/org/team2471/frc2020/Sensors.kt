@@ -8,5 +8,5 @@ object Sensors: Subsystem("Sensors") {
 
     init{ }
 
-    override suspend fun default(){ }
+//    override suspend fun default(){ }
 }
