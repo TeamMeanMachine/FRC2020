@@ -137,6 +137,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         periodic {
 //            println("drive default")
             var turn = 0.0
+            println("Between var turn and if statement. Hi.")
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {

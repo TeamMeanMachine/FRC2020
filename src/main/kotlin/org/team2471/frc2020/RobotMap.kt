@@ -8,7 +8,7 @@ object Talons {
     const val BALANCE = 14
 }
 
-object Victors { //practice bot only aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagh
+object Victors {
     const val CONTROL_PANEL = 9
     const val BALANCE = 14
 }

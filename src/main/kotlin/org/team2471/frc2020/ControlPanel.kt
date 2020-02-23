@@ -35,19 +35,19 @@ var isExtending: Boolean
     set(value) {
         extensionSolenoid.set(value)
     }
-
-    override suspend fun default() {
-        println("Made it to default!")
-//        periodic {
-////            isExtending = false
-//            serialPort.writeString("?")
-//            val str = serialPort.readString()
-//            println("USB: '$str'")
+//
+//    override suspend fun default() {
+//        println("Made it to default!")
+////        periodic {
+//////            isExtending = false
+////            serialPort.writeString("?")
+////            val str = serialPort.readString()
+////            println("USB: '$str'")
+////        }
+////        periodic {
+////            spin(OI.driveLeftTrigger)
+////            //setRPM(1000.0)
+////            // setRPM(rpmTable.getDouble(0.0))
+////        }
 //        }
-//        periodic {
-//            spin(OI.driveLeftTrigger)
-//            //setRPM(1000.0)
-//            // setRPM(rpmTable.getDouble(0.0))
-//        }
-        }
     }
