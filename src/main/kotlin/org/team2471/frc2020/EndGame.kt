@@ -10,8 +10,7 @@ import org.team2471.frc2020.Solenoids.BRAKE
 import org.team2471.frc2020.Solenoids.CLIMB
 
 object EndGame: Subsystem("EndGame") {
-    val balanceMotor = if (isCompBotIHateEverything) MotorController(VictorID(Victors.BALANCE)) else MotorController(TalonID(Talons.BALANCE))
-
+    val balanceMotor = MotorController(VictorID(Victors.BALANCE))
 
     private val climbSolenoid = Solenoid(CLIMB)
     private val brakeSolenoid = Solenoid(BRAKE)

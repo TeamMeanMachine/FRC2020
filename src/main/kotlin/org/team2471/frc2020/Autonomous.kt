@@ -179,6 +179,31 @@ object AutoChooser {
         }
     }
 
+    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder){
+        try {
+            val auto = autonomi["8 Ball Trench Run"]
+            if (auto != null) {
+                var path = auto["Collect 1 and Shoot 4 Cells"]
+                Intake.setPower(Intake.INTAKE_POWER)
+                Intake.extend = true
+                parallel ({
+                    Drive.driveAlongPath(path, true)
+                }, {
+                    delay(path.duration * 0.5)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(Limelight.distance.asInches)
+                    Shooter.rpm = rpmSetpoint
+                })
+                autoPrepShot(4)
+                path = auto["Collect 4 Cells"]
+                Drive.driveAlongPath(path, false)
+                path = auto["Shoot 4 Cells"]
+                Drive.driveAlongPath(path, false)
+            }
+        } finally {
+
+        }
+    }
+
     suspend fun test8FtStraight() = use(Drive) {
         val auto = autonomi["Tests"]
         if (auto != null) {

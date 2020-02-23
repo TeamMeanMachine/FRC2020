@@ -7,11 +7,16 @@ import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.EndGame
 import org.team2471.frc2020.Intake
+import org.team2471.frc2020.ControlPanel
 import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 import kotlin.math.absoluteValue
 
 suspend fun climb() = use(Intake, EndGame, Shooter) {
+    if (ControlPanel.isExtending) {
+        ControlPanel.isExtending = false
+        delay(0.5)
+    }
     try {
         Intake.extend = true
         delay(0.3)
