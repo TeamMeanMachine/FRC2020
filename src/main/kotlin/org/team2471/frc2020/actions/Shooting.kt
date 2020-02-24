@@ -9,6 +9,7 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
 import org.team2471.frc2020.FrontLimelight.aimError
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
@@ -16,6 +17,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
     try {
         Shooter.prepShotOn = true
         Shooter.rpm = Shooter.rpmSetpoint
+        Intake.extend = true
         val t = Timer()
         t.start()
         periodic {
@@ -66,21 +68,21 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             val currTime = t.get()
-            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
                 if (currTime > 0.1) {
                     this.stop()
                 }
             } else {
                 t.start()
             }
-            if (totalT.get() > 2.0) {
+            if (totalT.get() > 1.5) {
                 this.stop()
             }
             var turn = 0.0
-            if (OI.driveRotation.absoluteValue > 0.001) {
-                turn = OI.driveRotation
-            } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
+            if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = Drive.aimPDController.update(FrontLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
+                println("turn = $turn. Hi.")
             }
             Drive.drive(
                 Vector2(0.0, 0.0),
@@ -109,6 +111,10 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             if(ballsShot > ballsIntaken - 1 || t.get() > 3.5) {
                 this.stop()
             }
+            Drive.drive(
+                Vector2(0.0,0.0),
+                0.0
+            )
         }
     } finally {
         OI.driverController.rumble = 0.0

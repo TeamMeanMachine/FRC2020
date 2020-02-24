@@ -13,7 +13,7 @@ object Intake: Subsystem("Intake") {
     val intakeMotor = MotorController(TalonID(Talons.INTAKE))
     private val extensionSolenoid = Solenoid(INTAKE)
 
-    val INTAKE_POWER = 0.75
+    val INTAKE_POWER = 0.6
 
 
     init {

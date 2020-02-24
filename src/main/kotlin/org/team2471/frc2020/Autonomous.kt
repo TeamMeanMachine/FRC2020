@@ -75,10 +75,11 @@ object AutoChooser {
             DriverStation.reportError("Autonomi cache could not be found", false)
             autonomi = Autonomi()
         }
-
+        println("In Auto Init. Before AddListener. Hi.")
         NetworkTableInstance.getDefault()
             .getTable("PathVisualizer")
             .getEntry("Autonomi").addListener({ event ->
+                println("Automous change detected")
                 val json = event.value.string
                 if (!json.isEmpty()) {
                     val t = measureTimeFPGA {
@@ -141,15 +142,15 @@ object AutoChooser {
             val auto = autonomi["10 Ball Shield Generator"]
             println(auto == null)
             if (true){//auto != null) {
-                println()
-                Intake.setPower(Intake.INTAKE_POWER)
+                Intake.setPower(1.0) //Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
                 Drive.driveAlongPath(path, true, 0.125)
                 delay(0.25)
+                Intake.setPower(0.5)
                 Intake.extend = false
                 parallel ({
-                    delay(path.duration * 0.75)
+                    delay(path.duration * 0.25)
                     val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 }, {
@@ -161,6 +162,7 @@ object AutoChooser {
 //                }, {
 //                    delay(2.0)
                     autoPrepShot(5)
+                    Intake.setPower(1.0)
                     Intake.extend = true
                     path = auto["03- Intake 3 Cells"]
                     Drive.driveAlongPath(path, false)
@@ -172,6 +174,7 @@ object AutoChooser {
                         delay(path.duration * 0.9)
                         Intake.extend = true
                     })
+                    Intake.setPower(1.0)
                     Intake.extend = false
                     path = auto["05- Shooting Position"]
                     Drive.driveAlongPath(path, false)
