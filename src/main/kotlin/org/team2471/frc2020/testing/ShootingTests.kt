@@ -12,9 +12,14 @@ import java.lang.Math.abs
 suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
     periodic {
         rpm = rpmSetpointEntry.getDouble(0.0)
-        Feeder.setPower(OI.driveRightTrigger )
+        Feeder.setPower(OI.driveRightTrigger)
     }
 
+}
+
+suspend fun Shooter.motorTest() = use(Shooter) {
+    println("In Shooter.motorTest(). Hi.")
+    Shooter.setPower(0.5)
 }
 
 suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {

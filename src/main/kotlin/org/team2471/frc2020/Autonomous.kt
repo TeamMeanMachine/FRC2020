@@ -191,9 +191,10 @@ object AutoChooser {
 
     suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder){
         try {
+            println("Got into Trench Run 8")
             val auto = autonomi["8 Ball Trench Run"]
-            if (auto != null) {
-                var path = auto["Collect 1 and Shoot 4 Cells"]
+            if (true)/*auto != null)*/ {
+                var path = auto["1- Collect 1 and Shoot 4 Cells"]
                 Intake.setPower(Intake.INTAKE_POWER)
                 Intake.extend = true
                 parallel ({
@@ -202,11 +203,14 @@ object AutoChooser {
                     delay(path.duration * 0.5)
                     val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
-                })
+                }/*, {
+                    delay(1.1 * path.duration)
+                    Intake.extend = false
+                */)
                 autoPrepShot(4)
-                path = auto["Collect 4 Cells"]
+                path = auto["2- Collect 4 Cells"]
                 Drive.driveAlongPath(path, false)
-                path = auto["Shoot 4 Cells"]
+                path = auto["3- Shoot 4 Cells"]
                 parallel ({
                     Drive.driveAlongPath(path, false)
                 }, {

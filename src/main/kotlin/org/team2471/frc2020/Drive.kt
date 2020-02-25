@@ -137,19 +137,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
         periodic {
-            println("help")
             var turn = 0.0
-            println("Between var turn and if statement. Hi.")
             if (OI.driveRotation.absoluteValue > 0.001) {
-                println("ooweeeee")
                 turn = OI.driveRotation
-                println("ok boomer")
             } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
-                println("surprised pikachu")
                 turn = aimPDController.update(FrontLimelight.aimError)
-                println("crab rave")
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
-                println("doo doo doot")
             }
             drive(
                 OI.driveTranslation,
