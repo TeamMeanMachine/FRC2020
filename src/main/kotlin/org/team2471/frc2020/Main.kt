@@ -109,6 +109,11 @@ object Robot : MeanlibRobot() {
         Feeder.disable()
         Intake.disable()
         EndGame.disable()
+
+        periodic {
+            BackLimelight.ledEnabled = false
+            FrontLimelight.ledEnabled = false
+        }
 //        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
 //        val xEntry = table.getEntry("X")
 //        val yEntry = table.getEntry("Y")

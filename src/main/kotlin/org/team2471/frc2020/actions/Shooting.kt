@@ -13,19 +13,19 @@ import java.util.*
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-suspend fun shootMode() = use(Shooter, Feeder, Intake) {
+suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
     try {
         Shooter.prepShotOn = true
-        Shooter.rpm = Shooter.rpmSetpoint
+        Shooter.rpm = Shooter.rpmSetpoint + Shooter.rpmOffset
         Intake.extend = true
         Intake.setPower(0.0)
         val t = Timer()
         t.start()
         FrontLimelight.ledEnabled = true
         periodic {
-            Shooter.rpm = Shooter.rpmSetpoint
+            Shooter.rpm = Shooter.rpmSetpoint + Shooter.rpmOffset
             val currTime = t.get()
-            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
+//            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
 //                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
                 if (currTime > 0.1) {
@@ -72,7 +72,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         val t = Timer()
         t.start()
         periodic {
-            val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+            val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches) + Shooter.rpmOffset
             Shooter.rpm = rpmSetpoint
             val currTime = t.get()
             if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
@@ -105,7 +105,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         var ballsShot = 0
         var shootingBall = false
         periodic(0.015) {
-            var rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+            var rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches) + Shooter.rpmOffset
             Shooter.rpm = rpmSetpoint
             var currTime = t.get()
             if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {

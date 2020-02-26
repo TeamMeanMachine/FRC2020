@@ -43,6 +43,7 @@ object BackLimelight : Subsystem("Back Limelight") {
     private var parallaxEntry = table.getEntry("Parallax")
 
 
+
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")
 
     private val rotationPEntry = tempPIDTable.getEntry("Rotation P").apply {
@@ -59,6 +60,8 @@ object BackLimelight : Subsystem("Back Limelight") {
         setPersistent()
         setDefaultBoolean(true)
     }
+
+
 
     val targetAngle: Angle
         get() {

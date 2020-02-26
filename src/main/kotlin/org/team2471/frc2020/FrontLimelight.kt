@@ -16,6 +16,7 @@ import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
@@ -41,6 +42,8 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var positionYEntry = table.getEntry("PositionY")
     private var parallaxEntry = table.getEntry("Parallax")
 
+    private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
+
     val distance: Length
         get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
 
@@ -61,6 +64,13 @@ object FrontLimelight : Subsystem("Front Limelight") {
         setPersistent()
         setDefaultBoolean(true)
     }
+
+    var angleOffset: Double = 0.0
+        get() = FrontLimelight.angleOffsetEntry.getDouble(0.0)
+        set(value) {
+            field = value
+            FrontLimelight.angleOffsetEntry.setDouble(value)
+        }
 
     val position: Vector2
         get() = Vector2(0.0, 0.0) - Vector2(
@@ -122,6 +132,15 @@ object FrontLimelight : Subsystem("Front Limelight") {
     val aimError: Double
         get() = xTranslation + parallax.asDegrees
 
+    fun leftAngleOffset() {
+        FrontLimelight.angleOffset -= 0.1
+    }
+
+    fun rightAngleOffset() {
+        FrontLimelight.angleOffset += 0.1
+    }
+
+
     init {
         isCamEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
@@ -134,6 +153,17 @@ object FrontLimelight : Subsystem("Front Limelight") {
             val tmpDistance = heightToDistance.getValue(i).feet
             //println("$i, ${tmpDistance.asFeet}")
             i += 0.5
+        }
+        GlobalScope.launch(MeanlibDispatcher) {
+            periodic {
+                if (OI.operatorController.dPad == Controller.Direction.LEFT) {
+                    println("slide to the left")
+                    leftAngleOffset()
+                } else if (OI.operatorController.dPad == Controller.Direction.RIGHT) {
+                    println("slide to the right")
+                    rightAngleOffset()
+                }
+            }
         }
     }
 
@@ -170,7 +200,6 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     override suspend fun default() {
         ledEnabled = false
-        halt()
     }
 
     override fun reset() {

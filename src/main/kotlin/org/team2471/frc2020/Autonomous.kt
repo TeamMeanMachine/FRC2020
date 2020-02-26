@@ -128,7 +128,7 @@ object AutoChooser {
         }
     }
 
-    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder) {
+    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             val auto = autonomi["5 Ball Trench Run"]
             if (auto != null) {
@@ -145,7 +145,7 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder) {
+    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
             println("In sheildGenerator auto. Hi.")
@@ -200,7 +200,7 @@ object AutoChooser {
         }
     }
 
-    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder){
+    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
         try {
             FrontLimelight.ledEnabled = true
             println("Got into Trench Run 8")
