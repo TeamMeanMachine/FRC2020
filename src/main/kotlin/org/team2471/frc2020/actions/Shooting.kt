@@ -10,6 +10,7 @@ import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
 import org.team2471.frc2020.FrontLimelight.aimError
 import java.util.*
+import javax.naming.ldap.Control
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
@@ -30,8 +31,12 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
 //                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
+                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
                 }
             } else {
+                if(FrontLimelight.hasValidTarget && Shooter.prepShotOn){
+                    ControlPanel.sendCommand(ArduinoCommand.LED_YELLOW)
+                }
                 OI.driverController.rumble = 0.0
                 t.start()
             }
