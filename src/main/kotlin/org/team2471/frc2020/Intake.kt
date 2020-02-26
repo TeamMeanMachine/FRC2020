@@ -36,7 +36,9 @@ object Intake: Subsystem("Intake") {
     }
 
 
-//    override suspend fun default() {
-////        intakeIsExtending = true //climb testing
-//    }
+    override suspend fun default() {
+        extend = false
+        delay(1.7)
+        setPower(0.0)
+    }
 }

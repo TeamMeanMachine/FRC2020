@@ -99,6 +99,8 @@ object Robot : MeanlibRobot() {
 
 
     override suspend fun disable() {
+        Intake.setPower(0.0)
+        Intake.extend = false
         Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()

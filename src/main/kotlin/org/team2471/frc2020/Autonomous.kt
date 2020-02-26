@@ -86,7 +86,12 @@ object AutoChooser {
                         autonomi = Autonomi.fromJsonString(json)
                     }
                     println("Loaded autonomi in $t seconds")
-                    cacheFile?.writeText(json)
+                    if (cacheFile != null) {
+                        println("CacheFile != null. Hi.")
+                        cacheFile!!.writeText(json)
+                    } else {
+                        println("cacheFile == null. Hi.")
+                    }
                     println("New autonomi written to cache")
                 } else {
                     autonomi = Autonomi()
