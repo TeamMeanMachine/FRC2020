@@ -132,7 +132,7 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
     val rotationPDController = PDController(0.005, 0.0)
     try {
         Intake.extend = true
-        Intake.setPower (0.4)
+        Intake.setPower (Intake.INTAKE_POWER)
 
         periodic {
             println("In feederStationVision() periodic. Hi.")

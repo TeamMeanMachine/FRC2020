@@ -15,6 +15,8 @@ import kotlin.math.absoluteValue
 
 suspend fun shootMode() = use(Shooter, Feeder, Intake) {
     try {
+        Intake.setPower(0.0)
+        Intake.extend = false
         Shooter.prepShotOn = true
         Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
@@ -35,10 +37,12 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
                 t.start()
             }
 
-            if(OI.driverController.rightTrigger > 0.1) {
+            if(OI.operatorController.rightTrigger > 0.1) {
+                Feeder.setPower(OI.operatorRightTrigger * -0.70)
+                Intake.setPower(OI.operatorRightTrigger * -0.70)
+            } else if (OI.driverController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.driveRightTrigger * 0.80)
                 Intake.setPower(OI.driveRightTrigger * 0.80)
-                Intake.extend = false
             } else {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)

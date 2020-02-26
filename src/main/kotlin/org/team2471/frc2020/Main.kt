@@ -66,7 +66,6 @@ object Robot : MeanlibRobot() {
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
         Drive.brakeMode()
-        println("After brakeMode; before autonomous.")
         AutoChooser.autonomous()
     }
 
@@ -91,7 +90,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-        Shooter.distance2RpmTest()
+//        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
 //        Drive.tuneDrivePositionController()
