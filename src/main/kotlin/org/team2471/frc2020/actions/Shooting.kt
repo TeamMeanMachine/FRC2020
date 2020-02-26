@@ -19,7 +19,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
         Intake.setPower(0.0)
         Intake.extend = false
         Shooter.prepShotOn = true
-        Shooter.rpm = Shooter.rpmSetpoint + Shooter.rpmOffset
+        Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
         Intake.setPower(0.0)
         FrontLimelight.ledEnabled = true
@@ -27,18 +27,19 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
         t.start()
         FrontLimelight.ledEnabled = true
         periodic {
-            Shooter.rpm = Shooter.rpmSetpoint + Shooter.rpmOffset
+            println("shooting")
+            Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
 //            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
 //                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
-                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
+//                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
                 }
             } else {
                 if(FrontLimelight.hasValidTarget && Shooter.prepShotOn){
-                    ControlPanel.sendCommand(ArduinoCommand.LED_YELLOW)
+//                    ControlPanel.sendCommand(ArduinoCommand.LED_YELLOW)
                 }
                 OI.driverController.rumble = 0.0
                 t.start()
@@ -46,7 +47,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
 
             if (OI.operatorController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.operatorRightTrigger * -0.70)
-                Intake.setPower(OI.operatorRightTrigger * -0.70)
+                Intake.setPower(OI.operatorRightTrigger * 0.70)
             } else if (OI.driverController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.driveRightTrigger * 0.80)
                 Intake.setPower(OI.driveRightTrigger * 0.80)
@@ -54,7 +55,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
             }
-
+//            println(OI.driverController.leftBumper)
             if (!OI.driverController.leftBumper) {
                 this.stop()
             }

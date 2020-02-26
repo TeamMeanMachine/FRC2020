@@ -141,7 +141,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
             } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
-                turn = aimPDController.update(FrontLimelight.aimError) + FrontLimelight.angleOffset
+                turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
             drive(
@@ -235,7 +235,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             turnMotor.config(20) {
                 // this was from lil bois bench test of swerve
                 feedbackCoefficient = 360.0 / 823.2
-                //setRawOffsetConfig(analogAngle)
+                setRawOffsetConfig(analogAngle)
                 inverted(true)
                 setSensorPhase(false)
                 pid {

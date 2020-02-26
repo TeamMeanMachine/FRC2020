@@ -130,7 +130,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
 
     val aimError: Double
-        get() = xTranslation + parallax.asDegrees
+        get() = xTranslation + parallax.asDegrees + FrontLimelight.angleOffset
 
     fun leftAngleOffset() {
         FrontLimelight.angleOffset -= 0.1
@@ -156,11 +156,24 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
         GlobalScope.launch(MeanlibDispatcher) {
             periodic {
-                if (OI.operatorController.dPad == Controller.Direction.LEFT) {
-                    println("slide to the left")
+                var leftPressed = false
+                var rightPressed = false
+
+                if(OI.operatorController.dPad == Controller.Direction.LEFT) {
+                    leftPressed = true
+                }
+
+                if(OI.operatorController.dPad == Controller.Direction.RIGHT) {
+                    rightPressed = true
+                }
+
+                if(OI.operatorController.dPad != Controller.Direction.LEFT && leftPressed) {
+                    leftPressed = false
                     leftAngleOffset()
-                } else if (OI.operatorController.dPad == Controller.Direction.RIGHT) {
-                    println("slide to the right")
+                }
+
+                if(OI.operatorController.dPad != Controller.Direction.RIGHT && rightPressed) {
+                    rightPressed = false
                     rightAngleOffset()
                 }
             }
@@ -200,6 +213,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     override suspend fun default() {
         ledEnabled = false
+        halt()
     }
 
     override fun reset() {

@@ -33,12 +33,21 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve = MotionCurve()
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
+/*
         rpmCurve.storeValue(11.0, 5000.0)
         rpmCurve.storeValue(13.0, 4500.0)
         rpmCurve.storeValue(19.0, 4120.0)
         rpmCurve.storeValue(26.0, 4200.0)
         rpmCurve.storeValue(34.5, 4850.0)
         rpmCurve.storeValue(35.5, 4900.0)
+*/
+        rpmCurve.storeValue(13.5, 5050.0)
+        rpmCurve.storeValue(15.0, 4660.0)
+        rpmCurve.storeValue(19.0, 4270.0)
+        rpmCurve.storeValue(30.0, 4150.0)
+        rpmCurve.storeValue(38.0, 4320.0)
+        rpmCurve.storeValue(53.0, 5040.0)
+
         var dist = 11.0
         while (dist <= 34.0) {
             //println("$dist ${rpmCurve.getValue(dist)}")
@@ -71,10 +80,6 @@ object Shooter : Subsystem("Shooter") {
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
 
-                shootingMotor.stop()
-
-
-
                 if (OI.operatorController.dPad == Controller.Direction.UP) {
                     upPressed = true
                 } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
@@ -83,11 +88,12 @@ object Shooter : Subsystem("Shooter") {
 
                 if(OI.operatorController.dPad != Controller.Direction.UP && upPressed) {
                     upPressed = false
-
+                    incrementRpmOffset()
                 }
 
                 if(OI.operatorController.dPad != Controller.Direction.DOWN && downPressed) {
                     downPressed = false
+                    decrementRpmOffset()
                 }
 
             }
@@ -113,13 +119,13 @@ object Shooter : Subsystem("Shooter") {
     var rpmSetpoint: Double = 0.0
         get() {
             if (FrontLimelight.hasValidTarget) {
-                val rpm2 = rpmFromDistance(FrontLimelight.distance)
+                val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
                 /*} else if(rpmSetpointEntry.value.double > 0.0) {
                     return rpmSetpointEntry.value.double */
             } else {
-                return 4050.0
+                return 4050.0 + rpmOffset
             }
         }
 
@@ -140,4 +146,9 @@ object Shooter : Subsystem("Shooter") {
 
     var current = shootingMotor.current
 
+    override suspend fun default() {
+        periodic {
+            shootingMotor.stop()
+        }
+    }
 }
