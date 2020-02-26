@@ -20,6 +20,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
         Intake.extend = true
         val t = Timer()
         t.start()
+        FrontLimelight.ledEnabled = true
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
@@ -52,6 +53,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
         Feeder.setPower(0.0)
         Intake.setPower(0.0)
         Intake.extend = false
+        FrontLimelight.ledEnabled = false
     }
 }
 
