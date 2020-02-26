@@ -68,7 +68,7 @@ object ControlPanel : Subsystem("Control Panel") {
 
     override suspend fun default() {
         periodic {
-            if(OI.operatorController.leftBumper)
+            if(OI.operatorController.y)
                 sendCommand(ArduinoCommand.SAMPLE)
 
             SmartDashboard.putString("Serial Output", readSerial)

@@ -34,7 +34,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
                     ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
                 }
             } else {
-                if(FrontLimelight.hasValidTarget){
+                if(FrontLimelight.hasValidTarget && Shooter.prepShotOn){
                     ControlPanel.sendCommand(ArduinoCommand.LED_YELLOW)
                 }
                 OI.driverController.rumble = 0.0
