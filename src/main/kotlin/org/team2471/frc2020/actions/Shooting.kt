@@ -21,6 +21,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
         Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
         Intake.setPower(0.0)
+        FrontLimelight.ledEnabled = true
         val t = Timer()
         t.start()
         periodic {
@@ -37,7 +38,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
                 t.start()
             }
 
-            if(OI.operatorController.rightTrigger > 0.1) {
+            if (OI.operatorController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.operatorRightTrigger * -0.70)
                 Intake.setPower(OI.operatorRightTrigger * -0.70)
             } else if (OI.driverController.rightTrigger > 0.1) {
@@ -47,10 +48,10 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
             }
+
             if (!OI.driverController.leftBumper) {
                 this.stop()
             }
-
         }
     } finally {
         OI.driverController.rumble = 0.0

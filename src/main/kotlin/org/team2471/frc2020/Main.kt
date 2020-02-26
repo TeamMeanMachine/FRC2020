@@ -90,7 +90,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-//        Shooter.distance2RpmTest()
+        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
 //        Drive.tuneDrivePositionController()
