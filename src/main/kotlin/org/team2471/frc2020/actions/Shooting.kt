@@ -18,12 +18,15 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
         Shooter.prepShotOn = true
         Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
+        Intake.setPower(0.0)
         val t = Timer()
         t.start()
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
+            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
+//                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
@@ -58,7 +61,9 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake) {
 
 suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder) {
     try {
+        Intake.setPower(0.0)
         Shooter.prepShotOn = true
+        Intake.extend = true
         Intake.setPower(Intake.INTAKE_POWER)
         val totalT = Timer()
         totalT.start()
@@ -120,5 +125,6 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
+        Intake.extend = false
     }
 }
