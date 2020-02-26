@@ -128,21 +128,26 @@ object AutoChooser {
         }
     }
 
-    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder) {
-        val auto = autonomi["5 Ball Trench Run"]
-        if (auto != null) {
-            Intake.setPower(Intake.INTAKE_POWER)
-            var path = auto["01- Intake 2 Cells"]
-            Drive.driveAlongPath(path, true)
+    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+        try {
+            val auto = autonomi["5 Ball Trench Run"]
+            if (auto != null) {
+                Intake.setPower(Intake.INTAKE_POWER)
+                var path = auto["01- Intake 2 Cells"]
+                Drive.driveAlongPath(path, true)
 //            autoIntakeStop()
-            path = auto["02- Shooting Position"]
-            Drive.driveAlongPath(path, false)
-            autoPrepShot(5)
+                path = auto["02- Shooting Position"]
+                Drive.driveAlongPath(path, false)
+                autoPrepShot(5)
+            }
+        } finally {
+            FrontLimelight.ledEnabled = false
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder) {
+    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
+            FrontLimelight.ledEnabled = true
             println("In sheildGenerator auto. Hi.")
             val auto = autonomi["10 Ball Shield Generator"]
             println(auto == null)
@@ -191,11 +196,13 @@ object AutoChooser {
             Feeder.setPower(0.0)
             Intake.extend = false
             Intake.setPower(0.0)
+            FrontLimelight.ledEnabled = false
         }
     }
 
-    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder){
+    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
         try {
+            FrontLimelight.ledEnabled = true
             println("Got into Trench Run 8")
             val auto = autonomi["8 Ball Trench Run"]
             if (true)/*auto != null)*/ {
@@ -229,6 +236,7 @@ object AutoChooser {
             Feeder.setPower(0.0)
             Intake.extend = false
             Intake.setPower(0.0)
+            FrontLimelight.ledEnabled = false
         }
     }
 

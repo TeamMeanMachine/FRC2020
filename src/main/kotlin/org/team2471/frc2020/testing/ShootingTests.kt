@@ -10,12 +10,13 @@ import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 import java.lang.Math.abs
 
-suspend fun Shooter.distance2RpmTest() = use(this, Feeder){
+suspend fun Shooter.distance2RpmTest() = use(this, Feeder, FrontLimelight){
     FrontLimelight.ledEnabled = true
     periodic {
         rpm = rpmSetpointEntry.getDouble(0.0)
         Feeder.setPower(OI.driveRightTrigger)
     }
+
 }
 
 suspend fun Shooter.motorTest() = use(Shooter) {

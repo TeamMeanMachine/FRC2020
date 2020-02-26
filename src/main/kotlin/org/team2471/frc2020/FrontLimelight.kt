@@ -12,9 +12,11 @@ import org.team2471.frc2020.FrontLimelight.rotationD
 import org.team2471.frc2020.FrontLimelight.rotationP
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
+import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
@@ -40,7 +42,9 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var positionYEntry = table.getEntry("PositionY")
     private var parallaxEntry = table.getEntry("Parallax")
 
-    val distance : Length
+    private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
+
+    val distance: Length
         get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
 
 
@@ -61,8 +65,18 @@ object FrontLimelight : Subsystem("Front Limelight") {
         setDefaultBoolean(true)
     }
 
+    var angleOffset: Double = 0.0
+        get() = FrontLimelight.angleOffsetEntry.getDouble(0.0)
+        set(value) {
+            field = value
+            FrontLimelight.angleOffsetEntry.setDouble(value)
+        }
+
     val position: Vector2
-        get() = Vector2(0.0, 0.0) - Vector2((distance.asFeet * (heading + xTranslation.degrees).sin()), (distance.asFeet * (heading + xTranslation.degrees).cos()))
+        get() = Vector2(0.0, 0.0) - Vector2(
+            (distance.asFeet * (heading + xTranslation.degrees).sin()),
+            (distance.asFeet * (heading + xTranslation.degrees).cos())
+        )
 
     val targetAngle: Angle
         get() {
@@ -70,7 +84,10 @@ object FrontLimelight : Subsystem("Front Limelight") {
         } //verify that this changes? or is reasonablej
 
     val targetPoint
-        get() = Vector2(distance.asFeet * sin(targetAngle.asRadians), distance.asFeet * cos(targetAngle.asRadians)) + Drive.position
+        get() = Vector2(
+            distance.asFeet * sin(targetAngle.asRadians),
+            distance.asFeet * cos(targetAngle.asRadians)
+        ) + Drive.position
 
     var isCamEnabled = false
         set(value) {
@@ -100,7 +117,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         get() = rotationDEntry.getDouble(0.1)
 
     var hasValidTarget = false
-        get(){
+        get() {
             return targetValidEntry.getDouble(0.0) == 1.0
         }
 
@@ -115,6 +132,15 @@ object FrontLimelight : Subsystem("Front Limelight") {
     val aimError: Double
         get() = xTranslation + parallax.asDegrees
 
+    fun leftAngleOffset() {
+        FrontLimelight.angleOffset -= 0.1
+    }
+
+    fun rightAngleOffset() {
+        FrontLimelight.angleOffset += 0.1
+    }
+
+
     init {
         isCamEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
@@ -127,6 +153,17 @@ object FrontLimelight : Subsystem("Front Limelight") {
             val tmpDistance = heightToDistance.getValue(i).feet
             //println("$i, ${tmpDistance.asFeet}")
             i += 0.5
+        }
+        GlobalScope.launch(MeanlibDispatcher) {
+            periodic {
+                if (OI.operatorController.dPad == Controller.Direction.LEFT) {
+                    println("slide to the left")
+                    leftAngleOffset()
+                } else if (OI.operatorController.dPad == Controller.Direction.RIGHT) {
+                    println("slide to the right")
+                    rightAngleOffset()
+                }
+            }
         }
     }
 
@@ -147,22 +184,27 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
     }
 
-
-    override fun reset() {
-    }
-
     val parallax: Angle
         get() {
             val frontGoalPos = Vector2(0.0, 0.0)
             val backGoalPos = Vector2(0.0, 2.0)
-            val frontAngle = (frontGoalPos-position).angle.radians
-            val backAngle = (backGoalPos-position).angle.radians
-            var internalParallax = backAngle-frontAngle
+            val frontAngle = (frontGoalPos - position).angle.radians
+            val backAngle = (backGoalPos - position).angle.radians
+            var internalParallax = backAngle - frontAngle
             if (abs(internalParallax.asDegrees) > 4.0) {
                 internalParallax = 0.0.degrees
             }
             return internalParallax
         }
+
+
+    override suspend fun default() {
+        ledEnabled = false
+    }
+
+    override fun reset() {
+    }
+
 }
 
 

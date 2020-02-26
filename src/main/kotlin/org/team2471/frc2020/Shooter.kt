@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
+import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
@@ -20,6 +21,7 @@ object Shooter : Subsystem("Shooter") {
     val rpmSetpointEntry = table.getEntry("RPM Setpoint")
 
     val rpmErrorEntry = table.getEntry("RPM Error")
+    val rpmOffsetEntry = table.getEntry("RPM Offset")
 
     lateinit var rpmCurve: MotionCurve
 
@@ -38,7 +40,7 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve.storeValue(34.5, 4850.0)
         rpmCurve.storeValue(35.5, 4900.0)
         var dist = 11.0
-        while (dist<=34.0) {
+        while (dist <= 34.0) {
             //println("$dist ${rpmCurve.getValue(dist)}")
             dist += 0.2
         }
@@ -62,10 +64,32 @@ object Shooter : Subsystem("Shooter") {
         println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
             println("in global scope")
+            var upPressed = false
+            var downPressed = false
             periodic {
-//                print(".")
+                //                print(".")
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
+
+                shootingMotor.stop()
+
+
+
+                if (OI.operatorController.dPad == Controller.Direction.UP) {
+                    upPressed = true
+                } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
+                    downPressed = true
+                }
+
+                if(OI.operatorController.dPad != Controller.Direction.UP && upPressed) {
+                    upPressed = false
+
+                }
+
+                if(OI.operatorController.dPad != Controller.Direction.DOWN && downPressed) {
+                    downPressed = false
+                }
+
             }
         }
     }
@@ -92,19 +116,28 @@ object Shooter : Subsystem("Shooter") {
                 val rpm2 = rpmFromDistance(FrontLimelight.distance)
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
-            /*} else if(rpmSetpointEntry.value.double > 0.0) {
-                return rpmSetpointEntry.value.double */
+                /*} else if(rpmSetpointEntry.value.double > 0.0) {
+                    return rpmSetpointEntry.value.double */
             } else {
                 return 4050.0
             }
         }
 
+    var rpmOffset: Double = 0.0
+        get() = rpmOffsetEntry.getDouble(0.0)
+        set(value) {
+            field = value
+            rpmOffsetEntry.setDouble(value)
+        }
+
+    fun incrementRpmOffset() {
+        rpmOffset += 20.0
+    }
+
+    fun decrementRpmOffset() {
+        rpmOffset -= 20.0
+    }
 
     var current = shootingMotor.current
 
-    override suspend fun default() {
-        periodic {
-            shootingMotor.stop()
-        }
-    }
 }
