@@ -62,15 +62,19 @@ object OI {
         get() = operatorController.rightThumbstickY.deadband(0.25)
 
     init {
+        //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
 //        driverController::a.whenTrue { FrontLimelight.pipeline = 1.0 }
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
+
+        //Operator: Justine
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
         ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }
-//        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
+        //        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
+//        operatorController::back.toggleWhenTrue { Drive.initializeSteeringMotors() }
     }
 }

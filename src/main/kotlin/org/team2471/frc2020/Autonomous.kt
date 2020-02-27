@@ -10,6 +10,7 @@ import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
+import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
 import java.io.File
@@ -213,13 +214,14 @@ object AutoChooser {
                     Drive.driveAlongPath(path, true)
                 }, {
                     delay(path.duration * 0.5)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
                     Shooter.rpm = rpmSetpoint
                 }/*, {
                     delay(1.1 * path.duration)
                     Intake.extend = false
                 */)
                 autoPrepShot(4)
+                Intake.extend = true
                 path = auto["2- Collect 4 Cells"]
                 Drive.driveAlongPath(path, false)
                 path = auto["3- Shoot 4 Cells"]

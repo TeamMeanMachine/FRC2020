@@ -95,8 +95,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     init {
         println("drive init")
-        SmartDashboard.setPersistent("Use Gyro")
-
         //SmartDashboard.putData("Gyro", gyro!!.getNavX())
 
         GlobalScope.launch(MeanlibDispatcher) {
@@ -111,7 +109,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val aimPEntry = table.getEntry("p")
             val aimDEntry = table.getEntry("d")
             val aimErrorEntry = table.getEntry("Aim Error")
+            val useGyroEntry = table.getEntry("Use Gyro")
 
+            SmartDashboard.setPersistent("Use Gyro")
+
+            useGyroEntry.setBoolean(true)
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
             periodic {

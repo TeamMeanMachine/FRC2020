@@ -32,6 +32,9 @@ object Feeder: Subsystem("Feeder") {
         }
     }
 
-//    override suspend fun default() {
-//    }
+    override suspend fun default() {
+        periodic {
+            setPower(OI.operatorRightTrigger * -0.7)
+        }
+    }
 }

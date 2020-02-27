@@ -31,10 +31,6 @@ object Intake: Subsystem("Intake") {
         set(value) = extensionSolenoid.set(value)
 
 
-        /*fun setPower(power: Double) {
-            intakeMotor.setPercentOutput(power)
-        }
-*/
     fun setPower(power: Double) {
         intakeMotor.setPercentOutput(power)
     }
@@ -44,8 +40,9 @@ object Intake: Subsystem("Intake") {
         try {
             extend = false
             delay(1.7)
-            setPower(0.0)
-            halt()
+            periodic {
+                setPower(OI.operatorRightTrigger * 0.7)
+            }
         } finally {
             extend = false
             setPower(0.0)

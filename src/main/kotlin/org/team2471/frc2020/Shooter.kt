@@ -80,6 +80,8 @@ object Shooter : Subsystem("Shooter") {
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
 
+                rpmOffsetEntry.setDouble(rpmOffset)
+
                 if (OI.operatorController.dPad == Controller.Direction.UP) {
                     upPressed = true
                 } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {

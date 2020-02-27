@@ -1,24 +1,17 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc2020.Drive.gyro
 import org.team2471.frc2020.Drive.heading
-import org.team2471.frc2020.FrontLimelight.rotationD
-import org.team2471.frc2020.FrontLimelight.rotationP
-import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
-import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.math.Vector2
-import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.*
 import kotlin.math.abs
@@ -41,6 +34,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var positionXEntry = table.getEntry("PositionX")
     private var positionYEntry = table.getEntry("PositionY")
     private var parallaxEntry = table.getEntry("Parallax")
+    private var useParallaxEntry = table.getEntry("Toggle Parallax")
 
     private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
 
@@ -130,10 +124,11 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
 
     val aimError: Double
-        get() = xTranslation + parallax.asDegrees + FrontLimelight.angleOffset
+        get() = xTranslation + FrontLimelight.angleOffset + if(useParallaxEntry.getBoolean(true)) parallax.asDegrees else 0.0
+
 
     fun leftAngleOffset() {
-        FrontLimelight.angleOffset -= 0.1
+            FrontLimelight.angleOffset -= 0.1
     }
 
     fun rightAngleOffset() {
@@ -185,6 +180,11 @@ object FrontLimelight : Subsystem("Front Limelight") {
         positionXEntry = table.getEntry("PositionX")
         positionYEntry = table.getEntry("PositionY")
         parallaxEntry = table.getEntry("Parallax")
+        useParallaxEntry = table.getEntry("Use Parallax")
+
+        SmartDashboard.setPersistent("Use Parallax")
+        useParallaxEntry.setBoolean(true)
+
         GlobalScope.launch(MeanlibDispatcher) {
 
             periodic {

@@ -152,10 +152,10 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
             val translationControl = if (BackLimelight.hasValidTarget)
                 Vector2(
                     BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger,
-                    OI.driverController.leftTrigger * 0.4 * (if (area < 7) (1 / area) else 0.2)
+                    OI.driverController.leftTrigger * Math.min(0.4 * (1.5 / area), 0.5)
                 ) //im sorry mom
             else
-                Vector2(0.0, OI.driverController.leftTrigger * 0.4)
+                Vector2(0.0, 0.0)
 
             println("tx: ${BackLimelight.xTranslation} x: ${BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger}. Hi.")
             val turnControl = rotationPDController.update(headingError.asDegrees)

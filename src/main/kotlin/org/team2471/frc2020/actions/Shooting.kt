@@ -27,7 +27,6 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
         t.start()
         FrontLimelight.ledEnabled = true
         periodic {
-            println("shooting")
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
 //            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
@@ -48,14 +47,16 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
             if (OI.operatorController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.operatorRightTrigger * -0.70)
                 Intake.setPower(OI.operatorRightTrigger * 0.70)
+                Intake.extend = false
             } else if (OI.driverController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.driveRightTrigger * 0.80)
                 Intake.setPower(OI.driveRightTrigger * 0.80)
+                Intake.extend = false
             } else {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
+                Intake.extend = true
             }
-//            println(OI.driverController.leftBumper)
             if (!OI.driverController.leftBumper) {
                 this.stop()
             }
@@ -83,7 +84,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
         val t = Timer()
         t.start()
         periodic {
-            val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches) + Shooter.rpmOffset
+            val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
             Shooter.rpm = rpmSetpoint
             val currTime = t.get()
             if (abs(Shooter.rpm - Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
@@ -112,6 +113,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             )
         }
         Feeder.setPower(Feeder.FEED_POWER)
+        Intake.extend = false
         t.start()
         var ballsShot = 0
         var shootingBall = false

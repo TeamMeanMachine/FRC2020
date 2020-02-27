@@ -2,6 +2,7 @@
 
 package org.team2471.frc2020
 
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
@@ -51,7 +52,7 @@ object Robot : MeanlibRobot() {
     override suspend fun enable() {
         println("starting enable")
         Drive.enable()
-//        ControlPanel.enable()
+        ControlPanel.enable()
         Drive.zeroGyro()
         BackLimelight.enable()
         FrontLimelight.enable()
@@ -104,7 +105,7 @@ object Robot : MeanlibRobot() {
         Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()
-//        ControlPanel.disable()
+        ControlPanel.disable()
         Shooter.disable()
         Feeder.disable()
         Intake.disable()
