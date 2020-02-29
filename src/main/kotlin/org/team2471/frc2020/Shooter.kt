@@ -75,6 +75,7 @@ object Shooter : Subsystem("Shooter") {
             println("in global scope")
             var upPressed = false
             var downPressed = false
+            rpmOffsetEntry.setPersistent()
             periodic {
                 //                print(".")
                 rpmEntry.setDouble(rpm)
@@ -131,8 +132,8 @@ object Shooter : Subsystem("Shooter") {
             }
         }
 
-    var rpmOffset: Double = 0.0
-        get() = rpmOffsetEntry.getDouble(0.0)
+    var rpmOffset: Double = 400.0
+        get() = rpmOffsetEntry.getDouble(400.0)
         set(value) {
             field = value
             rpmOffsetEntry.setDouble(value)

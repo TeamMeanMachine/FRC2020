@@ -32,11 +32,11 @@ suspend fun climb() = use(Intake, EndGame, Shooter) {
     } finally {
         EndGame.brakeIsExtending = true
         EndGame.climbIsExtending = false
-        Intake.extend = false
         Shooter.setPower(0.0)
         EndGame.setPower(0.0)
         withContext(NonCancellable) {
             delay(0.5)
         }
+        Intake.extend = false
     }
 }

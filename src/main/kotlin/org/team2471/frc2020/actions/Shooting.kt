@@ -30,8 +30,8 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
 //            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
-            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
-//                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
+//                println("Close to rpmSetpoint? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0}. Valid Target? ${FrontLimelight.hasValidTarget} Small Aim Error? ${abs(aimError) < 1.0}. Been a while? ${currTime > 0.1}. Hi.")
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
 //                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
