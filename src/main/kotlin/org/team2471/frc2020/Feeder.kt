@@ -23,7 +23,7 @@ object Feeder: Subsystem("Feeder") {
 
     suspend fun reverseFeeder() = use(Feeder){
         try {
-            println("Got into reverseFeeder. Hi.")
+//            println("Got into reverseFeeder. Hi.")
             periodic {
                 setPower(-OI.operatorController.rightTrigger)
             }

@@ -58,7 +58,7 @@ object AutoChooser {
     }
 
     init {
-        println("Got into Autonomous' init. Hi. 222222222222222222222")
+//        println("Got into Autonomous' init. Hi. 222222222222222222222")
         SmartDashboard.putData("Best Song Lyrics", lyricsChooser)
         SmartDashboard.putData("Tests", testAutoChooser)
         SmartDashboard.putData("Autos", autonomousChooser)
@@ -159,7 +159,7 @@ object AutoChooser {
                 Drive.driveAlongPath(path, true, 0.125)
                 delay(0.25)
                 Intake.setPower(0.5)
-                Intake.extend = false
+//                Intake.extend = false
                 parallel ({
                     delay(path.duration * 0.25)
                     val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)

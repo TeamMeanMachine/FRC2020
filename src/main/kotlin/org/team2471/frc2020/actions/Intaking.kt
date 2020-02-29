@@ -38,10 +38,13 @@ import org.team2471.frc2020.OI
 //}
 
 suspend fun intake() = use(Intake) {
-//no finally intentionally
     Intake.extend = true
     Intake.setPower(INTAKE_POWER)
-    halt()
+    periodic {
+        if(intakeMotor.current > 8.0)
+            OI.driverController.rumble
+    }
+
 }
 
 suspend fun autoIntakeStart() = use(Intake) {
@@ -53,3 +56,4 @@ suspend fun autoIntakeStop() = use(Intake) {
     Intake.extend = false
     Intake.setPower(0.0)
 }
+

@@ -47,7 +47,7 @@ suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {
               if(shootingBall && abs(rpmSetpoint - rpm) < 0.05 * rpmSetpoint) {
                   shootingBall = false
               }
-            println("Balls shot: $ballsShot. Hi.")
+//            println("Balls shot: $ballsShot. Hi.")
         }
 
     })

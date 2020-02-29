@@ -111,13 +111,14 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val aimErrorEntry = table.getEntry("Aim Error")
             val useGyroEntry = table.getEntry("Use Gyro")
 
+            val zeroGyroEntry = table.getEntry("Zero Gyro")
+
             SmartDashboard.setPersistent("Use Gyro")
 
             useGyroEntry.setBoolean(true)
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
             periodic {
-
                 val (x, y) = position
                 xEntry.setDouble(x)
                 yEntry.setDouble(y)
@@ -125,6 +126,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 aimErrorEntry.setDouble(FrontLimelight.aimError)
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
+
             }
         }
     }

@@ -13,7 +13,7 @@ suspend fun Feeder.test() = use(this, Shooter) {
         periodic {
             Shooter.rpm = Shooter.rpmSetpointEntry.getDouble(0.0)
             feederPower = OI.driveRightTrigger * 0.80
-            println("Feeder power = $feederPower")
+//            println("Feeder power = $feederPower")
             Feeder.setPower(feederPower - OI.driveLeftTrigger)
             Intake.setPower(feederPower - OI.driveLeftTrigger)
         }

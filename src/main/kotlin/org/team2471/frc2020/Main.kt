@@ -53,7 +53,6 @@ object Robot : MeanlibRobot() {
         println("starting enable")
         Drive.enable()
         ControlPanel.enable()
-        Drive.zeroGyro()
         BackLimelight.enable()
         FrontLimelight.enable()
         Drive.initializeSteeringMotors()

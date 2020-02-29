@@ -129,7 +129,6 @@ object BackLimelight : Subsystem("Back Limelight") {
 }
 
 suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vision Drive") {
-    println("Got into feederStationVision(). Hi.")
     BackLimelight.isCamEnabled = true
     val timer = Timer()
     var prevTime = 0.0
@@ -141,7 +140,6 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
         Intake.setPower (Intake.INTAKE_POWER)
 
         periodic {
-            println("In feederStationVision() periodic. Hi.")
             val t = timer.get()
 
 
@@ -152,12 +150,12 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
             val translationControl = if (BackLimelight.hasValidTarget)
                 Vector2(
                     BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger,
-                    OI.driverController.leftTrigger * Math.min(0.4 * (1.5 / area), 0.5)
+                    OI.driverController.leftTrigger * Math.min(0.4 * (1.5 / area), 0.3)
                 ) //im sorry mom
             else
                 Vector2(0.0, 0.0)
 
-            println("tx: ${BackLimelight.xTranslation} x: ${BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger}. Hi.")
+//            println("tx: ${BackLimelight.xTranslation} x: ${BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger}. Hi.")
             val turnControl = rotationPDController.update(headingError.asDegrees)
             println(headingError)
             // send it
@@ -172,7 +170,6 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
             if(OI.operatorController.rightBumper) this.stop()
         }
     } finally {
-        Intake.extend = false
         Intake.setPower(0.0)
         BackLimelight.ledEnabled = false
     }

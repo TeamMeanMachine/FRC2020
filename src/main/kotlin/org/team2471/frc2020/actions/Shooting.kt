@@ -30,7 +30,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
 //            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
-            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
 //                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
@@ -98,10 +98,10 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
                 this.stop()
             }
             var turn = 0.0
-            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
+//            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
             if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = Drive.aimPDController.update(FrontLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
-                println("turn = $turn. Hi.")
+//                println("turn = $turn. Hi.")
             }
             Drive.drive(
                 Vector2(0.0, 0.0),
