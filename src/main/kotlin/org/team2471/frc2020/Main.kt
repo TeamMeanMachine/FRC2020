@@ -71,6 +71,7 @@ object Robot : MeanlibRobot() {
 
     override suspend fun teleop() {
         println("telop begin")
+        Drive.headingSetpoint = Drive.heading
 //        periodic{
 //            println("parallax ${FrontLimelight.parallax}")
 //        }

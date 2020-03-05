@@ -1,5 +1,6 @@
 package org.team2471.frc2020
 
+import com.revrobotics.SparkMax
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
@@ -9,11 +10,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
+import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDConstantFController
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc.lib.math.Vector2
+import org.team2471.frc.lib.math.round
 import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
@@ -58,8 +61,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-     val gyro: NavxWrapper? = NavxWrapper()
-//    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
+//     val gyro: NavxWrapper? = NavxWrapper()
+    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
 
@@ -78,6 +81,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     override var position = Vector2(0.0, 0.0)
 
     override var robotPivot = Vector2(0.0, 0.0)
+
+    override var headingSetpoint = 0.0.degrees
 
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
@@ -148,7 +153,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
-//            println("${(modules[3] as Module).analogAngle}")
+//            for (moduleCount in 0..3) {
+//                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
+//            }
+//            println()
+
             drive(
                 OI.driveTranslation,
                 turn,
@@ -156,10 +165,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro",true)
                         && !DriverStation.getInstance().isAutonomous else false,
-
-                Vector2(0.0, 0.0),
-                0.0
-                // 0.3 // inputDamping
+                true
             )
         }
     }
@@ -170,6 +176,25 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             module.turnMotor.setRawOffset(module.analogAngle)
             println("Module: $moduleCount analogAngle: ${module.analogAngle}")
         }
+    }
+
+    fun resetDriveMotors() {
+        for (moduleCount in 0..3) {
+            val module = (modules[moduleCount] as Module)
+            module.driveMotor.restoreFactoryDefaults()
+            println("For module $moduleCount, drive motor's factory defaults were restored.")
+        }
+        Drive.disable()
+
+    }
+
+    fun resetSteeringMotors() {
+        for (moduleCount in 0..3) {
+            val module = (modules[moduleCount] as Module)
+            module.turnMotor.restoreFactoryDefaults()
+            println("For module $moduleCount, turn motor's factory defaults were restored.")
+        }
+        Drive.disable()
     }
 
     fun brakeMode() {
