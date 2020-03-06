@@ -39,7 +39,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
 
     val distance: Length
-        get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
+        get() = 6.33.feet  / (17.995 + yTranslation).degrees.tan() // val distance = heightFromDistanceToLimelight.feet / tan(angle + yTranslation)  // var angle = atan(heightFromTargetToLimelight / distance) - yTranslation
 
 
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")

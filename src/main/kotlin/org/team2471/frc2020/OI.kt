@@ -73,12 +73,14 @@ object OI {
             println("dPad pressed. Heading before: ${Drive.heading.asDegrees.roundToInt()} Heading Setpoint before: ${Drive.headingSetpoint.asDegrees.roundToInt()}")
             Drive.headingSetpoint = 0.0.degrees
         }
-        driverController::start.whenTrue {
-            Drive.resetDriveMotors()
-            Drive.resetSteeringMotors()
-            Drive.enable()
-            println("Drive enabled.")
-        }
+//        driverController::start.whenTrue {
+//            Drive.disable()
+//            Drive.resetDriveMotors()
+//            Drive.resetSteeringMotors()
+//            Drive.modules = Drive.origModules
+//            Drive.enable()
+//            Drive.initializeSteeringMotors()
+//        }
 //        driverController::a.whenTrue { FrontLimelight.pipeline = 1.0 }
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
 

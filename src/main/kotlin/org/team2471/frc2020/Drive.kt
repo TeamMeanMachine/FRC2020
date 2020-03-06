@@ -28,7 +28,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     /**
      * Coordinates of modules
      * **/
-    override val modules: Array<SwerveDrive.Module> = arrayOf(
+    val origModules : Array<SwerveDrive.Module> = arrayOf(
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
@@ -58,6 +58,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             AnalogSensors.SWERVE_BACK_LEFT
         )
     )
+
+    override var modules = origModules
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
@@ -94,9 +96,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kHeadingFeedForward = 0.001
     )
 
-    val aimPDController = PDConstantFController(0.012, 0.032, 0.011) //0.01, 0.03, 0.0
+    val aimPDController = PDConstantFController(0.006, 0.032, 0.011) //0.012, 0.03, 0.0
     var lastError = 0.0
-
 
     init {
         println("drive init")
@@ -184,8 +185,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             module.driveMotor.restoreFactoryDefaults()
             println("For module $moduleCount, drive motor's factory defaults were restored.")
         }
-        Drive.disable()
-
     }
 
     fun resetSteeringMotors() {
@@ -194,7 +193,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             module.turnMotor.restoreFactoryDefaults()
             println("For module $moduleCount, turn motor's factory defaults were restored.")
         }
-        Drive.disable()
     }
 
     fun brakeMode() {

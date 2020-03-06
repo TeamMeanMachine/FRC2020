@@ -41,12 +41,11 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve.storeValue(34.5, 4850.0)
         rpmCurve.storeValue(35.5, 4900.0)
 */
-        rpmCurve.storeValue(13.5, 5050.0)
-        rpmCurve.storeValue(15.0, 4660.0)
-        rpmCurve.storeValue(19.0, 4270.0)
-        rpmCurve.storeValue(30.0, 4150.0)
-        rpmCurve.storeValue(38.0, 4320.0)
-        rpmCurve.storeValue(53.0, 5040.0)
+        rpmCurve.storeValue(11.0, 5050.0) //tuned 3/5
+        rpmCurve.storeValue(13.0, 4800.0) //tuned 3/5
+        rpmCurve.storeValue(18.0, 4333.0) //tuned 3/5
+        rpmCurve.storeValue(26.0, 4300.0) //tuned 3/5
+        rpmCurve.storeValue(34.0, 4950.0) //tuned(-ish) 3/5
 
         var dist = 11.0
         while (dist <= 34.0) {
@@ -132,8 +131,8 @@ object Shooter : Subsystem("Shooter") {
             }
         }
 
-    var rpmOffset: Double = 400.0
-        get() = rpmOffsetEntry.getDouble(400.0)
+    var rpmOffset: Double = 0.0 //400.0
+        get() = rpmOffsetEntry.getDouble(0.0)
         set(value) {
             field = value
             rpmOffsetEntry.setDouble(value)
