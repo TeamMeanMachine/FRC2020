@@ -2,9 +2,12 @@ package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Solenoid
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
+import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
@@ -17,12 +20,20 @@ object Intake: Subsystem("Intake") {
     val intakeMotor = MotorController(TalonID(Talons.INTAKE))
     private val extensionSolenoid = Solenoid(INTAKE)
 
+    private val table = NetworkTableInstance.getDefault().getTable(Intake.name)
+    val currentEntry = table.getEntry("Current")
+
     val INTAKE_POWER = 0.75
 
 
     init {
         intakeMotor.config {
             inverted(true)
+        }
+        GlobalScope.launch(MeanlibDispatcher) {
+            periodic {
+                currentEntry.setDouble(intakeMotor.current)
+            }
         }
     }
 
