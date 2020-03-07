@@ -58,6 +58,5 @@ object Intake: Subsystem("Intake") {
             extend = false
             setPower(0.0)
         }
-
     }
 }

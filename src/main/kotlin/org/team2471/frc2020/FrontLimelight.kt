@@ -124,7 +124,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
 
     val aimError: Double
-        get() = xTranslation + FrontLimelight.angleOffset + if(useParallaxEntry.getBoolean(true)) parallax.asDegrees else 0.0
+        get() = xTranslation + FrontLimelight.angleOffset + parallax.asDegrees
 
 
     fun leftAngleOffset() {
@@ -199,12 +199,14 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     val parallax: Angle
         get() {
+            if (!useParallaxEntry.getBoolean(true))
+                return 0.0.degrees
             val frontGoalPos = Vector2(0.0, 0.0)
             val backGoalPos = Vector2(0.0, 2.0)
             val frontAngle = (frontGoalPos - position).angle.radians
             val backAngle = (backGoalPos - position).angle.radians
             var internalParallax = backAngle - frontAngle
-            if (abs(internalParallax.asDegrees) > 4.0) {
+            if (abs(internalParallax.asDegrees) > 1.0) {
                 internalParallax = 0.0.degrees
             }
             return internalParallax

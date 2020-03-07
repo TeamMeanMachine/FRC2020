@@ -7,11 +7,14 @@ import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.input.whenTrue
+import org.team2471.frc.lib.math.squareWithSign
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.Intake
 import org.team2471.frc2020.Intake.INTAKE_POWER
 import org.team2471.frc2020.Intake.intakeMotor
 import org.team2471.frc2020.OI
+import java.lang.Double.max
+import kotlin.math.pow
 
 //suspend fun intake() = use(Intake){
 //    try {
@@ -40,11 +43,24 @@ import org.team2471.frc2020.OI
 suspend fun intake() = use(Intake) {
     Intake.extend = true
     Intake.setPower(INTAKE_POWER)
+    var t = Timer()
+    t.start()
+    var goalT = Double.MAX_VALUE
+    var maxCurr = 0.0
+    OI.driverController.rumble = 0.0
+    delay(0.5)
     periodic {
-        if(intakeMotor.current > 8.0)
-            OI.driverController.rumble
+        if (intakeMotor.current > 12.0) {
+            goalT = t.get() + 0.3
+            maxCurr = max(intakeMotor.current, maxCurr)
+        }
+        if (t.get() > goalT) {
+            maxCurr = 0.0
+            goalT = Double.MAX_VALUE
+        }
+        println("maxCurr: $maxCurr")
+        OI.driverController.rumble = (maxCurr / 40.0).pow(2.0)
     }
-
 }
 
 suspend fun autoIntakeStart() = use(Intake) {
