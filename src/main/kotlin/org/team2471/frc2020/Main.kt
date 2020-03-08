@@ -47,6 +47,7 @@ object Robot : MeanlibRobot() {
         Drive.heading = 0.0.degrees
         AutoChooser
         FrontLimelight.startUp()
+        BackLimelight.startUp()
     }
 
     override suspend fun enable() {

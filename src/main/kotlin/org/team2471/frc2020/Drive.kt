@@ -63,8 +63,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-//     val gyro: NavxWrapper? = NavxWrapper()
-    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
+     val gyro: NavxWrapper? = NavxWrapper()
+//    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
 
@@ -140,8 +140,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     fun  zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
-        println("doo doo doo")
-
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
@@ -158,6 +156,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 //                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
 //            }
 //            println()
+
+            val direction = OI.driverController.povDirection
+            if (direction!=-1.0.degrees)
+                headingSetpoint = direction
 
             drive(
                 OI.driveTranslation,

@@ -24,7 +24,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private val xEntry = table.getEntry("tx")
     private val yEntry = table.getEntry("ty")
     private val areaEntry = table.getEntry("ta")
-    private val camModeEntry = table.getEntry("camMode")
+    private var camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
     private val currentPipelineEntry = table.getEntry("getpipe")
@@ -83,11 +83,6 @@ object FrontLimelight : Subsystem("Front Limelight") {
             distance.asFeet * cos(targetAngle.asRadians)
         ) + Drive.position
 
-    var isCamEnabled = false
-        set(value) {
-            field = value
-            camModeEntry.setDouble(0.0)
-        }
 
     var ledEnabled = false
         set(value) {
@@ -137,7 +132,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
     init {
-        isCamEnabled = false
+        ledEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
         heightToDistance.storeValue(22.0, 7.2)
         heightToDistance.storeValue(9.6, 11.5)
@@ -184,6 +179,9 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
         SmartDashboard.setPersistent("Use Parallax")
         useParallaxEntry.setBoolean(true)
+        ledEnabled = false
+
+
 
         GlobalScope.launch(MeanlibDispatcher) {
 
@@ -225,7 +223,6 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
 //suspend fun visionDrive() = use(Drive, FrontLimelight, name = "Vision Drive") {
-//    FrontLimelight.isCamEnabled = true
 //    val timer = Timer()
 //    var prevTargetHeading = FrontLimelight.targetAngle
 //    var prevTargetPoint = FrontLimelight.targetPoint

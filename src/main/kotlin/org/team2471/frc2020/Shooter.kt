@@ -33,19 +33,12 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve = MotionCurve()
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
-/*
-        rpmCurve.storeValue(11.0, 5000.0)
-        rpmCurve.storeValue(13.0, 4500.0)
-        rpmCurve.storeValue(19.0, 4120.0)
-        rpmCurve.storeValue(26.0, 4200.0)
-        rpmCurve.storeValue(34.5, 4850.0)
-        rpmCurve.storeValue(35.5, 4900.0)
-*/
-        rpmCurve.storeValue(11.0, 5050.0) //tuned 3/5
-        rpmCurve.storeValue(13.0, 4800.0) //tuned 3/5
-        rpmCurve.storeValue(18.0, 4333.0) //tuned 3/5
-        rpmCurve.storeValue(26.0, 4300.0) //tuned 3/5
-        rpmCurve.storeValue(34.0, 4950.0) //tuned(-ish) 3/5
+
+        rpmCurve.storeValue(11.0, 7680.0) //tuned 3/5
+        rpmCurve.storeValue(13.0, 7300.0) //tuned 3/5
+        rpmCurve.storeValue(18.0, 6590.0) //tuned 3/5
+        rpmCurve.storeValue(26.0, 6540.0) //tuned 3/5
+        rpmCurve.storeValue(34.0, 7530.0) //tuned(-ish) 3/5
 
         var dist = 11.0
         while (dist <= 34.0) {
@@ -54,7 +47,7 @@ object Shooter : Subsystem("Shooter") {
         }
 
         shootingMotor.config {
-            feedbackCoefficient = 1.0 / (42.0 * 1.01471)
+            feedbackCoefficient = 1.0 / (42.0 * 0.667227)
             inverted(true)
             followersInverted(true)
             brakeMode()
@@ -124,10 +117,8 @@ object Shooter : Subsystem("Shooter") {
                 val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
-                /*} else if(rpmSetpointEntry.value.double > 0.0) {
-                    return rpmSetpointEntry.value.double */
             } else {
-                return 4050.0 + rpmOffset
+                return 6160.0 + rpmOffset
             }
         }
 

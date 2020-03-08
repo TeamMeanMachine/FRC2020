@@ -17,7 +17,6 @@ import kotlin.math.absoluteValue
 suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
     try {
         Intake.setPower(0.0)
-        Intake.extend = false
         Shooter.prepShotOn = true
         Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
@@ -25,7 +24,8 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
         FrontLimelight.ledEnabled = true
         val t = Timer()
         t.start()
-        FrontLimelight.ledEnabled = true
+        var isUnjamming = false
+        var startTime = 0.0
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
@@ -43,8 +43,18 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
                 OI.driverController.rumble = 0.0
                 t.start()
             }
-
-            if (OI.operatorController.rightTrigger > 0.1) {
+            //auto unjam does not work. Amperage is too variable and can surpass jamming amperage even during normal use.
+//            if(Feeder.current > 45.0 && !isUnjamming) {
+//                isUnjamming = true
+//                startTime = t.get()
+//            } else if(isUnjamming) {
+//                Feeder.setPower(-0.70)
+//                Intake.setPower(0.70)
+//                if(abs(startTime-t.get()) > 0.4) {
+//                    isUnjamming = false
+//                }
+//            }else
+                if (OI.operatorController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.operatorRightTrigger * -0.70)
                 Intake.setPower(OI.operatorRightTrigger * 0.70)
                 Intake.extend = false
@@ -56,6 +66,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
                 Intake.extend = true
+//                Intake.extend = false
             }
             if (!OI.driverController.leftBumper) {
                 this.stop()

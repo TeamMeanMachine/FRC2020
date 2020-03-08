@@ -32,7 +32,7 @@ object BackLimelight : Subsystem("Back Limelight") {
     private val xEntry = table.getEntry("tx")
     private val yEntry = table.getEntry("ty")
     private val areaEntry = table.getEntry("ta")
-    private val camModeEntry = table.getEntry("camMode")
+    private var camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
     private val currentPipelineEntry = table.getEntry("getpipe")
@@ -65,11 +65,6 @@ object BackLimelight : Subsystem("Back Limelight") {
             return -gyro!!.angle.degrees + xTranslation.degrees
         } //verify that this changes? or is reasonablej
 
-    var isCamEnabled = false
-        set(value) {
-            field = value
-            camModeEntry.setDouble(0.0)
-        }
 
     var ledEnabled = false
         set(value) {
@@ -104,7 +99,7 @@ object BackLimelight : Subsystem("Back Limelight") {
         }
 
     init {
-        isCamEnabled = false
+        ledEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
         heightToDistance.storeValue(22.0, 7.2)
         heightToDistance.storeValue(9.6, 11.5)
@@ -118,6 +113,11 @@ object BackLimelight : Subsystem("Back Limelight") {
         }
     }
 
+    fun startUp() {
+        ledEnabled = false
+
+    }
+
     override suspend fun default() {
         ledEnabled = false
         halt()
@@ -129,7 +129,6 @@ object BackLimelight : Subsystem("Back Limelight") {
 }
 
 suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vision Drive") {
-    BackLimelight.isCamEnabled = true
     val timer = Timer()
     var prevTime = 0.0
     timer.start()
