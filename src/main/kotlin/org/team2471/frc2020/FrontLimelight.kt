@@ -24,7 +24,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private val xEntry = table.getEntry("tx")
     private val yEntry = table.getEntry("ty")
     private val areaEntry = table.getEntry("ta")
-    private val camModeEntry = table.getEntry("camMode")
+    private var camModeEntry = table.getEntry("camMode")
     private val ledModeEntry = table.getEntry("ledMode")
     private val targetValidEntry = table.getEntry("tv")
     private val currentPipelineEntry = table.getEntry("getpipe")
@@ -39,7 +39,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
 
     val distance: Length
-        get() = 6.17.feet / (14.3 + yTranslation).degrees.tan() //heightToDistance.getValue(yTranslation).feet
+        get() = 6.33.feet  / (17.995 + yTranslation).degrees.tan() // val distance = heightFromDistanceToLimelight.feet / tan(angle + yTranslation)  // var angle = atan(heightFromTargetToLimelight / distance) - yTranslation
 
 
     private val tempPIDTable = NetworkTableInstance.getDefault().getTable("fklsdajklfjsadlk;")
@@ -83,11 +83,6 @@ object FrontLimelight : Subsystem("Front Limelight") {
             distance.asFeet * cos(targetAngle.asRadians)
         ) + Drive.position
 
-    var isCamEnabled = false
-        set(value) {
-            field = value
-            camModeEntry.setDouble(0.0)
-        }
 
     var ledEnabled = false
         set(value) {
@@ -124,7 +119,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
 
     val aimError: Double
-        get() = xTranslation + FrontLimelight.angleOffset + if(useParallaxEntry.getBoolean(true)) parallax.asDegrees else 0.0
+        get() = xTranslation + FrontLimelight.angleOffset + parallax.asDegrees
 
 
     fun leftAngleOffset() {
@@ -137,7 +132,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
     init {
-        isCamEnabled = false
+        ledEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
         heightToDistance.storeValue(22.0, 7.2)
         heightToDistance.storeValue(9.6, 11.5)
@@ -184,6 +179,9 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
         SmartDashboard.setPersistent("Use Parallax")
         useParallaxEntry.setBoolean(true)
+        ledEnabled = false
+
+
 
         GlobalScope.launch(MeanlibDispatcher) {
 
@@ -199,12 +197,14 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     val parallax: Angle
         get() {
+            if (!useParallaxEntry.getBoolean(true))
+                return 0.0.degrees
             val frontGoalPos = Vector2(0.0, 0.0)
             val backGoalPos = Vector2(0.0, 2.0)
             val frontAngle = (frontGoalPos - position).angle.radians
             val backAngle = (backGoalPos - position).angle.radians
             var internalParallax = backAngle - frontAngle
-            if (abs(internalParallax.asDegrees) > 4.0) {
+            if (abs(internalParallax.asDegrees) > 1.0) {
                 internalParallax = 0.0.degrees
             }
             return internalParallax
@@ -223,7 +223,6 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
 //suspend fun visionDrive() = use(Drive, FrontLimelight, name = "Vision Drive") {
-//    FrontLimelight.isCamEnabled = true
 //    val timer = Timer()
 //    var prevTargetHeading = FrontLimelight.targetAngle
 //    var prevTargetPoint = FrontLimelight.targetPoint

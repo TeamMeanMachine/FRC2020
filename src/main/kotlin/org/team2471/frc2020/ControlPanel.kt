@@ -28,10 +28,8 @@ object ControlPanel : Subsystem("Control Panel") {
         get() = DriverStation.getInstance().gameSpecificMessage
 
 
-    val controlMotor =
-        if (isCompBotIHateEverything) MotorController(VictorID(Victors.CONTROL_PANEL)) else MotorController(
-            TalonID(Talons.CONTROL_PANEL)
-        )
+    val controlMotor = MotorController(VictorID(Victors.CONTROL_PANEL))
+
     private val extensionSolenoid = Solenoid(CONTROL_PANEL)
 
 //    val serialPort = SerialPort(9600, SerialPort.Port.kUSB)

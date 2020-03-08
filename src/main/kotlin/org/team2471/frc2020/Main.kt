@@ -47,13 +47,13 @@ object Robot : MeanlibRobot() {
         Drive.heading = 0.0.degrees
         AutoChooser
         FrontLimelight.startUp()
+        BackLimelight.startUp()
     }
 
     override suspend fun enable() {
         println("starting enable")
         Drive.enable()
         ControlPanel.enable()
-        Drive.zeroGyro()
         BackLimelight.enable()
         FrontLimelight.enable()
         Drive.initializeSteeringMotors()
@@ -72,6 +72,7 @@ object Robot : MeanlibRobot() {
 
     override suspend fun teleop() {
         println("telop begin")
+        Drive.headingSetpoint = Drive.heading
 //        periodic{
 //            println("parallax ${FrontLimelight.parallax}")
 //        }

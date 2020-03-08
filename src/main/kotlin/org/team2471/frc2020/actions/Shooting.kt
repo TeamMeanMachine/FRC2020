@@ -17,7 +17,6 @@ import kotlin.math.absoluteValue
 suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
     try {
         Intake.setPower(0.0)
-        Intake.extend = false
         Shooter.prepShotOn = true
         Shooter.rpm = Shooter.rpmSetpoint
         Intake.extend = true
@@ -25,13 +24,14 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
         FrontLimelight.ledEnabled = true
         val t = Timer()
         t.start()
-        FrontLimelight.ledEnabled = true
+        var isUnjamming = false
+        var startTime = 0.0
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             val currTime = t.get()
-//            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
-            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0 && FrontLimelight.hasValidTarget && abs(aimError) < 0.5) {
-//                println("Close to rpmSetpoint? Answer: ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
+//            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; rpmOffset: ${Shooter.rpmOffset}; Distance from Target: ${FrontLimelight.distance} Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
+//            println("Close to rpmSetpoint? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0}. Valid Target? ${FrontLimelight.hasValidTarget} Small Aim Error? ${abs(aimError) < 1.0}. Been a while? ${currTime > 0.1}. Hi.")
+            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 if (currTime > 0.1) {
                     OI.driverController.rumble = 0.5
 //                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
@@ -43,8 +43,18 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
                 OI.driverController.rumble = 0.0
                 t.start()
             }
-
-            if (OI.operatorController.rightTrigger > 0.1) {
+            //auto unjam does not work. Amperage is too variable and can surpass jamming amperage even during normal use.
+//            if(Feeder.current > 45.0 && !isUnjamming) {
+//                isUnjamming = true
+//                startTime = t.get()
+//            } else if(isUnjamming) {
+//                Feeder.setPower(-0.70)
+//                Intake.setPower(0.70)
+//                if(abs(startTime-t.get()) > 0.4) {
+//                    isUnjamming = false
+//                }
+//            }else
+                if (OI.operatorController.rightTrigger > 0.1) {
                 Feeder.setPower(OI.operatorRightTrigger * -0.70)
                 Intake.setPower(OI.operatorRightTrigger * 0.70)
                 Intake.extend = false
@@ -56,6 +66,7 @@ suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
                 Feeder.setPower(0.0)
                 Intake.setPower(0.0)
                 Intake.extend = true
+//                Intake.extend = false
             }
             if (!OI.driverController.leftBumper) {
                 this.stop()
@@ -98,10 +109,10 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
                 this.stop()
             }
             var turn = 0.0
-            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
+//            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
             if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = Drive.aimPDController.update(FrontLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
-                println("turn = $turn. Hi.")
+//                println("turn = $turn. Hi.")
             }
             Drive.drive(
                 Vector2(0.0, 0.0),

@@ -19,7 +19,7 @@ suspend fun pathThenVision(path: Path2D, stopTime: Double, resetOdometry: Boolea
     pathJob.cancelAndJoin()
 
     //limelight takes over
-    BackLimelight.isCamEnabled = true
+    BackLimelight.ledEnabled = true
 
     periodic {
         if (BackLimelight.hasValidTarget) {

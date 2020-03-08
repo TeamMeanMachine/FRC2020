@@ -35,7 +35,7 @@ suspend fun Intake.intakeFeedAndShootTest() = use(this, Feeder, Shooter) {
     },{
         Intake.extend = true
         periodic {
-            println(brakeIsExtending)
+//            println(brakeIsExtending)
             setPower(OI.driveLeftTrigger)
         }
     })

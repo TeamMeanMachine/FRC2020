@@ -33,20 +33,12 @@ object Shooter : Subsystem("Shooter") {
         rpmCurve = MotionCurve()
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
-/*
-        rpmCurve.storeValue(11.0, 5000.0)
-        rpmCurve.storeValue(13.0, 4500.0)
-        rpmCurve.storeValue(19.0, 4120.0)
-        rpmCurve.storeValue(26.0, 4200.0)
-        rpmCurve.storeValue(34.5, 4850.0)
-        rpmCurve.storeValue(35.5, 4900.0)
-*/
-        rpmCurve.storeValue(13.5, 5050.0)
-        rpmCurve.storeValue(15.0, 4660.0)
-        rpmCurve.storeValue(19.0, 4270.0)
-        rpmCurve.storeValue(30.0, 4150.0)
-        rpmCurve.storeValue(38.0, 4320.0)
-        rpmCurve.storeValue(53.0, 5040.0)
+
+        rpmCurve.storeValue(11.0, 7680.0) //tuned 3/5
+        rpmCurve.storeValue(13.0, 7300.0) //tuned 3/5
+        rpmCurve.storeValue(18.0, 6590.0) //tuned 3/5
+        rpmCurve.storeValue(26.0, 6540.0) //tuned 3/5
+        rpmCurve.storeValue(34.0, 7530.0) //tuned(-ish) 3/5
 
         var dist = 11.0
         while (dist <= 34.0) {
@@ -55,7 +47,7 @@ object Shooter : Subsystem("Shooter") {
         }
 
         shootingMotor.config {
-            feedbackCoefficient = 1.0 / (42.0 * 1.01471)
+            feedbackCoefficient = 1.0 / (42.0 * 0.667227)
             inverted(true)
             followersInverted(true)
             brakeMode()
@@ -75,6 +67,7 @@ object Shooter : Subsystem("Shooter") {
             println("in global scope")
             var upPressed = false
             var downPressed = false
+            rpmOffsetEntry.setPersistent()
             periodic {
                 //                print(".")
                 rpmEntry.setDouble(rpm)
@@ -124,14 +117,12 @@ object Shooter : Subsystem("Shooter") {
                 val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
-                /*} else if(rpmSetpointEntry.value.double > 0.0) {
-                    return rpmSetpointEntry.value.double */
             } else {
-                return 4050.0 + rpmOffset
+                return 6160.0 + rpmOffset
             }
         }
 
-    var rpmOffset: Double = 0.0
+    var rpmOffset: Double = 0.0 //400.0
         get() = rpmOffsetEntry.getDouble(0.0)
         set(value) {
             field = value
