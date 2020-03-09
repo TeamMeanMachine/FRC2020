@@ -26,6 +26,9 @@ import kotlin.math.roundToInt
 
 object Drive : Subsystem("Drive"), SwerveDrive {
 
+    val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
+
+
     /**
      * Coordinates of modules
      * **/
@@ -64,8 +67,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-     val gyro: NavxWrapper? = NavxWrapper()
-//    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
+    private val navX: NavxWrapper? = NavxWrapper()
+    private val analogDevices: ADXRS450_Gyro? = ADXRS450_Gyro()
+    private val meanGyro : TheBestGyroEver? = TheBestGyroEver()
+
+    val gyro = if (navXGyroEntry.getBoolean(true) && navX != null) navX else if (analogDevices != null) analogDevices else meanGyro
 
     private var gyroOffset = 0.0.degrees
 
@@ -121,8 +127,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val zeroGyroEntry = table.getEntry("Zero Gyro")
 
             SmartDashboard.setPersistent("Use Gyro")
+            SmartDashboard.setPersistent("Gyro Type")
 
             useGyroEntry.setBoolean(true)
+            navXGyroEntry.setBoolean(isCompBotIHateEverything)
+
+
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
             periodic {

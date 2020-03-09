@@ -166,7 +166,7 @@ object AutoChooser {
 //            autoIntakeStop()
                 path = auto["02- Shooting Position"]
                 Drive.driveAlongPath(path, false)
-                autoPrepShot(5)
+                shootingMode(5)
             }
         } finally {
             FrontLimelight.ledEnabled = false
@@ -200,7 +200,7 @@ object AutoChooser {
 //                    autoPrepShot(7)
 //                }, {
 //                    delay(2.0)
-                    autoPrepShot(5)
+                    shootingMode(5)
                     Intake.setPower(1.0)
                     Intake.extend = true
                     path = auto["03- Intake 3 Cells"]
@@ -217,7 +217,7 @@ object AutoChooser {
                     Intake.extend = false
                     path = auto["05- Shooting Position"]
                     Drive.driveAlongPath(path, false)
-                    autoPrepShot(5)
+                    shootingMode(5)
                 }
         } finally {
             Shooter.stop()
@@ -255,7 +255,7 @@ object AutoChooser {
 //                    autoPrepShot(7)
 //                }, {
 //                    delay(2.0)
-                autoPrepShot(5)
+                shootingMode(5)
                 Intake.setPower(1.0)
                 Intake.extend = true
                 path = auto["03- Intake 3 Cells"]
@@ -264,7 +264,7 @@ object AutoChooser {
                 Intake.extend = false
                 path = auto["06- 8 Ball Mod"]
                 Drive.driveAlongPath(path, false)
-                autoPrepShot(5)
+                shootingMode(5)
             }
         } finally {
             Shooter.stop()
@@ -289,13 +289,12 @@ object AutoChooser {
                     Drive.driveAlongPath(path, true)
                 }, {
                     delay(path.duration * 0.5)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
-                    Shooter.rpm = rpmSetpoint
+                    Shooter.rpm = Shooter.rpmSetpoint
                 }/*, {
                     delay(1.1 * path.duration)
                     Intake.extend = false
                 */)
-                autoPrepShot(4)
+                shootingMode(4)
                 Intake.extend = true
                 path = auto["2- Collect 4 Cells"]
                 Drive.driveAlongPath(path, false)
@@ -305,7 +304,7 @@ object AutoChooser {
                 }, {
                     Intake.extend = false
                 })
-                autoPrepShot(4)
+                shootingMode(4)
             }
         } finally {
             Shooter.stop()
