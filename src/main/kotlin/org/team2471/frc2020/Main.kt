@@ -40,7 +40,7 @@ object Robot : MeanlibRobot() {
         // i heard the first string + double concatenations were expensive...
         repeat(25) {
             println("RANDOM NUMBER: ${Math.random()}")
-        }
+    }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
 
         Drive.zeroGyro()

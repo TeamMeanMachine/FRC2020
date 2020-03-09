@@ -68,6 +68,7 @@ object Shooter : Subsystem("Shooter") {
             var upPressed = false
             var downPressed = false
             rpmOffsetEntry.setPersistent()
+            rpmOffset = rpmOffsetEntry.getDouble(0.0)
             periodic {
                 //                print(".")
                 rpmEntry.setDouble(rpm)

@@ -152,10 +152,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
-//            for (moduleCount in 0..3) {
-//                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
-//            }
-//            println()
+            for (moduleCount in 0..3) {
+                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
+            }
+            println()
 
             val direction = OI.driverController.povDirection
             if (direction!=-1.0.degrees)

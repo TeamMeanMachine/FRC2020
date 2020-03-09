@@ -105,7 +105,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             } else {
                 t.start()
             }
-            if (totalT.get() > 1.5) {
+            if (totalT.get() > 1.15) {
                 this.stop()
             }
             var turn = 0.0
@@ -139,7 +139,7 @@ suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder
             if(shootingBall && Math.abs(rpmSetpoint - Shooter.rpm) < 0.05 * rpmSetpoint) {
                 shootingBall = false
             }
-            if(ballsShot > ballsIntaken - 1 || t.get() > 3.5) {
+            if(ballsShot > ballsIntaken - 1 || t.get() > 2.8) {
                 this.stop()
             }
             Drive.drive(

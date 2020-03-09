@@ -55,6 +55,7 @@ object AutoChooser {
         addOption("5 Ball Trench Run", "trenchRun5")
         addOption("10 Ball Shield Generator", "shieldGenerator10")
         addOption("8 Ball Trench Run", "trenchRun8")
+        addOption("8 Ball Shield Generator", "shieldGenerator10")
     }
 
     init {
@@ -110,6 +111,7 @@ object AutoChooser {
             "5 Ball Trench Run" -> trenchRun5()
             "10 Ball Shield Generator" -> shieldGenerator10()
             "8 Ball Trench Run" -> trenchRun8()
+            "8 Ball Shield Generator" -> shieldGenerator8()
             else -> println("No function found for ---->$selAuto<-----")
         }
 
@@ -145,6 +147,53 @@ object AutoChooser {
             FrontLimelight.ledEnabled = false
         }
     }
+
+    suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+        try {
+            FrontLimelight.ledEnabled = true
+            val auto = autonomi["8 Ball Shield Generator"]
+            println(auto == null)
+            if (true){//auto != null) {
+                Intake.setPower(1.0) //Intake.INTAKE_POWER)
+                Intake.extend = true
+                var path = auto["01- Intake 2 Cells"]
+                Drive.driveAlongPath(path, true, 0.125)
+                delay(0.25)
+                Intake.setPower(0.5)
+//                Intake.extend = false
+                parallel ({
+                    delay(path.duration * 0.25)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+                    Shooter.rpm = rpmSetpoint
+                }, {
+                    path = auto["02- Shooting Position"]
+                    Drive.driveAlongPath(path, false)
+                })
+//                parallel ({
+//                    autoPrepShot(7)
+//                }, {
+//                    delay(2.0)
+                autoPrepShot(5)
+                Intake.setPower(1.0)
+                Intake.extend = true
+                path = auto["06- Intake 3 Cells Slow"]
+                Drive.driveAlongPath(path, false)
+
+                Intake.setPower(1.0)
+                Intake.extend = false
+                Drive.driveAlongPath(path, false)
+                autoPrepShot(3)
+            }
+        } finally {
+            Shooter.stop()
+            Shooter.rpmSetpoint = 0.0
+            Feeder.setPower(0.0)
+            Intake.extend = false
+            Intake.setPower(0.0)
+            FrontLimelight.ledEnabled = false
+        }
+    }
+
 
     suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
@@ -225,11 +274,7 @@ object AutoChooser {
                 path = auto["2- Collect 4 Cells"]
                 Drive.driveAlongPath(path, false)
                 path = auto["3- Shoot 4 Cells"]
-                parallel ({
-                    Drive.driveAlongPath(path, false)
-                }, {
-                    Intake.extend = false
-                })
+                Drive.driveAlongPath(path, false)
                 autoPrepShot(4)
             }
         } finally {
