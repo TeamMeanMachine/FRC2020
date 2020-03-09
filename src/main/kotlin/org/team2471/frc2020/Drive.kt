@@ -28,6 +28,9 @@ import kotlin.math.roundToInt
 
 object Drive : Subsystem("Drive"), SwerveDrive {
 
+    val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
+
+
     /**
      * Coordinates of modules
      * **/
@@ -66,8 +69,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-    val gyro: NavxWrapper? = NavxWrapper()
-//    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
+    private val navX: NavxWrapper? = NavxWrapper()
+    private val analogDevices: ADXRS450_Gyro? = ADXRS450_Gyro()
+    private val meanGyro : TheBestGyroEver? = TheBestGyroEver()
+
+    val gyro = if (navXGyroEntry.getBoolean(true) && navX != null) navX else if (analogDevices != null) analogDevices else meanGyro
 
     private var gyroOffset = 0.0.degrees
 
@@ -123,8 +129,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val zeroGyroEntry = table.getEntry("Zero Gyro")
 
             SmartDashboard.setPersistent("Use Gyro")
+            SmartDashboard.setPersistent("Gyro Type")
 
             useGyroEntry.setBoolean(true)
+            navXGyroEntry.setBoolean(isCompBotIHateEverything)
+
+
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
             periodic {
@@ -140,7 +150,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun zeroGyro() = gyro?.reset()
+    fun  zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
@@ -155,11 +165,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
-
-//            for (moduleCount in 0..3) {
-//                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
-//            }
-//            println()
+//            printEncoderValues()
 
             val direction = OI.driverController.povDirection
             if (direction != -1.0.degrees)

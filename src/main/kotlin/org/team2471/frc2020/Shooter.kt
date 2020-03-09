@@ -119,7 +119,7 @@ object Shooter : Subsystem("Shooter") {
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
             } else {
-                return 6160.0 + rpmOffset
+                return field
             }
         }
 
