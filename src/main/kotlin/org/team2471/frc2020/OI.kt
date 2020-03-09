@@ -12,7 +12,7 @@ import org.team2471.frc2020.Feeder.reverseFeeder
 import org.team2471.frc2020.actions.climb
 import org.team2471.frc2020.actions.controlPanel1
 import org.team2471.frc2020.actions.intake
-import org.team2471.frc2020.actions.shootMode
+import org.team2471.frc2020.actions.shootingMode
 import kotlin.math.roundToInt
 
 //import org.team2471.frc2020.actions.intake
@@ -66,7 +66,7 @@ object OI {
     init {
         //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
-        driverController::leftBumper.whenTrue { shootMode() }
+        driverController::leftBumper.whenTrue { shootingMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
         ({driverController.dPad==Controller.Direction.UP}).whenTrue {

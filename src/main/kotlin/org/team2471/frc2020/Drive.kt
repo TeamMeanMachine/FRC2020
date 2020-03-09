@@ -15,12 +15,14 @@ import org.team2471.frc.lib.control.PDConstantFController
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
+import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.round
 import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
+import org.team2471.frc.lib.util.Timer
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -29,11 +31,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     /**
      * Coordinates of modules
      * **/
-    val origModules : Array<SwerveDrive.Module> = arrayOf(
+    val origModules: Array<SwerveDrive.Module> = arrayOf(
         Module(
             MotorController(SparkMaxID(Sparks.DRIVE_FRONTLEFT)),
             MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
-            Vector2(-11.5,14.0),
+            Vector2(-11.5, 14.0),
             (-315.0).degrees,
             AnalogSensors.SWERVE_FRONT_LEFT
         ),
@@ -64,7 +66,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     //    val gyro: Gyro? = null
     //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-     val gyro: NavxWrapper? = NavxWrapper()
+    val gyro: NavxWrapper? = NavxWrapper()
 //    val gyro: ADXRS450_Gyro = ADXRS450_Gyro()
 
     private var gyroOffset = 0.0.degrees
@@ -138,7 +140,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun  zeroGyro() = gyro?.reset()
+    fun zeroGyro() = gyro?.reset()
 
     override suspend fun default() {
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
@@ -153,21 +155,21 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
+
 //            for (moduleCount in 0..3) {
 //                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
 //            }
 //            println()
 
             val direction = OI.driverController.povDirection
-            if (direction!=-1.0.degrees)
+            if (direction != -1.0.degrees)
                 headingSetpoint = direction
 
             drive(
                 OI.driveTranslation,
                 turn,
                 //true,
-
-                if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro",true)
+                if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
                 true
             )
@@ -315,5 +317,19 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             driveMotor.stop()
             //turnMotor.stop()
         }
+//
+//        suspend fun aim() = use(Drive) {
+//            val timer = Timer()
+//            val startTime = time
+//            periodic {
+//                drive(
+//                    Vector2(0.0, 0.0),
+//                    aimPDController.update(FrontLimelight.aimError)
+//                )
+//                if()
+//            }
+//
+//
+//        }
     }
 }

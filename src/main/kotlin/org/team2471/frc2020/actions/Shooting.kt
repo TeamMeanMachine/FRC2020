@@ -154,7 +154,7 @@ import kotlin.math.abs
 //    }
 //}
 
-suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimelight, Intake, Feeder) {
+suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, Intake, Feeder) {
     try {
         val isAuto = DriverStation.getInstance().isAutonomous
         Intake.setPower(0.0)
@@ -183,16 +183,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                 }
             }
             if(isAuto) {
-                if(totalT.get() > 1.5) this.stop()
-                var turn = 0.0
-                if (FrontLimelight.hasValidTarget) {
-                    turn = Drive.aimPDController.update(FrontLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
-                }
-                Drive.drive(
-                    Vector2(0.0, 0.0),
-                    turn,
-                    false
-                )
+                if(totalT.get() > 1.15) this.stop()
             } else {
                 if (OI.operatorController.rightTrigger > 0.1) {
                     Feeder.setPower(OI.operatorRightTrigger * -0.70)
@@ -226,7 +217,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                 if(shootingBall && abs(Shooter.rpmSetpoint - Shooter.rpm) < 0.05 * Shooter.rpmSetpoint) {
                     shootingBall = false
                 }
-                if(ballsShot > ballsIntaken - 1 || totalT.get() > 3.5) {
+                if(ballsShot > ballsIntaken - 1 || totalT.get() > 2.8) {
                     this.stop()
                 }
             }
