@@ -22,6 +22,7 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 object Drive : Subsystem("Drive"), SwerveDrive {
 
@@ -152,10 +153,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
-//            for (moduleCount in 0..3) {
-//                print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
-//            }
-//            println()
+//            printEncoderValues()
 
             val direction = OI.driverController.povDirection
             if (direction!=-1.0.degrees)
@@ -171,6 +169,13 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 true
             )
         }
+    }
+
+    fun printEncoderValues() {
+        for (moduleCount in 0..3) {
+            print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
+        }
+        println()
     }
 
     fun initializeSteeringMotors() {

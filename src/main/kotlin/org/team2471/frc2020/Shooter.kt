@@ -5,6 +5,7 @@ import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
@@ -67,7 +68,8 @@ object Shooter : Subsystem("Shooter") {
             println("in global scope")
             var upPressed = false
             var downPressed = false
-            rpmOffsetEntry.setPersistent()
+            SmartDashboard.setPersistent("RPM Offset")
+            rpmOffset = rpmOffsetEntry.getDouble(1600.0)
             periodic {
                 //                print(".")
                 rpmEntry.setDouble(rpm)
@@ -123,7 +125,7 @@ object Shooter : Subsystem("Shooter") {
         }
 
     var rpmOffset: Double = 0.0 //400.0
-        get() = rpmOffsetEntry.getDouble(0.0)
+        get() = rpmOffsetEntry.getDouble(1600.0)
         set(value) {
             field = value
             rpmOffsetEntry.setDouble(value)

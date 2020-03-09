@@ -5,14 +5,20 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
+import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
+import java.awt.Color.red
 import java.io.File
 
 private lateinit var autonomi: Autonomi
@@ -32,7 +38,15 @@ private var startingSide = Side.RIGHT
 
 
 object AutoChooser {
+    private val isRedAllianceEntry = NetworkTableInstance.getDefault().getTable("FMSInfo").getEntry("isRedAlliance")
+
     var cacheFile : File? = null
+    var redSide: Boolean = true
+        get() = isRedAllianceEntry.getBoolean(true)
+        set(value) {
+            field = value
+            isRedAllianceEntry.setBoolean(value)
+        }
 
     private val lyricsChooser = SendableChooser<String?>().apply {
         setDefaultOption("Country roads", "Country roads")
@@ -54,7 +68,9 @@ object AutoChooser {
         setDefaultOption("Tests", "testAuto")
         addOption("5 Ball Trench Run", "trenchRun5")
         addOption("10 Ball Shield Generator", "shieldGenerator10")
+        addOption("8 Ball Shield Generator", "shieldGenerator8")
         addOption("8 Ball Trench Run", "trenchRun8")
+        addOption("Carpet Bias Test", "carpetBiasTest")
     }
 
     init {
@@ -99,6 +115,9 @@ object AutoChooser {
                     DriverStation.reportWarning("Empty autonomi received from network tables", false)
                 }
             }, EntryListenerFlags.kImmediate or EntryListenerFlags.kNew or EntryListenerFlags.kUpdate)
+        GlobalScope.launch(MeanlibDispatcher) {
+
+        }
     }
 
     suspend fun autonomous() = use(Drive, name = "Autonomous") {
@@ -109,8 +128,16 @@ object AutoChooser {
             "Tests" -> testAuto()
             "5 Ball Trench Run" -> trenchRun5()
             "10 Ball Shield Generator" -> shieldGenerator10()
+            "8 Ball Shield Generator" -> shieldGenerator8()
             "8 Ball Trench Run" -> trenchRun8()
+            "Carpet Bias Test" -> carpetBiasTest()
             else -> println("No function found for ---->$selAuto<-----")
+        }
+
+        when (SmartDashboard.getString("Autos/Side", "Red")) {
+            "Red" -> redSide = true
+            "Blue" -> redSide = false
+            else -> println("Invalid Side")
         }
 
 //        var autoEntry = autonomousChooser.selected
@@ -150,7 +177,8 @@ object AutoChooser {
         try {
             FrontLimelight.ledEnabled = true
             println("In sheildGenerator auto. Hi.")
-            val auto = autonomi["10 Ball Shield Generator"]
+            var auto = autonomi["Red 10 Ball Shield Generator"]
+            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
             println(auto == null)
             if (true){//auto != null) {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
@@ -201,6 +229,53 @@ object AutoChooser {
         }
     }
 
+    suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+        try {
+            FrontLimelight.ledEnabled = true
+            var auto = autonomi["Red 10 Ball Shield Generator"]
+            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
+            println(auto == null)
+            if (true){//auto != null) {
+                Intake.setPower(1.0) //Intake.INTAKE_POWER)
+                Intake.extend = true
+                var path = auto["01- Intake 2 Cells"]
+                Drive.driveAlongPath(path, true, 0.125)
+                delay(0.25)
+                Intake.setPower(0.5)
+//                Intake.extend = false
+                parallel ({
+                    delay(path.duration * 0.25)
+                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+                    Shooter.rpm = rpmSetpoint
+                }, {
+                    path = auto["02- Shooting Position"]
+                    Drive.driveAlongPath(path, false)
+                })
+//                parallel ({
+//                    autoPrepShot(7)
+//                }, {
+//                    delay(2.0)
+                autoPrepShot(5)
+                Intake.setPower(1.0)
+                Intake.extend = true
+                path = auto["03- Intake 3 Cells"]
+                Drive.driveAlongPath(path, false)
+//                })
+                Intake.extend = false
+                path = auto["06- 8 Ball Mod"]
+                Drive.driveAlongPath(path, false)
+                autoPrepShot(5)
+            }
+        } finally {
+            Shooter.stop()
+            Shooter.rpmSetpoint = 0.0
+            Feeder.setPower(0.0)
+            Intake.extend = false
+            Intake.setPower(0.0)
+            FrontLimelight.ledEnabled = false
+        }
+    }
+
     suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
         try {
             FrontLimelight.ledEnabled = true
@@ -240,6 +315,19 @@ object AutoChooser {
             Intake.setPower(0.0)
             FrontLimelight.ledEnabled = false
         }
+    }
+
+    suspend fun carpetBiasTest() = use(Drive) {
+        val auto = autonomi["Carpet Bias Test"]
+        var path = auto["01- Forward"]
+        Drive.driveAlongPath(path, false)
+        path = auto["02- Backward"]
+        Drive.driveAlongPath(path, false)
+        path = auto["03- Left"]
+        Drive.driveAlongPath(path, false)
+        path = auto["04- Forward"]
+        Drive.driveAlongPath(path, false)
+        path = auto["05- Backward"]
     }
 
     suspend fun test8FtStraight() = use(Drive) {
