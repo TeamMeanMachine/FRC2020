@@ -2,14 +2,17 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
+import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
 import org.team2471.frc2020.FrontLimelight.aimError
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 //TODO: Delete commented out areas if the combined function works
 
@@ -154,7 +157,7 @@ import kotlin.math.abs
 //    }
 //}
 
-suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, Intake, Feeder) {
+suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimelight, Intake, Feeder) {
     try {
         val isAuto = DriverStation.getInstance().isAutonomous
         Intake.setPower(0.0)
@@ -166,6 +169,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, I
         var t = totalT.get()
         FrontLimelight.ledEnabled = true
         var currTime = totalT.get() - t
+        var turn = 0.0
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
@@ -183,7 +187,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, I
                 }
             }
             if(isAuto) {
-                if(totalT.get() > 1.15) this.stop()
+                if(totalT.get() > 1.5) this.stop()
             } else {
                 if (OI.operatorController.rightTrigger > 0.1) {
                     Feeder.setPower(OI.operatorRightTrigger * -0.70)
@@ -202,6 +206,23 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, I
                     this.stop()
                 }
             }
+            turn = 0.0
+            if (OI.driveRotation.absoluteValue > 0.001 && !isAuto) {
+                turn = OI.driveRotation
+            } else if (FrontLimelight.hasValidTarget) {
+                turn = Drive.aimPDController.update(FrontLimelight.aimError)
+                println("FrontLimeLightAimError=${FrontLimelight.aimError} Hi.")
+            }
+//            printEncoderValues()
+            if(!isAuto) {
+                val direction = OI.driverController.povDirection
+                if (direction != -1.0.degrees) Drive.headingSetpoint = direction
+            }
+            Drive.drive(
+                if(isAuto) Vector2(0.0,0.0) else OI.driveTranslation,
+                turn,
+                !isAuto
+            )
         }
         if(isAuto) {
             Feeder.setPower(Feeder.FEED_POWER)
@@ -217,9 +238,13 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Shooter, FrontLimelight, I
                 if(shootingBall && abs(Shooter.rpmSetpoint - Shooter.rpm) < 0.05 * Shooter.rpmSetpoint) {
                     shootingBall = false
                 }
-                if(ballsShot > ballsIntaken - 1 || totalT.get() > 2.8) {
+                if(ballsShot > ballsIntaken - 1 || totalT.get() > 3.5) {
                     this.stop()
                 }
+                Drive.drive(
+                Vector2(0.0,0.0),
+                0.0
+            )
             }
         }
     } finally {

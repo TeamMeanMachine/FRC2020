@@ -129,18 +129,6 @@ object AutoChooser {
             "Carpet Bias Test" -> carpetBiasTest()
             else -> println("No function found for ---->$selAuto<-----")
         }
-
-        when (SmartDashboard.getString("Autos/Side", "Red")) {
-            "Red" -> redSide = true
-            "Blue" -> redSide = false
-            else -> println("Invalid Side")
-        }
-
-//        var autoEntry = autonomousChooser.selected
-//        autoEntry = ::shieldGenerator10 //delete this line after 2/18/2020
-//        println("Got to right before invoke. Hi. 5555555555555555555555555 $autoEntry")
-//        autoEntry.invoke()
-    //    shieldGenerator10() //delete this line
     }
 
     suspend fun testAuto() {
@@ -172,9 +160,9 @@ object AutoChooser {
     suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
-            println("In sheildGenerator auto. Hi.")
-            var auto = autonomi["Red 10 Ball Shield Generator"]
-            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
+            val auto = autonomi["10 Ball Shield Generator"]
+//            var auto = autonomi["Red 10 Ball Shield Generator"]
+//            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
             println(auto == null)
             if (true){//auto != null) {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
@@ -228,8 +216,9 @@ object AutoChooser {
     suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
-            var auto = autonomi["Red 10 Ball Shield Generator"]
-            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
+            var auto = autonomi["10 Ball Shield Generator"]
+//            var auto = autonomi["Red 10 Ball Shield Generator"]
+//            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
             println(auto == null)
             if (true){//auto != null) {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)

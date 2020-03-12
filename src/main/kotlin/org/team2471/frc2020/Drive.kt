@@ -68,12 +68,14 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     override var modules = origModules
 
     //    val gyro: Gyro? = null
-    //    val gyro: ADIS16448_IMU? = ADIS16448_IMU()
-    private val navX: NavxWrapper? = NavxWrapper()
-    private val analogDevices: ADXRS450_Gyro? = ADXRS450_Gyro()
-    private val meanGyro : TheBestGyroEver? = TheBestGyroEver()
+//        val gyro: ADIS16448_IMU? = ADIS16448_IMU()
+//    private var navX: NavxWrapper? = NavxWrapper()
+//    private var analogDevices: ADXRS450_Gyro? = ADXRS450_Gyro()
+//    private var meanGyro : TheBestGyroEver? = TheBestGyroEver()
+//    val gyro: NavxWrapper? = NavxWrapper()
+    val gyro = if(isCompBotIHateEverything) NavxWrapper() else ADXRS450_Gyro()
 
-    val gyro = if (navXGyroEntry.getBoolean(true) && navX != null) navX else if (analogDevices != null) analogDevices else meanGyro
+//    val gyro = navX /*if (navXGyroEntry.getBoolean(true) && navX != null) navX else if (analogDevices != null) analogDevices else meanGyro*/
 
     private var gyroOffset = 0.0.degrees
 
@@ -111,6 +113,30 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     init {
         println("drive init")
         //SmartDashboard.putData("Gyro", gyro!!.getNavX())
+
+/*
+        try {
+            navX = NavxWrapper()
+        } catch(ex : Exception) {
+            navX = null
+            navXGyroEntry.setBoolean(false)
+            println("NavX is having troubles. $ex")
+        }
+
+        try {
+            analogDevices = ADXRS450_Gyro()
+        } catch(ex: Exception) {
+            analogDevices = null
+            println("Analog Devices is having troubles. $ex")
+        }
+
+        try {
+            meanGyro =  TheBestGyroEver()
+        } catch(ex: Exception) {
+            meanGyro = null
+            println("Mean Gyro is having troubles. $ex")
+        }
+*/
 
         GlobalScope.launch(MeanlibDispatcher) {
             println("in drive global scope")
@@ -323,19 +349,5 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             driveMotor.stop()
             //turnMotor.stop()
         }
-//
-//        suspend fun aim() = use(Drive) {
-//            val timer = Timer()
-//            val startTime = time
-//            periodic {
-//                drive(
-//                    Vector2(0.0, 0.0),
-//                    aimPDController.update(FrontLimelight.aimError)
-//                )
-//                if()
-//            }
-//
-//
-//        }
     }
 }
