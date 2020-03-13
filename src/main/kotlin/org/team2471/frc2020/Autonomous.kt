@@ -119,6 +119,7 @@ object AutoChooser {
     suspend fun autonomous() = use(Drive, name = "Autonomous") {
         println("Got into Auto fun autonomous. Hi. 888888888888888")
         val selAuto = SmartDashboard.getString("Autos/selected", "no auto selected")
+        SmartDashboard.putString("autoStatus", "init")
         println("Selected Auto = *****************   $selAuto ****************************")
         when (selAuto) {
             "Tests" -> testAuto()
@@ -129,6 +130,7 @@ object AutoChooser {
             "Carpet Bias Test" -> carpetBiasTest()
             else -> println("No function found for ---->$selAuto<-----")
         }
+        SmartDashboard.putString("autoStatus", "complete")
     }
 
     suspend fun testAuto() {
