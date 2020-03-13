@@ -60,21 +60,18 @@ object Shooter : Subsystem("Shooter") {
             }
 //            burnSettings()
         }
-
-
         rpmSetpointEntry.setDouble(0.0)
         println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
             println("in global scope")
             var upPressed = false
             var downPressed = false
-            rpmOffsetEntry.setPersistent()
+            rpmOffset = rpmOffsetEntry.getDouble(1600.0)
+
             periodic {
                 //                print(".")
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
-
-                rpmOffsetEntry.setDouble(rpmOffset)
 
                 if (OI.operatorController.dPad == Controller.Direction.UP) {
                     upPressed = true
@@ -124,7 +121,6 @@ object Shooter : Subsystem("Shooter") {
         }
 
     var rpmOffset: Double = 0.0 //400.0
-        get() = rpmOffsetEntry.getDouble(1600.0)
         set(value) {
             field = value
             rpmOffsetEntry.setDouble(value)

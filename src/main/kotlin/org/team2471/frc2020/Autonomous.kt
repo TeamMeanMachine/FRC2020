@@ -216,6 +216,7 @@ object AutoChooser {
     suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
+            var additionalTime = 0.5
             var auto = autonomi["10 Ball Shield Generator"]
 //            var auto = autonomi["Red 10 Ball Shield Generator"]
 //            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
@@ -224,6 +225,7 @@ object AutoChooser {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
+                path.duration += additionalTime
                 Drive.driveAlongPath(path, true, 0.125)
                 delay(0.25)
                 Intake.setPower(0.5)
@@ -234,6 +236,7 @@ object AutoChooser {
                     Shooter.rpm = rpmSetpoint
                 }, {
                     path = auto["02- Shooting Position"]
+                    path.duration += additionalTime
                     Drive.driveAlongPath(path, false)
                 })
 //                parallel ({
@@ -244,12 +247,14 @@ object AutoChooser {
                 Intake.setPower(1.0)
                 Intake.extend = true
                 path = auto["03- Intake 3 Cells"]
+                path.duration += additionalTime
                 Drive.driveAlongPath(path, false)
 //                })
                 Intake.extend = false
                 path = auto["06- 8 Ball Mod"]
+                path.duration += additionalTime
                 Drive.driveAlongPath(path, false)
-                shootingMode(5)
+                shootingMode(3)
             }
         } finally {
             Shooter.stop()
