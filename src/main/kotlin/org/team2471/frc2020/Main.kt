@@ -36,11 +36,10 @@ object Robot : MeanlibRobot() {
            }
         }
 
-
         // i heard the first string + double concatenations were expensive...
         repeat(25) {
             println("RANDOM NUMBER: ${Math.random()}")
-    }
+        }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
 
         Drive.zeroGyro()
@@ -48,6 +47,8 @@ object Robot : MeanlibRobot() {
         AutoChooser
         FrontLimelight.startUp()
         BackLimelight.startUp()
+        BackLimelight.ledEnabled = false
+        FrontLimelight.ledEnabled = false
     }
 
     override suspend fun enable() {
@@ -112,10 +113,12 @@ object Robot : MeanlibRobot() {
         Intake.disable()
         EndGame.disable()
 
-        periodic {
-            BackLimelight.ledEnabled = false
-            FrontLimelight.ledEnabled = false
-        }
+        BackLimelight.ledEnabled = false
+        FrontLimelight.ledEnabled = false
+
+        Shooter.rpmOffsetEntry.setPersistent()
+        FrontLimelight.parallaxThresholdEntry.setPersistent()
+
 //        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
 //        val xEntry = table.getEntry("X")
 //        val yEntry = table.getEntry("Y")

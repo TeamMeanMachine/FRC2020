@@ -194,7 +194,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 //            printEncoderValues()
 
             val direction = OI.driverController.povDirection
-            if (direction != -1.0.degrees)
+            if (direction==270.0.degrees)
+                headingSetpoint = -112.0.degrees
+            else if (direction == 0.0.degrees)
                 headingSetpoint = direction
 
             drive(

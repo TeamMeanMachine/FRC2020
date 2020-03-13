@@ -1,5 +1,6 @@
 package org.team2471.frc2020
 
+import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
@@ -34,7 +35,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
     private var positionXEntry = table.getEntry("PositionX")
     private var positionYEntry = table.getEntry("PositionY")
     private var parallaxEntry = table.getEntry("Parallax")
-    private var useParallaxEntry = table.getEntry("Toggle Parallax")
+    var parallaxThresholdEntry: NetworkTableEntry = table.getEntry("Parallax Threshold")
 
     private var angleOffsetEntry = FrontLimelight.table.getEntry("Angle Offset Entry")
 
@@ -175,16 +176,12 @@ object FrontLimelight : Subsystem("Front Limelight") {
         positionXEntry = table.getEntry("PositionX")
         positionYEntry = table.getEntry("PositionY")
         parallaxEntry = table.getEntry("Parallax")
-        useParallaxEntry = table.getEntry("Use Parallax")
+        parallaxThresholdEntry = table.getEntry("Parallax Threshold")
+        parallaxThresholdEntry.setDouble(parallaxThresholdEntry.getDouble(1.0))
 
-        SmartDashboard.setPersistent("Use Parallax")
-        useParallaxEntry.setBoolean(true)
         ledEnabled = false
 
-
-
         GlobalScope.launch(MeanlibDispatcher) {
-
             periodic {
                 distanceEntry.setDouble(distance.asFeet)
                 val savePosition = position
@@ -197,14 +194,12 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     val parallax: Angle
         get() {
-            if (!useParallaxEntry.getBoolean(true))
-                return 0.0.degrees
             val frontGoalPos = Vector2(0.0, 0.0)
             val backGoalPos = Vector2(0.0, 2.0)
             val frontAngle = (frontGoalPos - position).angle.radians
             val backAngle = (backGoalPos - position).angle.radians
             var internalParallax = backAngle - frontAngle
-            if (abs(internalParallax.asDegrees) > 1.0) {
+            if (abs(internalParallax.asDegrees) > parallaxThresholdEntry.getDouble(1.0)) {
                 internalParallax = 0.0.degrees
             }
             return internalParallax
