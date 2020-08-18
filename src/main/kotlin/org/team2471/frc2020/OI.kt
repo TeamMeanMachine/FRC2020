@@ -70,7 +70,8 @@ object OI {
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
         ({driverController.dPad==Controller.Direction.UP}).whenTrue {
-            println("dPad pressed. Heading before: ${Drive.heading.asDegrees.roundToInt()} Heading Setpoint before: ${Drive.headingSetpoint.asDegrees.roundToInt()}")
+            println("dPad pressed. Heading before: ${Drive.heading.asDegrees.roundToInt()} Heading Setpoint before: ${Drive.
+                headingSetpoint.asDegrees.roundToInt()}")
             Drive.headingSetpoint = 0.0.degrees
         }
 //        driverController::start.whenTrue {
