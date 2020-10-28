@@ -162,7 +162,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         val isAuto = DriverStation.getInstance().isAutonomous
         Intake.setPower(0.0)
         Shooter.prepShotOn = true
-        Intake.extend = true
+        Intake.extend = isCompBotIHateEverything
         Intake.setPower(Intake.INTAKE_POWER)
         val totalT = Timer()
         totalT.start()
@@ -200,7 +200,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                 } else {
                     Feeder.setPower(0.0)
                     Intake.setPower(0.0)
-                    Intake.extend = true
+                    Intake.extend = isCompBotIHateEverything
                 }
                 if (!OI.driverController.leftBumper) {
                     this.stop()

@@ -340,4 +340,12 @@ object AutoChooser {
             Drive.driveAlongPath( auto["90 Degree Turn"], true, 2.0)
         }
     }
+
+    suspend fun feederToYeeter() = use(Drive) {
+        val auto = autonomi["Helper"]
+        if (auto != null) {
+            var path = auto["Feeder To Yeeter"]
+            Drive.driveAlongPath(path, true)
+        }
+    }
 }

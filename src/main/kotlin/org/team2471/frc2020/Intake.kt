@@ -1,6 +1,7 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.Solenoid
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -25,6 +26,10 @@ object Intake: Subsystem("Intake") {
 
     val INTAKE_POWER = 0.75
 
+    val button = DigitalInput(0)
+
+
+
 
     init {
         intakeMotor.config {
@@ -40,6 +45,9 @@ object Intake: Subsystem("Intake") {
     var extend: Boolean
         get() = extensionSolenoid.get()
         set(value) = extensionSolenoid.set(value)
+
+    val ballIsStaged: Boolean
+        get() = !button.get()
 
 
     fun setPower(power: Double) {

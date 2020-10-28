@@ -2,6 +2,7 @@
 
 package org.team2471.frc2020
 
+import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
@@ -23,7 +24,7 @@ object Robot : MeanlibRobot() {
     init {
         val networkInterfaces =  NetworkInterface.getNetworkInterfaces()
         for (iFace in networkInterfaces) {
-                   if (iFace.name == "eth0") {
+            if (iFace.name == "eth0") {
                    println("NETWORK NAME--->${iFace.name}<----")
                    var macString = ""
                    for (byteVal in iFace.hardwareAddress){
@@ -32,7 +33,6 @@ object Robot : MeanlibRobot() {
                 println("FORMATTED---->$macString<-----")
 
             isCompBotIHateEverything = (macString != "0-128472587-69")
-            println("Comp Bot = $isCompBotIHateEverything")
            }
         }
 
@@ -63,6 +63,7 @@ object Robot : MeanlibRobot() {
         Intake.enable()
         EndGame.enable()
         Tester.enable()
+        println("Comp Bot = $isCompBotIHateEverything")
         println("ending enable")
     }
 
@@ -75,9 +76,6 @@ object Robot : MeanlibRobot() {
     override suspend fun teleop() {
         println("telop begin")
         Drive.headingSetpoint = Drive.heading
-//        periodic{
-//            println("parallax ${FrontLimelight.parallax}")
-//        }
     }
 
     override suspend fun test()  {
