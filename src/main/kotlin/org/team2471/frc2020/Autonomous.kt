@@ -70,6 +70,7 @@ object AutoChooser {
         addOption("8 Ball Shield Generator", "shieldGenerator8")
         addOption("8 Ball Trench Run", "trenchRun8")
         addOption("Carpet Bias Test", "carpetBiasTest")
+        addOption("Helper Paths", "helperPaths")
     }
 
     init {
@@ -128,6 +129,7 @@ object AutoChooser {
             "8 Ball Shield Generator" -> shieldGenerator8()
             "8 Ball Trench Run" -> trenchRun8()
             "Carpet Bias Test" -> carpetBiasTest()
+            "Helper Paths" -> feederToYeeter()
             else -> println("No function found for ---->$selAuto<-----")
         }
         SmartDashboard.putString("autoStatus", "complete")
@@ -342,10 +344,19 @@ object AutoChooser {
     }
 
     suspend fun feederToYeeter() = use(Drive) {
-        val auto = autonomi["Helper"]
+        val auto = autonomi["Helper Paths"]
         if (auto != null) {
-            var path = auto["Feeder To Yeeter"]
+            var path = auto["Feeder to Yeeter"]
             Drive.driveAlongPath(path, true)
+        }
+    }
+
+    suspend fun yeeterToFeeder() = use(Drive) {
+        val auto = autonomi["Helper Paths"]
+        if (auto != null) {
+            var path = auto["Yeeter to Feeder"]
+            Drive.driveAlongPath(path, true)
+//            path.getPosition()
         }
     }
 }

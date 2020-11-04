@@ -8,6 +8,7 @@ import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
 import org.team2471.frc.lib.math.squareWithSign
 import org.team2471.frc.lib.units.degrees
+import org.team2471.frc2020.AutoChooser
 import org.team2471.frc2020.Feeder.reverseFeeder
 import org.team2471.frc2020.actions.climb
 import org.team2471.frc2020.actions.controlPanel1
@@ -74,6 +75,8 @@ object OI {
                 headingSetpoint.asDegrees.roundToInt()}")
             Drive.headingSetpoint = 0.0.degrees
         }
+        driverController::a.whenTrue { AutoChooser.yeeterToFeeder() } //no path yet
+        driverController::b.whenTrue { AutoChooser.feederToYeeter() }
 //        driverController::start.whenTrue {
 //            Drive.disable()
 //            Drive.resetDriveMotors()

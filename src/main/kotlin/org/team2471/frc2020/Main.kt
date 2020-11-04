@@ -2,6 +2,7 @@
 
 package org.team2471.frc2020
 
+import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.RobotBase
@@ -119,16 +120,26 @@ object Robot : MeanlibRobot() {
         Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
 
-//        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-//        val xEntry = table.getEntry("X")
-//        val yEntry = table.getEntry("Y")
-//        periodic {
+        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
+        val angle1Entry = table.getEntry("Angle 1")
+        val angle2Entry = table.getEntry("Angle 2")
+        val angle3Entry = table.getEntry("Angle 3")
+        val angle4Entry = table.getEntry("Angle 4")
+
+        val module0 = (Drive.modules[0] as Drive.Module)
+        val module1 = (Drive.modules[1] as Drive.Module)
+        val module2 = (Drive.modules[2] as Drive.Module)
+        val module3 = (Drive.modules[3] as Drive.Module)
+
+        periodic {
 //            Drive.recordOdometry()
-//
-//            xEntry.setDouble(Drive.position.x)
-//            yEntry.setDouble(Drive.position.y)
-//            //println("analog 2 ${Drive.modules[2].angle}" )
-//        }
+
+            println(module0.analogAngle)
+            angle1Entry.setValue(module0.analogAngle.asDegrees)
+            angle2Entry.setValue(module1.analogAngle.asDegrees)
+            angle3Entry.setValue(module2.analogAngle.asDegrees)
+            angle4Entry.setValue(module3.analogAngle.asDegrees)
+        }
     }
 }
 
