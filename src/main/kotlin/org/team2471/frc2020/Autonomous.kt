@@ -71,6 +71,7 @@ object AutoChooser {
         addOption("8 Ball Trench Run", "trenchRun8")
         addOption("Carpet Bias Test", "carpetBiasTest")
         addOption("Helper Paths", "helperPaths")
+        addOption("Slalom Auto", "slalomAuto")
     }
 
     init {
@@ -130,6 +131,7 @@ object AutoChooser {
             "8 Ball Trench Run" -> trenchRun8()
             "Carpet Bias Test" -> carpetBiasTest()
             "Helper Paths" -> feederToYeeter()
+            "Slalom Auto" -> slalom()
             else -> println("No function found for ---->$selAuto<-----")
         }
         SmartDashboard.putString("autoStatus", "complete")
@@ -347,7 +349,9 @@ object AutoChooser {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
             var path = auto["Feeder to Yeeter"]
-            Drive.driveAlongPath(path, true)
+            Drive.driveAlongPath(path, true, 0.0, false) {
+                OI.driveTranslation.length > 0.0
+            }
         }
     }
 
@@ -355,8 +359,24 @@ object AutoChooser {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
             var path = auto["Yeeter to Feeder"]
-            Drive.driveAlongPath(path, true)
-//            path.getPosition()
+            Drive.driveAlongPath(path, true, 0.0, false) {
+                OI.driveTranslation.length > 0.0
+            }
+        }
+    }
+
+    suspend fun slalom() =use(Drive) {
+        val auto = autonomi ["Slalom Auto"]
+        if (auto != null) {
+            var path = auto ["First Way"]
+            path = path.apply {
+                //addEasePoint(0.0, 0.0)
+                //addEasePointSlopeAndMagnitude(path.duration / 2, 0.5, -0.5, 2.5)
+                //addEasePoint(path.duration, 1.0)
+            }
+            Drive.driveAlongPath(path, true, 0.0, true) {
+                OI.driveTranslation.length > 0.0
+            }
         }
     }
 }

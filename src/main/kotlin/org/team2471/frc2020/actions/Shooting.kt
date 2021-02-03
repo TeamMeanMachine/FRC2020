@@ -211,7 +211,6 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                 turn = OI.driveRotation
             } else if (FrontLimelight.hasValidTarget) {
                 turn = Drive.aimPDController.update(FrontLimelight.aimError)
-                println("FrontLimeLightAimError=${FrontLimelight.aimError} Hi.")
             }
 //            printEncoderValues()
             if(!isAuto) {
@@ -253,6 +252,11 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
         Intake.extend = false
+        if (FrontLimelight.hasValidTarget) {
+            val alpha = 0.5
+            Drive.position = Drive.position * alpha + FrontLimelight.position * (1.0-alpha)
+            println("Reset odometry to include limelight. Hi.")
+        }
         FrontLimelight.ledEnabled = false
         if(!isAuto) {
             Shooter.rpm = 0.0

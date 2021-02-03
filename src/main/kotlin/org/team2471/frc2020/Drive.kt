@@ -176,7 +176,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun  zeroGyro() = gyro?.reset()
+    fun zeroGyro() = gyro?.reset()
+
+    
 
     override suspend fun default() {
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
@@ -214,7 +216,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         for (moduleCount in 0..3) {
             print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
         }
-        println()
     }
 
     fun initializeSteeringMotors() {

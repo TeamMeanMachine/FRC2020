@@ -128,15 +128,17 @@ object BackLimelight : Subsystem("Back Limelight") {
 
 }
 
-suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vision Drive") {
+suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, Intake, name = "Vision Drive") {
     val timer = Timer()
     var prevTime = 0.0
     timer.start()
     BackLimelight.ledEnabled = true
+    FrontLimelight.ledEnabled = true
     val rotationPDController = PDController(0.005, 0.0)
     try {
         Intake.extend = true
         Intake.setPower (Intake.INTAKE_POWER)
+        FrontLimelight.pipeline = 1.0
 
         periodic {
             val t = timer.get()
@@ -169,7 +171,13 @@ suspend fun feederStationVision() = use(Drive, BackLimelight, Intake, name = "Vi
             if(OI.operatorController.rightBumper) this.stop()
         }
     } finally {
+        if (FrontLimelight.hasValidTarget) {
+            Drive.heading = -FrontLimelight.xTranslation.degrees
+        }
+
         Intake.setPower(0.0)
+        FrontLimelight.pipeline = 0.0
         BackLimelight.ledEnabled = false
+        FrontLimelight.ledEnabled = false
     }
 }

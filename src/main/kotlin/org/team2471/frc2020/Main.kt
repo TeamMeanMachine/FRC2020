@@ -49,7 +49,7 @@ object Robot : MeanlibRobot() {
         FrontLimelight.startUp()
         BackLimelight.startUp()
         BackLimelight.ledEnabled = false
-        FrontLimelight.ledEnabled = false
+        FrontLimelight.ledEnabled = true
     }
 
     override suspend fun enable() {
@@ -134,7 +134,7 @@ object Robot : MeanlibRobot() {
         periodic {
 //            Drive.recordOdometry()
 
-            println(module0.analogAngle)
+            //println(module0.analogAngle)
             angle1Entry.setValue(module0.analogAngle.asDegrees)
             angle2Entry.setValue(module1.analogAngle.asDegrees)
             angle3Entry.setValue(module2.analogAngle.asDegrees)
