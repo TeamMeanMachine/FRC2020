@@ -46,7 +46,7 @@ object Robot : MeanlibRobot() {
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
-        FrontLimelight.startUp()
+        FrontLimelight.startUp() 
         BackLimelight.startUp()
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = true
@@ -55,15 +55,15 @@ object Robot : MeanlibRobot() {
     override suspend fun enable() {
         println("starting enable")
         Drive.enable()
-        ControlPanel.enable()
-        BackLimelight.enable()
-        FrontLimelight.enable()
-        Drive.initializeSteeringMotors()
-        Shooter.enable()
-        Feeder.enable()
-        Intake.enable()
-        EndGame.enable()
-        Tester.enable()
+//        ControlPanel.enable()
+//        BackLimelight.enable()
+//        FrontLimelight.enable()
+//        Drive.initializeSteeringMotors()
+//        Shooter.enable()
+//        Feeder.enable()
+//        Intake.enable()
+//        EndGame.enable()
+//        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
         println("ending enable")
     }
@@ -83,7 +83,6 @@ object Robot : MeanlibRobot() {
 //        Drive.disable()
 //        ControlPanel.test()
 //
-        println("ajfslkdjaslk;fjkldsajflkd;sa")
         Drive.steeringTests()
         Drive.driveTests()
 //        Feeder.test()

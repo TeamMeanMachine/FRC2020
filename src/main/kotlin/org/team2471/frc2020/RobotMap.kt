@@ -12,16 +12,15 @@ object Victors {
 }
 
 object Sparks {
-    const val DRIVE_FRONTLEFT = 12 //
-    const val DRIVE_BACKLEFT = 3 //
-    const val DRIVE_BACKRIGHT = 16 //
-
-    const val DRIVE_FRONTRIGHT = 15 //
-
-    const val STEER_FRONTLEFT = 8 //
-    const val STEER_BACKLEFT = 7 //
-    const val STEER_BACKRIGHT = 4 //
-    const val STEER_FRONTRIGHT = 11 //
+//    const val DRIVE_FRONTLEFT = 12 //
+//    const val DRIVE_BACKLEFT = 3 //
+//    const val DRIVE_BACKRIGHT = 16 //
+//    const val DRIVE_FRONTRIGHT = 15 //
+//
+//    const val STEER_FRONTLEFT = 8 //
+//    const val STEER_BACKLEFT = 7 //
+//    const val STEER_BACKRIGHT = 4 //
+//    const val STEER_FRONTRIGHT = 11 //
 
     const val SHOOTER = 2 //
     const val SHOOTER2 = 13 //
@@ -30,12 +29,22 @@ object Sparks {
 // Analog Sensors
 object AnalogSensors {
     const val SWERVE_FRONT_LEFT = 3
-    const val SWERVE_FRONT_RIGHT = 1
-    const val SWERVE_BACK_RIGHT = 0
-    const val SWERVE_BACK_LEFT = 2
+    const val SWERVE_FRONT_RIGHT = 2
+    const val SWERVE_BACK_RIGHT = 1
+    const val SWERVE_BACK_LEFT = 0
 }
 
 object Falcons {
+    const val DRIVE_FRONTLEFT = 13
+    const val DRIVE_BACKLEFT = 12
+    const val DRIVE_BACKRIGHT = 3
+    const val DRIVE_FRONTRIGHT = 0
+
+    const val STEER_FRONTLEFT = 10
+    const val STEER_BACKLEFT = 8
+    const val STEER_BACKRIGHT = 7
+    const val STEER_FRONTRIGHT = 5
+
     const val FEEDER = 1
     const val TESTER = 5
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.team2471.frc.lib.actuators.FalconID
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.actuators.SparkMaxWrapper
@@ -36,29 +37,29 @@ object Drive : Subsystem("Drive"), SwerveDrive {
      * **/
     val origModules: Array<SwerveDrive.Module> = arrayOf(
         Module(
-            MotorController(SparkMaxID(Sparks.DRIVE_FRONTLEFT)),
-            MotorController(SparkMaxID(Sparks.STEER_FRONTLEFT)),
+            MotorController(FalconID(Falcons.DRIVE_FRONTLEFT)),
+            MotorController(FalconID(Falcons.STEER_FRONTLEFT)),
             Vector2(-11.5, 14.0),
             (-315.0).degrees,
             AnalogSensors.SWERVE_FRONT_LEFT
         ),
         Module(
-            MotorController(SparkMaxID(Sparks.DRIVE_FRONTRIGHT)),
-            MotorController(SparkMaxID(Sparks.STEER_FRONTRIGHT)),
+            MotorController(FalconID(Falcons.DRIVE_FRONTRIGHT)),
+            MotorController(FalconID(Falcons.STEER_FRONTRIGHT)),
             Vector2(11.5, 14.0),
             (-225.0).degrees,
             AnalogSensors.SWERVE_FRONT_RIGHT
         ),
         Module(
-            MotorController(SparkMaxID(Sparks.DRIVE_BACKRIGHT)),
-            MotorController(SparkMaxID(Sparks.STEER_BACKRIGHT)),
+            MotorController(FalconID(Falcons.DRIVE_BACKRIGHT)),
+            MotorController(FalconID(Falcons.STEER_BACKRIGHT)),
             Vector2(11.5, -14.0),
             (-135.0).degrees,
             AnalogSensors.SWERVE_BACK_RIGHT
         ),
         Module(
-            MotorController(SparkMaxID(Sparks.DRIVE_BACKLEFT)),
-            MotorController(SparkMaxID(Sparks.STEER_BACKLEFT)),
+            MotorController(FalconID(Falcons.DRIVE_BACKLEFT)),
+            MotorController(FalconID(Falcons.STEER_BACKLEFT)),
             Vector2(-11.5, -14.0),
             (-45.0).degrees,
             AnalogSensors.SWERVE_BACK_LEFT
@@ -104,7 +105,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kPositionFeedForward = 0.0, //075,
         kpHeading = 0.008,
         kdHeading = 0.01,
-        kHeadingFeedForward = 0.001
+        kHeadingFeedForward = 0.001,
+        alignRobotToPath = false
     )
 
     val aimPDController = PDConstantFController(0.006, 0.032, 0.011) //0.012, 0.03, 0.0
@@ -151,6 +153,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val aimDEntry = table.getEntry("d")
             val aimErrorEntry = table.getEntry("Aim Error")
             val useGyroEntry = table.getEntry("Use Gyro")
+            val powerEntry = table.getEntry("Power")
 
             val zeroGyroEntry = table.getEntry("Zero Gyro")
 
@@ -171,6 +174,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 aimErrorEntry.setDouble(FrontLimelight.aimError)
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
+
 
             }
         }
@@ -277,7 +281,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         private val analogAngleInput = AnalogInput(analogAnglePort)
 
         val analogAngle: Angle
-            get() = (((analogAngleInput.value - 170.0) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap()
+            get() = ((((analogAngleInput.value - 170.0) * 100000) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap() //(((analogAngleInput.value - 170.0) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap()
 
         val driveCurrent: Double
             get() = driveMotor.current
