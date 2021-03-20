@@ -281,7 +281,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         private val analogAngleInput = AnalogInput(analogAnglePort)
 
         val analogAngle: Angle
-            get() = ((((analogAngleInput.value - 170.0) * 100000) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap() //(((analogAngleInput.value - 170.0) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap()
+            get() = (((analogAngleInput.value - 170.0) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap()
 
         val driveCurrent: Double
             get() = driveMotor.current
