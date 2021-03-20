@@ -72,6 +72,8 @@ object AutoChooser {
         addOption("Carpet Bias Test", "carpetBiasTest")
         addOption("Helper Paths", "helperPaths")
         addOption("Slalom Auto", "slalomAuto")
+        addOption("Barrel Racing Auto", "barrelRacingAuto")
+
     }
 
     init {
@@ -132,6 +134,7 @@ object AutoChooser {
             "Carpet Bias Test" -> carpetBiasTest()
             "Helper Paths" -> feederToYeeter()
             "Slalom Auto" -> slalom()
+            "Barrel Racing Auto" -> barrelRacingAuto()
             else -> println("No function found for ---->$selAuto<-----")
         }
         SmartDashboard.putString("autoStatus", "complete")
@@ -377,6 +380,14 @@ object AutoChooser {
             Drive.driveAlongPath(path, true, 0.0, true) {
                 OI.driveTranslation.length > 0.0
             }
+        }
+    }
+
+    suspend fun barrelRacingAuto() = use(Drive) {
+        val auto = autonomi["Barrel Racing Auto"]
+        if (auto != null) {
+            var path = auto["Barrel Racing Path"]
+            Drive.driveAlongPath(path, true)
         }
     }
 }
