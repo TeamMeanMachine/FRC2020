@@ -1,5 +1,6 @@
 package org.team2471.frc2020.testing
 
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
@@ -21,7 +22,10 @@ suspend fun Shooter.distance2RpmTest() = use(this, Feeder, FrontLimelight){
 
 suspend fun Shooter.motorTest() = use(Shooter) {
     println("In Shooter.motorTest(). Hi.")
-    Shooter.setPower(0.5)
+    periodic {
+        setPower(OI.operatorController.leftThumbstickY * 0.75)
+        Feeder.setPower(OI.operatorController.leftThumbstickY * 0.75)
+    }
 }
 
 suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {

@@ -21,9 +21,9 @@ object Sparks {
 //    const val STEER_BACKLEFT = 7 //
 //    const val STEER_BACKRIGHT = 4 //
 //    const val STEER_FRONTRIGHT = 11 //
-
-    const val SHOOTER = 2 //
-    const val SHOOTER2 = 13 //
+//
+//    const val SHOOTER = 2 //
+//    const val SHOOTER2 = 13 //
 }
 
 // Analog Sensors
@@ -46,7 +46,10 @@ object Falcons {
     const val STEER_FRONTRIGHT = 5
 
     const val FEEDER = 1
-    const val TESTER = 5
+//    const val TESTER = 5
+
+    const val SHOOTER = 14
+    const val SHOOTER2 = 15
 }
 
  object Solenoids {

@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.team2471.frc.lib.actuators.FalconID
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.motion_profiling.MotionCurve
@@ -15,7 +16,7 @@ import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
 
 object Shooter : Subsystem("Shooter") {
-    private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER), SparkMaxID(Sparks.SHOOTER2))
+    private val shootingMotor = MotorController(FalconID(Falcons.SHOOTER),FalconID(Falcons.SHOOTER2))
 
     private val table = NetworkTableInstance.getDefault().getTable(name)
     val rpmEntry = table.getEntry("RPM")
@@ -50,7 +51,7 @@ object Shooter : Subsystem("Shooter") {
         shootingMotor.config {
             feedbackCoefficient = 1.0 / (42.0 * 0.667227)
             inverted(true)
-            followersInverted(true)
+            followersInverted(false)
             brakeMode()
             pid {
                 p(0.4e-8) //1.5e-8)

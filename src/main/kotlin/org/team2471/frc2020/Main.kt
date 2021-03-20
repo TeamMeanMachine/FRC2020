@@ -59,7 +59,7 @@ object Robot : MeanlibRobot() {
 //        BackLimelight.enable()
 //        FrontLimelight.enable()
 //        Drive.initializeSteeringMotors()
-//        Shooter.enable()
+        Shooter.enable()
 //        Feeder.enable()
 //        Intake.enable()
 //        EndGame.enable()
@@ -82,9 +82,8 @@ object Robot : MeanlibRobot() {
     override suspend fun test()  {
 //        Drive.disable()
 //        ControlPanel.test()
-//
-        Drive.steeringTests()
-        Drive.driveTests()
+//        Drive.steeringTests()
+//        Drive.driveTests()
 //        Feeder.test()
 //        Intake.solenoidTest()
 //        ControlPanel.motorTest()
@@ -95,7 +94,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbTest()
 //        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
-//        Shooter.motorTest()
+        Shooter.motorTest()
 //        Drive.tuneDrivePositionController()
     }
 
