@@ -313,13 +313,13 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         init {
             turnMotor.config(20) {
                 // this was from lil bois bench test of swerve
-                feedbackCoefficient = 360.0 / 823.2
+                feedbackCoefficient = 360.0 / 40140.8 //823.2 //revolutions/ti
                 setRawOffsetConfig(analogAngle)
                 inverted(true)
                 setSensorPhase(false)
                 pid {
-                    p(0.000075)
-                    d(0.00025)
+                    p(0.000002)
+//                    d(0.0000025)
                 }
 //                burnSettings()
             }
