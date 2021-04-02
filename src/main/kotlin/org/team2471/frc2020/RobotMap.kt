@@ -57,6 +57,6 @@ object Falcons {
  object Solenoids {
      const val BRAKE = 7
      const val CLIMB = 6
-     const val INTAKE = 5
-     const val CONTROL_PANEL = 4
+     const val INTAKE = 4
+     const val CONTROL_PANEL = 10000
 }

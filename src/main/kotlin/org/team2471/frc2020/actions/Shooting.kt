@@ -171,7 +171,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         var currTime = totalT.get() - t
         var turn = 0.0
         periodic {
-            Shooter.rpm = Shooter.rpmSetpoint
+            Shooter.setPower(Shooter.shooterPower) //Shooter.rpm = Shooter.rpmSetpoint
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
                 if (!isAuto && currTime > 0.1) {
@@ -259,7 +259,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         }
         FrontLimelight.ledEnabled = false
         if(!isAuto) {
-            Shooter.rpm = 0.0
+            Shooter.setPower(0.0)
             Intake.setPower(0.0)
         }
     }

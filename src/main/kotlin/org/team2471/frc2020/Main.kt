@@ -58,10 +58,10 @@ object Robot : MeanlibRobot() {
         Drive.enable()
 //        ControlPanel.enable()
 //        BackLimelight.enable()
-//        FrontLimelight.enable()
+        FrontLimelight.enable()
 //        Drive.initializeSteeringMotors()
         Shooter.enable()
-//        Feeder.enable()
+        Feeder.enable()
         Intake.enable()
 //        EndGame.enable()
 //        Tester.enable()
@@ -96,7 +96,8 @@ object Robot : MeanlibRobot() {
 //        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
-        Drive.tuneDrivePositionController()
+//        Drive.tuneDrivePositionController()
+        Shooter.motorTest()
     }
 
 
@@ -106,7 +107,7 @@ object Robot : MeanlibRobot() {
         Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()
-        ControlPanel.disable()
+//        ControlPanel.disable()
         Shooter.disable()
         Feeder.disable()
         Intake.disable()

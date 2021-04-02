@@ -30,6 +30,8 @@ object Shooter : Subsystem("Shooter") {
 
     var prepShotOn = false
 
+    val shooterPower = 0.8
+
 
     init {
         println("shooter init")
@@ -54,12 +56,12 @@ object Shooter : Subsystem("Shooter") {
         }
 
         shootingMotor.config {
-            feedbackCoefficient = 1.0 / (42.0 * 0.667227)
+            feedbackCoefficient = 1.0 / (2048.0 * 0.667227)
             inverted(true)
             followersInverted(false)
             brakeMode()
             pid {
-                p(0.4e-8) //1.5e-8)
+                p(0.4e-2) //1.5e-8)
                 i(0.0)//i(0.0)
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.000042) //0.000045
