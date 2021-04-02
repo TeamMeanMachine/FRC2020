@@ -17,6 +17,7 @@ import org.team2471.frc.lib.units.asFeet
 
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(FalconID(Falcons.SHOOTER),FalconID(Falcons.SHOOTER2))
+    private val hoodMotor = MotorController(SparkMaxID(Sparks.HOOD))
 
     private val table = NetworkTableInstance.getDefault().getTable(name)
     val rpmEntry = table.getEntry("RPM")
@@ -32,6 +33,10 @@ object Shooter : Subsystem("Shooter") {
 
     init {
         println("shooter init")
+        hoodMotor.config {
+            brakeMode()
+        }
+
         rpmCurve = MotionCurve()
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
@@ -71,6 +76,8 @@ object Shooter : Subsystem("Shooter") {
 
             periodic {
                 //                print(".")
+//                println(hoodMotor.analogAngle)
+//                hoodMotor.setPercentOutput( 0.25 * (OI.operatorController.leftTrigger - OI.operatorController.rightTrigger))
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
 

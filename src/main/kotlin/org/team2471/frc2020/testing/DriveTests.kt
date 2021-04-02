@@ -45,3 +45,9 @@ suspend fun Drive.tuneDrivePositionController() = use(this) {
     tuneDrivePositionController(OI.driverController)
 }
 
+suspend fun Drive.encoderValueTest() = use(this) {
+    periodic {
+        printEncoderValues()
+       // (modules[0] as Drive.Module).lampreyEncoder
+    }
+}

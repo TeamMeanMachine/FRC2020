@@ -40,28 +40,28 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             MotorController(FalconID(Falcons.DRIVE_FRONTLEFT)),
             MotorController(FalconID(Falcons.STEER_FRONTLEFT)),
             Vector2(-11.5, 14.0),
-            (-315.0).degrees,
+            (0.0).degrees,
             AnalogSensors.SWERVE_FRONT_LEFT
         ),
         Module(
             MotorController(FalconID(Falcons.DRIVE_FRONTRIGHT)),
             MotorController(FalconID(Falcons.STEER_FRONTRIGHT)),
             Vector2(11.5, 14.0),
-            (-225.0).degrees,
+            (0.0).degrees,
             AnalogSensors.SWERVE_FRONT_RIGHT
         ),
         Module(
             MotorController(FalconID(Falcons.DRIVE_BACKRIGHT)),
             MotorController(FalconID(Falcons.STEER_BACKRIGHT)),
             Vector2(11.5, -14.0),
-            (-135.0).degrees,
+            (0.0).degrees,
             AnalogSensors.SWERVE_BACK_RIGHT
         ),
         Module(
             MotorController(FalconID(Falcons.DRIVE_BACKLEFT)),
             MotorController(FalconID(Falcons.STEER_BACKLEFT)),
             Vector2(-11.5, -14.0),
-            (-45.0).degrees,
+            (0.0).degrees,
             AnalogSensors.SWERVE_BACK_LEFT
         )
     )
@@ -100,11 +100,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     override val parameters: SwerveParameters = SwerveParameters(
         gyroRateCorrection = 0.0,// 0.001,
-        kpPosition = 0.32,
-        kdPosition = 0.6,
+        kpPosition = 0.6,
+        kdPosition = 1.5,
         kPositionFeedForward = 0.0, //075,
-        kpHeading = 0.008,
-        kdHeading = 0.01,
+        kpHeading = 0.015,
+        kdHeading = 0.03,
         kHeadingFeedForward = 0.001,
         alignRobotToPath = false
     )
@@ -174,8 +174,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 aimErrorEntry.setDouble(FrontLimelight.aimError)
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
-
-
+//                printEncoderValues()
             }
         }
     }
@@ -218,8 +217,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     fun printEncoderValues() {
         for (moduleCount in 0..3) {
-            print("$moduleCount=${round((modules[moduleCount] as Module).analogAngle.asDegrees, 2)}   ")
+            val lampreyAngle = round((modules[moduleCount] as Module).analogAngle.asDegrees, 1)
+            val falconAngle = round((modules[moduleCount] as Module).angle.asDegrees, 1)
+            print("$moduleCount=$lampreyAngle; $falconAngle; ${round((lampreyAngle-falconAngle).degrees.wrap().asDegrees, 1)}               ")
         }
+        println("Hi.")
     }
 
     fun initializeSteeringMotors() {
@@ -281,7 +283,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         private val analogAngleInput = AnalogInput(analogAnglePort)
 
         val analogAngle: Angle
-            get() = (((analogAngleInput.value - 170.0) / (3888.0 - 170.0) * 360.0).degrees + angleOffset).wrap()
+            get() = ((((analogAngleInput.voltage - 0.01) / 3.25) * 360.0).degrees + angleOffset).wrap()
+
+        val lampreyEncoder: Double
+            get() = analogAngleInput.voltage
 
         val driveCurrent: Double
             get() = driveMotor.current
@@ -313,7 +318,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         init {
             turnMotor.config(20) {
                 // this was from lil bois bench test of swerve
-                feedbackCoefficient = 360.0 / 40140.8 //823.2 //revolutions/ti
+                feedbackCoefficient = 360.0 / 2048.0 / 19.6  // ~111 ticks per degree // spark max-neo 360.0 / 42.0 / 19.6 // degrees per tick
                 setRawOffsetConfig(analogAngle)
                 inverted(true)
                 setSensorPhase(false)
@@ -326,7 +331,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
             driveMotor.config {
                 brakeMode()
-                feedbackCoefficient = 1.0 / 246.0
+                feedbackCoefficient = 1.0 / 2048.0 / 5.857 / 1.067 // spark max-neo 1.0 / 42.0/ 5.857 / fudge factor
                 currentLimit(30, 0, 0)
                 openLoopRamp(0.15)
 //                burnSettings()

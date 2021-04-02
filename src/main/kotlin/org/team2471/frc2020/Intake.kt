@@ -43,8 +43,8 @@ object Intake: Subsystem("Intake") {
     }
 
     var extend: Boolean
-        get() = extensionSolenoid.get()
-        set(value) = extensionSolenoid.set(value)
+        get() =  extensionSolenoid.get()
+        set(value) = println("intake extend set is commented out")// extensionSolenoid.set(value)
 
     val ballIsStaged: Boolean
         get() = !button.get()

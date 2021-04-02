@@ -158,7 +158,7 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
 
 //            println("tx: ${BackLimelight.xTranslation} x: ${BackLimelight.xTranslation * 0.01 * OI.driverController.leftTrigger}. Hi.")
             val turnControl = rotationPDController.update(headingError.asDegrees)
-            println(headingError)
+            //println(headingError)
             // send it
 
 

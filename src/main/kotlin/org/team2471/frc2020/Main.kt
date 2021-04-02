@@ -62,7 +62,7 @@ object Robot : MeanlibRobot() {
 //        Drive.initializeSteeringMotors()
         Shooter.enable()
 //        Feeder.enable()
-//        Intake.enable()
+        Intake.enable()
 //        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
@@ -95,15 +95,15 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbTest()
 //        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
-        Shooter.motorTest()
-//        Drive.tuneDrivePositionController()
+//        Shooter.motorTest()
+        Drive.tuneDrivePositionController()
+//        Drive.encoderValueTest()
     }
 
 
     override suspend fun disable() {
         Intake.setPower(0.0)
         Intake.extend = false
-        Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()
         ControlPanel.disable()
@@ -112,6 +112,8 @@ object Robot : MeanlibRobot() {
         Intake.disable()
         EndGame.disable()
         Tester.disable()
+//        Drive.encoderValueTest()
+        Drive.disable()
 
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = false
@@ -119,16 +121,17 @@ object Robot : MeanlibRobot() {
         Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
 
-        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-        val angle1Entry = table.getEntry("Angle 1")
-        val angle2Entry = table.getEntry("Angle 2")
-        val angle3Entry = table.getEntry("Angle 3")
-        val angle4Entry = table.getEntry("Angle 4")
 
-        val analogInput0 = AnalogInput(0)
-        val analogInput1 = AnalogInput(1)
-        val analogInput2 = AnalogInput(2)
-        val analogInput3 = AnalogInput(3)
+//        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
+//        val angle1Entry = table.getEntry("Angle 1")
+//        val angle2Entry = table.getEntry("Angle 2")
+//        val angle3Entry = table.getEntry("Angle 3")
+//        val angle4Entry = table.getEntry("Angle 4")
+//
+//        val analogInput0 = AnalogInput(0)
+//        val analogInput1 = AnalogInput(1)
+//        val analogInput2 = AnalogInput(2)
+//        val analogInput3 = AnalogInput(3)
 
 
 //        val module0 = (Drive.modules[0] as Drive.Module)
@@ -136,7 +139,7 @@ object Robot : MeanlibRobot() {
 //        val module2 = (Drive.modules[2] as Drive.Module)
 //        val module3 = (Drive.modules[3] as Drive.Module)
 
-        periodic {
+//        periodic {
 //            Drive.recordOdometry()
 
             //println(module0.analogAngle)
@@ -144,12 +147,12 @@ object Robot : MeanlibRobot() {
 //            angle2Entry.setValue(module1.analogAngle.asDegrees)
 //            angle3Entry.setValue(module2.analogAngle.asDegrees)
 //            angle4Entry.setValue(module3.analogAngle.asDegrees)
-            println("hi")
-            angle1Entry.setValue(analogInput0.voltage)
-            angle2Entry.setValue(analogInput1.voltage)
-            angle3Entry.setValue(analogInput2.voltage)
-            angle4Entry.setValue(analogInput3.voltage)
-        }
+//            println("hi")
+//            angle1Entry.setValue(analogInput0.voltage)
+//            angle2Entry.setValue(analogInput1.voltage)
+//            angle3Entry.setValue(analogInput2.voltage)
+//            angle4Entry.setValue(analogInput3.voltage)
+//        }
     }
 }
 

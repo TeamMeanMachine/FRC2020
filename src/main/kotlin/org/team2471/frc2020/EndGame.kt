@@ -12,23 +12,23 @@ import org.team2471.frc2020.Solenoids.CLIMB
 object EndGame: Subsystem("EndGame") {
     val balanceMotor = MotorController(VictorID(Victors.BALANCE))
 
-    private val climbSolenoid = Solenoid(CLIMB)
-    private val brakeSolenoid = Solenoid(BRAKE)
+    //private val climbSolenoid = Solenoid(CLIMB)
+   // private val brakeSolenoid = Solenoid(BRAKE)
 
     init {
 
     }
 
     var climbIsExtending: Boolean
-        get() = climbSolenoid.get()
+        get() = true// climbSolenoid.get()
         set(value) {
-           climbSolenoid.set(value)
+           //climbSolenoid.set(value)
         }
 
     var brakeIsExtending: Boolean
-        get() = !brakeSolenoid.get()
+        get() = true //!brakeSolenoid.get()
         set(value) {
-            brakeSolenoid.set(!value)
+           // brakeSolenoid.set(!value)
         }
 
     fun setPower(power: Double) {

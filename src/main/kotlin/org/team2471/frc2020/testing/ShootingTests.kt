@@ -23,8 +23,8 @@ suspend fun Shooter.distance2RpmTest() = use(this, Feeder, FrontLimelight){
 suspend fun Shooter.motorTest() = use(Shooter) {
     println("In Shooter.motorTest(). Hi.")
     periodic {
-        setPower(OI.operatorController.leftThumbstickY * 0.75)
-        Feeder.setPower(OI.operatorController.leftThumbstickY * 0.75)
+        setPower(OI.operatorController.leftThumbstickY)
+        Feeder.setPower(OI.operatorController.rightThumbstickY * 0.75)
     }
 }
 
