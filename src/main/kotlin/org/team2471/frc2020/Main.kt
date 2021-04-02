@@ -97,13 +97,13 @@ object Robot : MeanlibRobot() {
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
         Drive.tuneDrivePositionController()
-//        Drive.encoderValueTest()
     }
 
 
     override suspend fun disable() {
         Intake.setPower(0.0)
         Intake.extend = false
+        Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()
         ControlPanel.disable()
@@ -112,8 +112,6 @@ object Robot : MeanlibRobot() {
         Intake.disable()
         EndGame.disable()
         Tester.disable()
-//        Drive.encoderValueTest()
-        Drive.disable()
 
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = false
