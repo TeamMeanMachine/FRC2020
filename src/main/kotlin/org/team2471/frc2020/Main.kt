@@ -95,8 +95,8 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbTest()
 //        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
-        Shooter.motorTest()
-//        Drive.tuneDrivePositionController()
+//        Shooter.motorTest()
+        Drive.tuneDrivePositionController()
     }
 
 
