@@ -109,7 +109,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         alignRobotToPath = false
     )
 
-    val aimPDController = PDConstantFController(0.006, 0.032, 0.011) //0.012, 0.03, 0.0
+    val aimPDController = PDConstantFController(0.025, 0.032, 0.011) //0.012, 0.03, 0.0
     var lastError = 0.0
 
     init {

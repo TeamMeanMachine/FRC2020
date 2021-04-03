@@ -14,151 +14,9 @@ import org.team2471.frc2020.FrontLimelight.aimError
 import kotlin.math.abs
 import kotlin.math.absoluteValue
 
-//TODO: Delete commented out areas if the combined function works
-
-
-//suspend fun shootMode() = use(Shooter, Feeder, Intake, FrontLimelight) {
-//    try {
-//        Intake.setPower(0.0)
-//        Shooter.prepShotOn = true
-//        Shooter.rpm = Shooter.rpmSetpoint
-//        Intake.setPower(0.0)
-//        Intake.extend = true
-//        FrontLimelight.ledEnabled = true
-//        val t = Timer()
-//        t.start()
-//        var isUnjamming = false
-//        var startTime = 0.0
-//        periodic {
-//            Shooter.rpm = Shooter.rpmSetpoint
-//            val currTime = t.get()
-////            println("rpm: ${Shooter.rpm}; rpmSetpoint: ${Shooter.rpmSetpoint}; rpmOffset: ${Shooter.rpmOffset}; Distance from Target: ${FrontLimelight.distance} Close? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 100.0}. Hi.")
-////            println("Close to rpmSetpoint? ${abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0}. Valid Target? ${FrontLimelight.hasValidTarget} Small Aim Error? ${abs(aimError) < 1.0}. Been a while? ${currTime > 0.1}. Hi.")
-//            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
-//                if (currTime > 0.1) {
-//                    OI.driverController.rumble = 0.5
-////                    ControlPanel.sendCommand(ArduinoCommand.LED_GREEN)
-//                }
-//            } else {
-////                if(FrontLimelight.hasValidTarget && Shooter.prepShotOn){
-//////                    ControlPanel.sendCommand(ArduinoCommand.LED_YELLOW)
-////                }
-//                OI.driverController.rumble = 0.0
-//                t.start()
-//            }
-//            //auto unjam does not work. Amperage is too variable and can surpass jamming amperage even during normal use.
-////            if(Feeder.current > 45.0 && !isUnjamming) {
-////                isUnjamming = true
-////                startTime = t.get()
-////            } else if(isUnjamming) {
-////                Feeder.setPower(-0.70)
-////                Intake.setPower(0.70)
-////                if(abs(startTime-t.get()) > 0.4) {
-////                    isUnjamming = false
-////                }
-////            }else
-//            if (OI.operatorController.rightTrigger > 0.1) {
-//                Feeder.setPower(OI.operatorRightTrigger * -0.70)
-//                Intake.setPower(OI.operatorRightTrigger * 0.70)
-//                Intake.extend = false
-//            } else if (OI.driverController.rightTrigger > 0.1) {
-//                Feeder.setPower(OI.driveRightTrigger * 0.80)
-//                Intake.setPower(OI.driveRightTrigger * 0.80)
-//                Intake.extend = false
-//            } else {
-//                Feeder.setPower(0.0)
-//                Intake.setPower(0.0)
-//                Intake.extend = true
-////                Intake.extend = false
-//            }
-//            if (!OI.driverController.leftBumper) {
-//                this.stop()
-//            }
-//        }
-//    } finally {
-//        OI.driverController.rumble = 0.0
-//        Shooter.rpm = 0.0
-//        Shooter.prepShotOn = false
-//        Feeder.setPower(0.0)
-//        Intake.setPower(0.0)
-//        Intake.extend = false
-//        FrontLimelight.ledEnabled = false
-//    }
-//}
-//
-//
-//suspend fun autoPrepShot(ballsIntaken: Int) = use(Shooter, Drive, Intake, Feeder) {
-//    try {
-//        Intake.setPower(0.0)
-//        Shooter.prepShotOn = true
-//        Intake.extend = true
-//        Intake.setPower(Intake.INTAKE_POWER)
-//        val totalT = Timer()
-//        totalT.start()
-//        val t = Timer()
-//        t.start()
-//        periodic {
-//            Shooter.rpm = Shooter.rpmSetpoint
-//            val currTime = t.get()
-//            if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.0) {
-//                if (currTime > 0.1) {
-//                    this.stop()
-//                }
-//            } else {
-//                t.start()
-//            }
-//            if (totalT.get() > 1.5) {
-//                this.stop()
-//            }
-//            var turn = 0.0
-////            println("has valid target: ${FrontLimelight.hasValidTarget}, xtranslation ${FrontLimelight.xTranslation}, parallax ${FrontLimelight.parallax.asDegrees}")
-//            if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
-//                turn = Drive.aimPDController.update(FrontLimelight.xTranslation-FrontLimelight.parallax.asDegrees)
-////                println("turn = $turn. Hi.")
-//            }
-//            Drive.drive(
-//                Vector2(0.0, 0.0),
-//                turn,
-//                if (Drive.gyro != null) SmartDashboard.getBoolean(
-//                    "Use Gyro",
-//                    true
-//                ) && !DriverStation.getInstance().isAutonomous else false
-//            )
-//        }
-//        Feeder.setPower(Feeder.FEED_POWER)
-//        Intake.extend = false
-//        t.start()
-//        var ballsShot = 0
-//        var shootingBall = false
-//        periodic(0.015) {
-//            var rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches) + Shooter.rpmOffset
-//            Shooter.rpm = rpmSetpoint
-//            var currTime = t.get()
-//            if(currTime > 2.0 && !shootingBall && Shooter.rpm < 0.93 * rpmSetpoint) {
-//                ballsShot++
-//                shootingBall = true
-//            }
-//            if(shootingBall && Math.abs(rpmSetpoint - Shooter.rpm) < 0.05 * rpmSetpoint) {
-//                shootingBall = false
-//            }
-//            if(ballsShot > ballsIntaken - 1 || t.get() > 3.5) {
-//                this.stop()
-//            }
-//            Drive.drive(
-//                Vector2(0.0,0.0),
-//                0.0
-//            )
-//        }
-//    } finally {
-//        OI.driverController.rumble = 0.0
-//        Shooter.prepShotOn = false
-//        Feeder.setPower(0.0)
-//        Intake.extend = false
-//    }
-//}
-
 suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimelight, Intake, Feeder) {
     try {
+        println("Got in shootingMode function. Hi.")
         val isAuto = DriverStation.getInstance().isAutonomous
         Intake.setPower(0.0)
         Shooter.prepShotOn = true
@@ -171,7 +29,8 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         var currTime = totalT.get() - t
         var turn = 0.0
         periodic {
-            Shooter.setPower(Shooter.shooterPower) //Shooter.rpm = Shooter.rpmSetpoint
+//            Shooter.setPower(Shooter.shooterPower)
+            Shooter.rpm = Shooter.rpmSetpoint
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
                 if (!isAuto && currTime > 0.1) {

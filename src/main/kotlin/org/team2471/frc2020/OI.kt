@@ -67,7 +67,9 @@ object OI {
     init {
         //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
-        driverController::leftBumper.whenTrue { shootingMode() }
+        driverController::leftBumper.whenTrue {
+            println("Driver left bumper pressed. Hi.")
+            shootingMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
         ({driverController.dPad==Controller.Direction.UP}).whenTrue {

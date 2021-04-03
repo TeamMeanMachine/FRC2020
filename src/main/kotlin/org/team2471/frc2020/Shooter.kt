@@ -30,7 +30,7 @@ object Shooter : Subsystem("Shooter") {
 
     var prepShotOn = false
 
-    val shooterPower = 0.8
+    val shooterPower = 0.7
 
 
     init {
@@ -56,19 +56,19 @@ object Shooter : Subsystem("Shooter") {
         }
 
         shootingMotor.config {
-            feedbackCoefficient = 1.0 / (2048.0 * 0.667227)
+            feedbackCoefficient = 60.0 / (2048 * 0.49825)
             inverted(true)
             followersInverted(false)
             brakeMode()
             pid {
-                p(0.4e-2) //1.5e-8)
+                p(0.8e-5) //1.5e-8)
                 i(0.0)//i(0.0)
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
-                f(0.000042) //0.000045
+                f(0.03696) //0.000045
             }
 //            burnSettings()
         }
-        rpmSetpointEntry.setDouble(0.0)
+        rpmSetpointEntry.setDouble(6000.0)
         println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
             println("in global scope")
@@ -121,15 +121,17 @@ object Shooter : Subsystem("Shooter") {
 
     var rpmSetpoint: Double = 0.0
         get() {
-            if (FrontLimelight.hasValidTarget) {
-                val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
-                rpmSetpointEntry.setDouble(rpm2)
-                return rpm2
-            } else {
-                field = rpmCurve.getValue(20.0) + rpmOffset
-                rpmSetpointEntry.setDouble(field)
-                return field
-            }
+//            if (FrontLimelight.hasValidTarget) {
+//                val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
+//                rpmSetpointEntry.setDouble(rpm2)
+//                return rpm2
+//            } else {
+//                field = rpmCurve.getValue(20.0) + rpmOffset
+//                rpmSetpointEntry.setDouble(field)
+//                return field
+//            }
+
+            return rpmSetpointEntry.getDouble(2000.0)
         }
 
     var rpmOffset: Double = 0.0 //400.0
