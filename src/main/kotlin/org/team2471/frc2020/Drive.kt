@@ -300,7 +300,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             get() = driveMotor.velocity
 
         val power: Double
-            get() = driveMotor.output
+            get() {
+                return driveMotor.output
+            }
 
         override val currDistance: Double
             get() = driveMotor.position
