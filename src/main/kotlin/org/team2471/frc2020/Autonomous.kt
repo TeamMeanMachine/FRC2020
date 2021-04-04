@@ -128,9 +128,9 @@ object AutoChooser {
         when (selAuto) {
             "Tests" -> testAuto()
             "5 Ball Trench Run" -> trenchRun5()
-            "10 Ball Shield Generator" -> shieldGenerator10()
-            "8 Ball Shield Generator" -> shieldGenerator8()
-            "8 Ball Trench Run" -> trenchRun8()
+//            "10 Ball Shield Generator" -> shieldGenerator10()
+//            "8 Ball Shield Generator" -> shieldGenerator8()
+//            "8 Ball Trench Run" -> trenchRun8()
             "Carpet Bias Test" -> carpetBiasTest()
             "Helper Paths" -> feederToYeeter()
             "Slalom Auto" -> slalom()
@@ -166,151 +166,151 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
-        try {
-            FrontLimelight.ledEnabled = true
-            val auto = autonomi["10 Ball Shield Generator"]
-//            var auto = autonomi["Red 10 Ball Shield Generator"]
-//            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
-            println(auto == null)
-            if (true){//auto != null) {
-                Intake.setPower(1.0) //Intake.INTAKE_POWER)
-                Intake.extend = true
-                var path = auto["01- Intake 2 Cells"]
-                Drive.driveAlongPath(path, true, 0.125)
-                delay(0.25)
-                Intake.setPower(0.5)
-//                Intake.extend = false
-                parallel ({
-                    delay(path.duration * 0.25)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
-                    Shooter.rpm = rpmSetpoint
-                }, {
-                    path = auto["02- Shooting Position"]
-                    Drive.driveAlongPath(path, false)
-                })
+//    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+//        try {
+//            FrontLimelight.ledEnabled = true
+//            val auto = autonomi["10 Ball Shield Generator"]
+////            var auto = autonomi["Red 10 Ball Shield Generator"]
+////            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
+//            println(auto == null)
+//            if (true){//auto != null) {
+//                Intake.setPower(1.0) //Intake.INTAKE_POWER)
+//                Intake.extend = true
+//                var path = auto["01- Intake 2 Cells"]
+//                Drive.driveAlongPath(path, true, 0.125)
+//                delay(0.25)
+//                Intake.setPower(0.5)
+////                Intake.extend = false
 //                parallel ({
-//                    shootingMode(7)
+//                    delay(path.duration * 0.25)
+//                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+//                    Shooter.rpm = rpmSetpoint
 //                }, {
-//                    delay(2.0)
-                    shootingMode(5)
-                    Intake.setPower(1.0)
-                    Intake.extend = true
-                    path = auto["03- Intake 3 Cells"]
-                    Drive.driveAlongPath(path, false)
+//                    path = auto["02- Shooting Position"]
+//                    Drive.driveAlongPath(path, false)
 //                })
-                    parallel ({
-                        path = auto["04- Intake 2 Cells"]
-                        Drive.driveAlongPath(path, false)
-                    }, {
-                        delay(path.duration * 0.9)
-                        Intake.extend = true
-                    })
-                    Intake.setPower(1.0)
-                    Intake.extend = false
-                    path = auto["05- Shooting Position"]
-                    Drive.driveAlongPath(path, false)
-                    shootingMode(5)
-                }
-        } finally {
-            Shooter.stop()
-            Shooter.rpmSetpoint = 0.0
-            Feeder.setPower(0.0)
-            Intake.extend = false
-            Intake.setPower(0.0)
-            FrontLimelight.ledEnabled = false
-        }
-    }
-
-    suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
-        try {
-            FrontLimelight.ledEnabled = true
-            var additionalTime = 0.5
-            var auto = autonomi["10 Ball Shield Generator"]
-//            var auto = autonomi["Red 10 Ball Shield Generator"]
-//            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
-            println(auto == null)
-            if (true){//auto != null) {
-                Intake.setPower(1.0) //Intake.INTAKE_POWER)
-                Intake.extend = true
-                var path = auto["01- Intake 2 Cells"]
-                path.duration += additionalTime
-                Drive.driveAlongPath(path, true, 0.125)
-                delay(0.25)
-                Intake.setPower(0.5)
-//                Intake.extend = false
-                parallel ({
-                    delay(path.duration * 0.25)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
-                    Shooter.rpm = rpmSetpoint
-                }, {
-                    path = auto["02- Shooting Position"]
-                    path.duration += additionalTime
-                    Drive.driveAlongPath(path, false)
-                })
+////                parallel ({
+////                    shootingMode(7)
+////                }, {
+////                    delay(2.0)
+//                    shootingMode(5)
+//                    Intake.setPower(1.0)
+//                    Intake.extend = true
+//                    path = auto["03- Intake 3 Cells"]
+//                    Drive.driveAlongPath(path, false)
+////                })
+//                    parallel ({
+//                        path = auto["04- Intake 2 Cells"]
+//                        Drive.driveAlongPath(path, false)
+//                    }, {
+//                        delay(path.duration * 0.9)
+//                        Intake.extend = true
+//                    })
+//                    Intake.setPower(1.0)
+//                    Intake.extend = false
+//                    path = auto["05- Shooting Position"]
+//                    Drive.driveAlongPath(path, false)
+//                    shootingMode(5)
+//                }
+//        } finally {
+//            Shooter.stop()
+//            Shooter.rpmSetpoint = 0.0
+//            Feeder.setPower(0.0)
+//            Intake.extend = false
+//            Intake.setPower(0.0)
+//            FrontLimelight.ledEnabled = false
+//        }
+//    }
+//
+//    suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+//        try {
+//            FrontLimelight.ledEnabled = true
+//            var additionalTime = 0.5
+//            var auto = autonomi["10 Ball Shield Generator"]
+////            var auto = autonomi["Red 10 Ball Shield Generator"]
+////            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
+//            println(auto == null)
+//            if (true){//auto != null) {
+//                Intake.setPower(1.0) //Intake.INTAKE_POWER)
+//                Intake.extend = true
+//                var path = auto["01- Intake 2 Cells"]
+//                path.duration += additionalTime
+//                Drive.driveAlongPath(path, true, 0.125)
+//                delay(0.25)
+//                Intake.setPower(0.5)
+////                Intake.extend = false
 //                parallel ({
-//                    shootingMode(7)
+//                    delay(path.duration * 0.25)
+//                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
+//                    Shooter.rpm = rpmSetpoint
 //                }, {
-//                    delay(2.0)
-                shootingMode(5)
-                Intake.setPower(1.0)
-                Intake.extend = true
-                path = auto["03- Intake 3 Cells"]
-                path.duration += additionalTime
-                Drive.driveAlongPath(path, false)
+//                    path = auto["02- Shooting Position"]
+//                    path.duration += additionalTime
+//                    Drive.driveAlongPath(path, false)
 //                })
-                Intake.extend = false
-                path = auto["06- 8 Ball Mod"]
-                path.duration += additionalTime
-                Drive.driveAlongPath(path, false)
-                shootingMode(3)
-            }
-        } finally {
-            Shooter.stop()
-            Shooter.rpmSetpoint = 0.0
-            Feeder.setPower(0.0)
-            Intake.extend = false
-            Intake.setPower(0.0)
-            FrontLimelight.ledEnabled = false
-        }
-    }
-
-    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
-        try {
-            FrontLimelight.ledEnabled = true
-            println("Got into Trench Run 8")
-            val auto = autonomi["8 Ball Trench Run"]
-            if (true)/*auto != null)*/ {
-                var path = auto["1- Collect 1 and Shoot 4 Cells"]
-                Intake.setPower(Intake.INTAKE_POWER)
-                Intake.extend = true
-                parallel ({
-                    Drive.driveAlongPath(path, true)
-                }, {
-                    delay(path.duration * 0.5)
-                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
-                    Shooter.rpm = rpmSetpoint
-                }/*, {
-                    delay(1.1 * path.duration)
-                    Intake.extend = false
-                */)
-                shootingMode(4)
-                Intake.extend = true
-                path = auto["2- Collect 4 Cells"]
-                Drive.driveAlongPath(path, false)
-                path = auto["3- Shoot 4 Cells"]
-                Drive.driveAlongPath(path, false)
-                shootingMode(4)
-            }
-        } finally {
-            Shooter.stop()
-            Shooter.rpmSetpoint = 0.0
-            Feeder.setPower(0.0)
-            Intake.extend = false
-            Intake.setPower(0.0)
-            FrontLimelight.ledEnabled = false
-        }
-    }
+////                parallel ({
+////                    shootingMode(7)
+////                }, {
+////                    delay(2.0)
+//                shootingMode(5)
+//                Intake.setPower(1.0)
+//                Intake.extend = true
+//                path = auto["03- Intake 3 Cells"]
+//                path.duration += additionalTime
+//                Drive.driveAlongPath(path, false)
+////                })
+//                Intake.extend = false
+//                path = auto["06- 8 Ball Mod"]
+//                path.duration += additionalTime
+//                Drive.driveAlongPath(path, false)
+//                shootingMode(3)
+//            }
+//        } finally {
+//            Shooter.stop()
+//            Shooter.rpmSetpoint = 0.0
+//            Feeder.setPower(0.0)
+//            Intake.extend = false
+//            Intake.setPower(0.0)
+//            FrontLimelight.ledEnabled = false
+//        }
+//    }
+//
+//    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
+//        try {
+//            FrontLimelight.ledEnabled = true
+//            println("Got into Trench Run 8")
+//            val auto = autonomi["8 Ball Trench Run"]
+//            if (true)/*auto != null)*/ {
+//                var path = auto["1- Collect 1 and Shoot 4 Cells"]
+//                Intake.setPower(Intake.INTAKE_POWER)
+//                Intake.extend = true
+//                parallel ({
+//                    Drive.driveAlongPath(path, true)
+//                }, {
+//                    delay(path.duration * 0.5)
+//                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
+//                    Shooter.rpm = rpmSetpoint
+//                }/*, {
+//                    delay(1.1 * path.duration)
+//                    Intake.extend = false
+//                */)
+//                shootingMode(4)
+//                Intake.extend = true
+//                path = auto["2- Collect 4 Cells"]
+//                Drive.driveAlongPath(path, false)
+//                path = auto["3- Shoot 4 Cells"]
+//                Drive.driveAlongPath(path, false)
+//                shootingMode(4)
+//            }
+//        } finally {
+//            Shooter.stop()
+//            Shooter.rpmSetpoint = 0.0
+//            Feeder.setPower(0.0)
+//            Intake.extend = false
+//            Intake.setPower(0.0)
+//            FrontLimelight.ledEnabled = false
+//        }
+//    }
 
     suspend fun carpetBiasTest() = use(Drive) {
         val auto = autonomi["Carpet Bias Test"]

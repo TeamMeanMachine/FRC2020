@@ -4,6 +4,7 @@ import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.input.Controller
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.Feeder
 import org.team2471.frc2020.FrontLimelight
@@ -55,4 +56,21 @@ suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {
         }
 
     })
+}
+
+suspend fun Shooter.hoodTest() = use(this) {
+    if (OI.operatorController.dPad == Controller.Direction.UP) {
+        hoodSetPower(0.1)
+    } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
+        hoodSetPower(-0.05)
+    }
+    delay(0.5)
+    hoodSetPower(0.0)
+}
+
+suspend fun Shooter.hoodCurveTesting() = use(this) {
+    periodic {
+        hoodSetPower(hoodSetpoint)
+
+    }
 }

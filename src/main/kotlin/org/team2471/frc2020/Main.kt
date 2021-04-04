@@ -24,18 +24,18 @@ var isCompBotIHateEverything = true
 object Robot : MeanlibRobot() {
 
     init {
-        val networkInterfaces =  NetworkInterface.getNetworkInterfaces()
+        val networkInterfaces = NetworkInterface.getNetworkInterfaces()
         for (iFace in networkInterfaces) {
             if (iFace.name == "eth0") {
-                   println("NETWORK NAME--->${iFace.name}<----")
-                   var macString = ""
-                   for (byteVal in iFace.hardwareAddress){
+                println("NETWORK NAME--->${iFace.name}<----")
+                var macString = ""
+                for (byteVal in iFace.hardwareAddress) {
                     macString += String.format("%s", byteVal)
                 }
                 println("FORMATTED---->$macString<-----")
 
-            isCompBotIHateEverything = (macString != "0-128472587-69")
-           }
+                isCompBotIHateEverything = (macString != "0-128472587-69")
+            }
         }
 
         // i heard the first string + double concatenations were expensive...
@@ -43,11 +43,13 @@ object Robot : MeanlibRobot() {
             println("RANDOM NUMBER: ${Math.random()}")
         }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
+        println("Deploy: 15")
+
 
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser
-        FrontLimelight.startUp() 
+        FrontLimelight.startUp()
         BackLimelight.startUp()
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = true
@@ -66,6 +68,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
+        Shooter.resetHoodEncoder()
         println("ending enable")
     }
 
@@ -80,7 +83,7 @@ object Robot : MeanlibRobot() {
         Drive.headingSetpoint = Drive.heading
     }
 
-    override suspend fun test()  {
+    override suspend fun test() {
 //        Drive.disable()
 //        ControlPanel.test()
 //        Drive.steeringTests()
@@ -97,7 +100,7 @@ object Robot : MeanlibRobot() {
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
 //        Drive.tuneDrivePositionController()
-        Shooter.motorTest()
+//        Shooter.hoodCurveTesting()
     }
 
 
@@ -108,18 +111,17 @@ object Robot : MeanlibRobot() {
         BackLimelight.disable()
         FrontLimelight.disable()
 //        ControlPanel.disable()
-        Shooter.disable()
         Feeder.disable()
         Intake.disable()
         EndGame.disable()
         Tester.disable()
+        Shooter.disable()
 
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = false
 
         Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
-
 
 //        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
 //        val angle1Entry = table.getEntry("Angle 1")
@@ -139,9 +141,10 @@ object Robot : MeanlibRobot() {
 //        val module3 = (Drive.modules[3] as Drive.Module)
 
 //        periodic {
+//            println(Shooter.hoodEncoderPosition)
 //            Drive.recordOdometry()
 
-            //println(module0.analogAngle)
+        //println(module0.analogAngle)
 //            angle1Entry.setValue(module0.analogAngle.asDegrees)
 //            angle2Entry.setValue(module1.analogAngle.asDegrees)
 //            angle3Entry.setValue(module2.analogAngle.asDegrees)
@@ -152,7 +155,9 @@ object Robot : MeanlibRobot() {
 //            angle3Entry.setValue(analogInput2.voltage)
 //            angle4Entry.setValue(analogInput3.voltage)
 //        }
-    }
+        }
+//    }
+
 }
 
 fun main() {
