@@ -160,6 +160,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             SmartDashboard.setPersistent("Use Gyro")
             SmartDashboard.setPersistent("Gyro Type")
 
+
             useGyroEntry.setBoolean(true)
             navXGyroEntry.setBoolean(isCompBotIHateEverything)
 
@@ -172,6 +173,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 yEntry.setDouble(y)
                 headingEntry.setDouble(heading.asDegrees)
                 aimErrorEntry.setDouble(FrontLimelight.aimError)
+
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
 //                printEncoderValues()
@@ -188,11 +190,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
+
         periodic {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+            } else if (FrontLimelight.hasValidTarget) { //) beans && Shooter.prepShotOn) {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
@@ -295,6 +298,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
         override val speed: Double
             get() = driveMotor.velocity
+
+        val power: Double
+            get() = driveMotor.output
 
         override val currDistance: Double
             get() = driveMotor.position

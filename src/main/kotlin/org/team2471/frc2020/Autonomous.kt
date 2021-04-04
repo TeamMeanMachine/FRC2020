@@ -372,11 +372,11 @@ object AutoChooser {
         val auto = autonomi ["Slalom Auto"]
         if (auto != null) {
             var path = auto ["First Way"]
-            path = path.apply {
-                //addEasePoint(0.0, 0.0)
-                //addEasePointSlopeAndMagnitude(path.duration / 2, 0.5, -0.5, 2.5)
-                //addEasePoint(path.duration, 1.0)
-            }
+//            path = path.apply {
+//                //addEasePoint(0.0, 0.0)
+//                //addEasePointSlopeAndMagnitude(path.duration / 2, 0.5, -0.5, 2.5)
+//                //addEasePoint(path.duration, 1.0)
+//            }
             Drive.driveAlongPath(path, true, 0.0, true) {
                 OI.driveTranslation.length > 0.0
             }

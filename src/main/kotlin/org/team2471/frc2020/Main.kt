@@ -62,13 +62,14 @@ object Robot : MeanlibRobot() {
 //        BackLimelight.enable()
         FrontLimelight.enable()
 //        Drive.initializeSteeringMotors()
-        Shooter.enable()
+//        Shooter.enable()
         Feeder.enable()
         Intake.enable()
 //        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
-        Shooter.resetHoodEncoder()
+//        Shooter.resetHoodEncoder()
+        //bean
         println("ending enable")
     }
 
@@ -115,12 +116,13 @@ object Robot : MeanlibRobot() {
         Intake.disable()
         EndGame.disable()
         Tester.disable()
-        Shooter.disable()
+//        Shooter.disable()
+        //bean
 
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = false
-
-        Shooter.rpmOffsetEntry.setPersistent()
+// bean
+//        Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
 
 //        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
