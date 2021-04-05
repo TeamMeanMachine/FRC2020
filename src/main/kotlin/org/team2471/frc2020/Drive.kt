@@ -103,7 +103,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         kpPosition = 0.6,
         kdPosition = 1.5,
         kPositionFeedForward = 0.0, //075,
-        kpHeading = 0.015,
+        kpHeading = 0.025,
         kdHeading = 0.03,
         kHeadingFeedForward = 0.001,
         alignRobotToPath = false
@@ -195,7 +195,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (FrontLimelight.hasValidTarget) { //) beans && Shooter.prepShotOn) {
+            } else if (FrontLimelight.hasValidTarget && false) { //) beans && Shooter.prepShotOn) {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }

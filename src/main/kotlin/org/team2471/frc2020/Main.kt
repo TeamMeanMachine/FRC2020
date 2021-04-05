@@ -84,25 +84,30 @@ object Robot : MeanlibRobot() {
         Drive.headingSetpoint = Drive.heading
 
         val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-        val power0Entry = table.getEntry("Power 0")
-        val power1Entry = table.getEntry("Power 1")
-        val power2Entry = table.getEntry("Power 2")
-        val power3Entry = table.getEntry("Power 3")
+
+        val angle1Entry = table.getEntry("Angle 1")
+        val angle2Entry = table.getEntry("Angle 2")
+        val angle3Entry = table.getEntry("Angle 3")
+        val angle4Entry = table.getEntry("Angle 4")
 
         val module0 = (Drive.modules[0] as Drive.Module)
         val module1 = (Drive.modules[1] as Drive.Module)
         val module2 = (Drive.modules[2] as Drive.Module)
         val module3 = (Drive.modules[3] as Drive.Module)
 
+
         periodic {
 //            Drive.recordOdometry()
 
             //println(module0.analogAngle)
-            power0Entry.setValue(module0.power)
-            power1Entry.setValue(module1.power)
-            power2Entry.setValue(module2.power)
-            power3Entry.setValue(module3.power)
+//            println("kjaflds;jfklda;sjflk;adsjkl")
+//            println(module0.analogAngle.asDegrees)
+            angle1Entry.setValue(module0.analogAngle.asDegrees)
+            angle2Entry.setValue(module1.analogAngle.asDegrees)
+            angle3Entry.setValue(module2.analogAngle.asDegrees)
+            angle4Entry.setValue(module3.analogAngle.asDegrees)
         }
+//        }
     }
 
     override suspend fun test() {
