@@ -7,8 +7,8 @@ object Talons {
 }
 
 object Victors {
-    const val CONTROL_PANEL = 9
-    const val BALANCE = 14
+//    const val CONTROL_PANEL = 9
+//    const val BALANCE = 14
 }
 
 object Sparks {

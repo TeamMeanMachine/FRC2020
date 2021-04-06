@@ -62,13 +62,13 @@ object Robot : MeanlibRobot() {
 //        BackLimelight.enable()
         FrontLimelight.enable()
 //        Drive.initializeSteeringMotors()
-//        Shooter.enable()
+        Shooter.enable()
         Feeder.enable()
         Intake.enable()
 //        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
-//        Shooter.resetHoodEncoder()
+        Shooter.resetHoodEncoder()
         //bean
         println("ending enable")
     }
@@ -140,9 +140,9 @@ object Robot : MeanlibRobot() {
 //        ControlPanel.disable()
         Feeder.disable()
         Intake.disable()
-        EndGame.disable()
-        Tester.disable()
-//        Shooter.disable()
+//        EndGame.disable()
+//        Tester.disable()
+        Shooter.disable()
         //bean
 
         BackLimelight.ledEnabled = false
@@ -161,7 +161,7 @@ object Robot : MeanlibRobot() {
 //        val analogInput1 = AnalogInput(1)
 //        val analogInput2 = AnalogInput(2)
 //        val analogInput3 = AnalogInput(3)
-
+        println("Disable Done")
 
         }
 //    }

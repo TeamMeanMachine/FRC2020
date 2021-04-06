@@ -93,6 +93,7 @@ object Shooter : Subsystem("Shooter") {
 //                hoodMotor.setPercentOutput( 0.25 * (OI.operatorController.leftTrigger - OI.operatorController.rightTrigger))
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
+
                 hoodEntry.setDouble(hoodEncoderPosition)
 
                 if (OI.operatorController.dPad == Controller.Direction.UP) {

@@ -28,7 +28,7 @@ object ControlPanel : Subsystem("Control Panel") {
         get() = DriverStation.getInstance().gameSpecificMessage
 
 
-    val controlMotor = MotorController(VictorID(Victors.CONTROL_PANEL))
+    val controlMotor = MotorController(VictorID(123))//Victors.CONTROL_PANEL))
 
     private val extensionSolenoid = Solenoid(CONTROL_PANEL)
 

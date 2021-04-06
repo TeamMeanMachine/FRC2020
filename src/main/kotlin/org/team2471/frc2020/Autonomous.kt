@@ -73,7 +73,11 @@ object AutoChooser {
         addOption("Helper Paths", "helperPaths")
         addOption("Slalom Auto", "slalomAuto")
         addOption("Barrel Racing Auto", "barrelRacingAuto")
-
+        addOption("Bounce Path Auto", "bouncePathAuto")
+        addOption("Galactic Search A Red Auto", "galacticSearchARedAuto")
+        addOption("Galactic Search A Blue Auto", "galacticSearchABlueAuto")
+        addOption("Galactic Search B Red Auto", "galacticSearchBRedAuto")
+        addOption("Galactic Search B Blue Auto", "galacticSearchBBlue")
     }
 
     init {
@@ -135,6 +139,11 @@ object AutoChooser {
             "Helper Paths" -> feederToYeeter()
             "Slalom Auto" -> slalom()
             "Barrel Racing Auto" -> barrelRacingAuto()
+            "Bounce Path Auto" -> bouncePathAuto()
+            "Galactic Search A Red Auto" -> galacticSearchARedAuto()
+            "Galactic Search A Blue Auto" -> galacticSearchABlueAuto()
+            "Galactic Search B Red Auto" -> galacticSearchBRedAuto()
+            "Galactic Search B Blue Auto" -> galacticSearchBBlueAuto()
             else -> println("No function found for ---->$selAuto<-----")
         }
         SmartDashboard.putString("autoStatus", "complete")
@@ -389,5 +398,67 @@ object AutoChooser {
             var path = auto["Barrel Racing Path"]
             Drive.driveAlongPath(path, true)
         }
+    }
+
+    suspend fun bouncePathAuto() = use(Drive) {
+        val auto = autonomi["Bounce Path Auto"]
+        if (auto != null) {
+            var path = auto["1 First Hit"]
+            Drive.driveAlongPath(path, true)
+            path = auto["2 Second Hit"]
+            Drive.driveAlongPath(path, false)
+            path = auto["3 Third Hit"]
+            Drive.driveAlongPath(path, false)
+            path = auto ["4 End"]
+            Drive.driveAlongPath(path, false)
+        }
+    }
+
+    suspend fun galacticSearchARedAuto() = use(Drive, Intake) {
+        println("Glactic Search A Red Chosen.")
+        Intake.extend = true
+        Intake.setPower(Intake.INTAKE_POWER)
+        val auto = autonomi["Galactic Search A"]
+        if (auto != null) {
+            var path = auto["Red"]
+            Drive.driveAlongPath(path, true)
+        }
+        Intake.setPower(0.0)
+    }
+
+    suspend fun galacticSearchABlueAuto() = use(Drive) {
+        println("Glactic Search A Blue Chosen.")
+        Intake.extend = true
+        Intake.setPower(Intake.INTAKE_POWER)
+        val auto = autonomi["Galactic Search A"]
+        if (auto != null) {
+            var path = auto["Blue"]
+            Drive.driveAlongPath(path, true)
+        }
+        Intake.setPower(0.0)
+    }
+
+    suspend fun galacticSearchBRedAuto() = use(Drive) {
+        println("Glactic Search B Red Chosen.")
+        Intake.extend = true
+        Intake.setPower(Intake.INTAKE_POWER)
+        val auto = autonomi["Galactic Search B"]
+        if (auto != null) {
+            var path = auto["Red"]
+            Drive.driveAlongPath(path, true)
+        }
+        Intake.setPower(0.0)
+    }
+
+    suspend fun galacticSearchBBlueAuto() = use(Drive) {
+        println("Glactic Search B Blue Chosen.")
+        Intake.extend = true
+        Intake.setPower(Intake.INTAKE_POWER)
+        val auto = autonomi["Galactic Search B"]
+        if (auto != null) {
+            var path = auto["Blue"]
+            Drive.driveAlongPath(path, true)
+        }
+        Intake.setPower(0.0)
     }
 }

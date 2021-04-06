@@ -10,7 +10,7 @@ import org.team2471.frc2020.Solenoids.BRAKE
 import org.team2471.frc2020.Solenoids.CLIMB
 
 object EndGame: Subsystem("EndGame") {
-    val balanceMotor = MotorController(VictorID(Victors.BALANCE))
+    val balanceMotor = MotorController(VictorID(456))///Victors.BALANCE))
 
     //private val climbSolenoid = Solenoid(CLIMB)
    // private val brakeSolenoid = Solenoid(BRAKE)
