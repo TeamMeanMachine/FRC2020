@@ -41,7 +41,7 @@ object Feeder: Subsystem("Feeder") {
         try {
 //            println("Got into reverseFeeder. Hi.")
             periodic {
-                setPower(-OI.operatorController.rightTrigger)
+                setPower(-OI.driverController.leftTrigger * 0.7)
             }
         } finally {
             setPower(0.0)
@@ -49,8 +49,21 @@ object Feeder: Subsystem("Feeder") {
     }
 
     override suspend fun default() {
-        periodic {
-            setPower(OI.operatorRightTrigger * -0.7)
+        try {
+            var buttonWasPressed = false
+
+            periodic {
+                if (!Intake.ballIsStaged && !buttonWasPressed) {
+                    Feeder.setPower(0.5)
+
+                } else {
+                    setPower(0.0)
+                    buttonWasPressed = true
+                }
+            }
+        } finally {
+            setPower(0.0)
         }
+
     }
 }

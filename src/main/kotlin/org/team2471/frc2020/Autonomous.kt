@@ -10,12 +10,15 @@ import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
+import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
+import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.asFeet
+import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
 import java.io.File
@@ -74,10 +77,8 @@ object AutoChooser {
         addOption("Slalom Auto", "slalomAuto")
         addOption("Barrel Racing Auto", "barrelRacingAuto")
         addOption("Bounce Path Auto", "bouncePathAuto")
-        addOption("Galactic Search A Red Auto", "galacticSearchARedAuto")
-        addOption("Galactic Search A Blue Auto", "galacticSearchABlueAuto")
-        addOption("Galactic Search B Red Auto", "galacticSearchBRedAuto")
-        addOption("Galactic Search B Blue Auto", "galacticSearchBBlue")
+        addOption("Galactic Search Auto", "galacticSearchChooser")
+        //Change to chooser
     }
 
     init {
@@ -140,10 +141,8 @@ object AutoChooser {
             "Slalom Auto" -> slalom()
             "Barrel Racing Auto" -> barrelRacingAuto()
             "Bounce Path Auto" -> bouncePathAuto()
-            "Galactic Search A Red Auto" -> galacticSearchARedAuto()
-            "Galactic Search A Blue Auto" -> galacticSearchABlueAuto()
-            "Galactic Search B Red Auto" -> galacticSearchBRedAuto()
-            "Galactic Search B Blue Auto" -> galacticSearchBBlueAuto()
+            "Galactic Search Auto" -> galacticSearchChooser()
+            //Change to chooser
             else -> println("No function found for ---->$selAuto<-----")
         }
         SmartDashboard.putString("autoStatus", "complete")
@@ -377,7 +376,7 @@ object AutoChooser {
         }
     }
 
-    suspend fun slalom() =use(Drive) {
+    suspend fun slalom() = use(Drive) {
         val auto = autonomi ["Slalom Auto"]
         if (auto != null) {
             var path = auto ["First Way"]
@@ -409,8 +408,26 @@ object AutoChooser {
             Drive.driveAlongPath(path, false)
             path = auto["3 Third Hit"]
             Drive.driveAlongPath(path, false)
-            path = auto ["4 End"]
+            path = auto["4 End"]
             Drive.driveAlongPath(path, false)
+        }
+    }
+
+    suspend fun galacticSearchChooser() = use(FrontLimelight, Drive) {
+        FrontLimelight.ledEnabled = true
+        suspendUntil(condition = {FrontLimelight.hasValidTarget})
+        if(FrontLimelight.hasValidTarget) {
+            var angle = FrontLimelight.xTranslation
+            println("Angle: $angle. Hi.")
+            Drive.position = Vector2((22.6 * Math.tan(angle * Math.PI/180)), 0.0)
+            val x = Drive.position.x
+            println("x = $x. Hi.")
+            if (-3.3 <= x && x <= 1) galacticSearchARedAuto()
+            if (x > 4.2) galacticSearchABlueAuto()
+            if (1 < x && x <= 4.2) galacticSearchBBlueAuto()
+            if (x < -3.3) galacticSearchBRedAuto()
+        } else {
+            println("Limelight has no valid target.")
         }
     }
 
@@ -421,43 +438,43 @@ object AutoChooser {
         val auto = autonomi["Galactic Search A"]
         if (auto != null) {
             var path = auto["Red"]
-            Drive.driveAlongPath(path, true)
+            Drive.driveAlongPath(path, true, 0.0, true)
         }
         Intake.setPower(0.0)
     }
 
-    suspend fun galacticSearchABlueAuto() = use(Drive) {
+    suspend fun galacticSearchABlueAuto() = use(Drive, Intake) {
         println("Glactic Search A Blue Chosen.")
         Intake.extend = true
         Intake.setPower(Intake.INTAKE_POWER)
         val auto = autonomi["Galactic Search A"]
         if (auto != null) {
             var path = auto["Blue"]
-            Drive.driveAlongPath(path, true)
+            Drive.driveAlongPath(path, true, 0.0, true)
         }
         Intake.setPower(0.0)
     }
 
-    suspend fun galacticSearchBRedAuto() = use(Drive) {
+    suspend fun galacticSearchBRedAuto() = use(Drive, Intake) {
         println("Glactic Search B Red Chosen.")
         Intake.extend = true
         Intake.setPower(Intake.INTAKE_POWER)
         val auto = autonomi["Galactic Search B"]
         if (auto != null) {
             var path = auto["Red"]
-            Drive.driveAlongPath(path, true)
+            Drive.driveAlongPath(path, true, 0.0, true)
         }
         Intake.setPower(0.0)
     }
 
-    suspend fun galacticSearchBBlueAuto() = use(Drive) {
+    suspend fun galacticSearchBBlueAuto() = use(Drive, Intake) {
         println("Glactic Search B Blue Chosen.")
         Intake.extend = true
         Intake.setPower(Intake.INTAKE_POWER)
         val auto = autonomi["Galactic Search B"]
         if (auto != null) {
             var path = auto["Blue"]
-            Drive.driveAlongPath(path, true)
+            Drive.driveAlongPath(path, true, 0.0, true)
         }
         Intake.setPower(0.0)
     }

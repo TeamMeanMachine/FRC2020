@@ -93,8 +93,8 @@ object OI {
         //Operator: Justine
         operatorController::rightBumper.toggleWhenTrue { climb() }
 //        operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
-        ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }
-        //        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
+        ({ driverController.leftTrigger > 0.1 }).whileTrue { reverseFeeder() }
+//        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
 //        operatorController::back.toggleWhenTrue { Drive.initializeSteeringMotors() }
     }
 }

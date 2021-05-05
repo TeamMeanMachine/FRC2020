@@ -340,7 +340,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             driveMotor.config {
                 brakeMode()
                 feedbackCoefficient = 1.0 / 2048.0 / 5.857 / 1.067 // spark max-neo 1.0 / 42.0/ 5.857 / fudge factor
-                currentLimit(30, 0, 0)
+                currentLimit(30)
                 openLoopRamp(0.15)
 //                burnSettings()
             }

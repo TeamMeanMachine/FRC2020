@@ -41,6 +41,7 @@ object Shooter : Subsystem("Shooter") {
         println("shooter init")
         hoodMotor.config {
             brakeMode()
+            currentLimit(20)
             feedbackCoefficient = 63.0 / 475.0 // deg / tick
             pid {
                 p(.00005)
@@ -51,12 +52,16 @@ object Shooter : Subsystem("Shooter") {
 
         hoodCurve.setMarkBeginOrEndKeysToZeroSlope(false)
 
-        hoodCurve.storeValue(7.6, 28.0) //tuned 4/3
-        hoodCurve.storeValue(10.2, 36.0) //tuned 4/3
-        hoodCurve.storeValue(14.5, 42.0) //tuned 4/3
-        hoodCurve.storeValue(19.6, 45.0) //tuned 4/3
-        hoodCurve.storeValue(25.0, 45.0) //tuned 4/3
+//        hoodCurve.storeValue(7.6, 28.0) //tuned 4/3
+//        hoodCurve.storeValue(10.2, 36.0) //tuned 4/3
+//        hoodCurve.storeValue(14.5, 42.0) //tuned 4/3
+//        hoodCurve.storeValue(19.6, 45.0) //tuned 4/3
+//        hoodCurve.storeValue(25.0, 45.0) //tuned 4/3
 
+
+        hoodCurve.storeValue(18.3, 48.0) //rpm 7000
+        hoodCurve.storeValue(13.5, 45.7)
+        hoodCurve.storeValue(9.0, 37.0)
 
         var dist = 11.0
         while (dist <= 34.0) {
@@ -75,9 +80,10 @@ object Shooter : Subsystem("Shooter") {
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.03696) //0.000045
             }
+            currentLimit(40)
 //            burnSettings()
         }
-        rpmSetpointEntry.setDouble(6000.0)
+        rpmSetpointEntry.setDouble(7000.0)
         hoodSetpointEntry.setDouble(0.0)
         println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
@@ -154,7 +160,7 @@ object Shooter : Subsystem("Shooter") {
 //                return field
 //            }
 
-            return rpmSetpointEntry.getDouble(6000.0)
+            return rpmSetpointEntry.getDouble(7000.0)
         }
 
     var rpmOffset: Double = 0.0 //400.0
@@ -175,7 +181,7 @@ object Shooter : Subsystem("Shooter") {
     }
 
     suspend fun resetHoodEncoder() = use(this) {
-        //wip
+
         var t = Timer()
         hoodSetPower(-0.1)
         t.start()
@@ -184,7 +190,7 @@ object Shooter : Subsystem("Shooter") {
                 println("Second passed. Hi.")
                 this.stop()
             }
-            if (hoodMotor.current > 20.0 && t.get() > 0.05) {
+            if (hoodMotor.current > 10.0 && t.get() > 0.05) {
                 println("Current limit hit. Hi.")
                 this.stop()
             }

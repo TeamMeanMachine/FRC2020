@@ -59,9 +59,9 @@ object Intake: Subsystem("Intake") {
         try {
             extend = false
             delay(1.7)
-            periodic {
-                setPower(OI.operatorRightTrigger * 0.7)
-            }
+            //setPower(OI.operatorRightTrigger * 0.7 ) beans put this in a periodic
+
+
         } finally {
             extend = false
             setPower(0.0)
