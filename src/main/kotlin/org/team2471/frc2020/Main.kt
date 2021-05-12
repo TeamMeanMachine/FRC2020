@@ -44,7 +44,6 @@ object Robot : MeanlibRobot() {
             println("RANDOM NUMBER: ${Math.random()}")
         }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
-        println("Deploy: 15")
 
 
         Drive.zeroGyro()

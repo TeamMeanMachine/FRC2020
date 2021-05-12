@@ -120,7 +120,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         }
 
     val aimError: Double
-        get() = xTranslation + FrontLimelight.angleOffset //+ parallax.asDegrees
+        get() = xTranslation + FrontLimelight.angleOffset + parallax.asDegrees
 
 
     fun leftAngleOffset() {

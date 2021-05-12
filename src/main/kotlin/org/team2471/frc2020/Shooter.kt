@@ -41,7 +41,7 @@ object Shooter : Subsystem("Shooter") {
         println("shooter init")
         hoodMotor.config {
             brakeMode()
-            currentLimit(20)
+            currentLimit(30) //20)
             feedbackCoefficient = 63.0 / 475.0 // deg / tick
             pid {
                 p(.00005)

@@ -66,7 +66,6 @@ suspend fun intake() = use(Intake, Feeder) {
 //                print(!Intake.ballIsStaged)
             } else {
                 Feeder.setPower(0.0)
-//                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH")
                 buttonWasPressed = true
             }
 //            println("maxCurr: $maxCurr")
