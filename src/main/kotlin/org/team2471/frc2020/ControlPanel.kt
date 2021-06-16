@@ -28,14 +28,14 @@ object ControlPanel : Subsystem("Control Panel") {
         get() = DriverStation.getInstance().gameSpecificMessage
 
 
-    val controlMotor = MotorController(VictorID(123))//Victors.CONTROL_PANEL))
+//    val controlMotor = MotorController(VictorID(123))//Victors.CONTROL_PANEL))
 
     private val extensionSolenoid = Solenoid(CONTROL_PANEL)
 
 //    val serialPort = SerialPort(9600, SerialPort.Port.kUSB)
 
     fun setPower(power: Double) {
-        controlMotor.setPercentOutput(power)
+//        controlMotor.setPercentOutput(power)
     }
 
 //    private enum class Color {

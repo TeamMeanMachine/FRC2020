@@ -1,6 +1,7 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.wpilibj.Solenoid
+import org.team2471.frc.lib.actuators.FalconID
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
 import org.team2471.frc.lib.actuators.VictorID
@@ -10,35 +11,36 @@ import org.team2471.frc2020.Solenoids.BRAKE
 import org.team2471.frc2020.Solenoids.CLIMB
 
 object EndGame: Subsystem("EndGame") {
-    val balanceMotor = MotorController(VictorID(456))///Victors.BALANCE))
+    val leftClimbMotor = MotorController(FalconID(Falcons.LEFT_CLIMB))
+    val rightClimbMotor = MotorController(FalconID(Falcons.RIGHT_CLIMB))
 
-    //private val climbSolenoid = Solenoid(CLIMB)
-   // private val brakeSolenoid = Solenoid(BRAKE)
+    // motors aren't ided yet!
+
+
+    private val brakeSolenoid = Solenoid(BRAKE)
 
     init {
 
     }
 
-    var climbIsExtending: Boolean
-        get() = true// climbSolenoid.get()
+
+    var brakeIsOn: Boolean
+        get() = !brakeSolenoid.get()
         set(value) {
-           //climbSolenoid.set(value)
+            brakeSolenoid.set(!value)
         }
 
-    var brakeIsExtending: Boolean
-        get() = true //!brakeSolenoid.get()
-        set(value) {
-           // brakeSolenoid.set(!value)
-        }
+    fun setLeftPower(power: Double) {
+        leftClimbMotor.setPercentOutput(power)
+    }
 
-    fun setPower(power: Double) {
-        balanceMotor.setPercentOutput(power)
+    fun setRightPower(power: Double) {
+        rightClimbMotor.setPercentOutput(power)
     }
 
     override suspend fun default() {
         periodic {
-            climbIsExtending = false
-            brakeIsExtending = true
+            brakeIsOn = true
         }
     }
 }

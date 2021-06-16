@@ -52,6 +52,9 @@ object Falcons {
 
     const val SHOOTER = 14
     const val SHOOTER2 = 15
+
+    const val LEFT_CLIMB = 50
+    const val RIGHT_CLIMB = 51
 }
 
  object Solenoids {

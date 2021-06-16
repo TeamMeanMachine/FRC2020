@@ -13,30 +13,30 @@ import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 import kotlin.math.absoluteValue
 
-suspend fun climb() = use(Intake, EndGame, Shooter) {
+suspend fun climb() = use(EndGame) {
     try {
-        parallel ({
-            if (ControlPanel.isExtending) {
-                ControlPanel.isExtending = false
-            }
-        }, {
-            Intake.extend = true
-            delay(0.5)
-        })
-        EndGame.climbIsExtending = true
         periodic {
-            EndGame.brakeIsExtending = OI.operatorLeftY.absoluteValue < 0.1
-            Shooter.setPower(OI.operatorLeftY * -0.5)
-            EndGame.setPower(OI.operatorRightX)
+            if (OI.operatorLeftTrigger > 0.1) {
+                EndGame.brakeIsOn = false
+
+                EndGame.setLeftPower(OI.operatorLeftTrigger * 0.6)
+                EndGame.setRightPower(OI.operatorLeftTrigger * 0.6)
+            } else if (OI.operatorRightTrigger > 0.1) {
+                EndGame.brakeIsOn = false
+
+                EndGame.setLeftPower(OI.operatorRightTrigger * -0.6)
+                EndGame.setRightPower(OI.operatorRightTrigger * -0.6)
+            } else {
+                EndGame.setLeftPower(0.0)
+                EndGame.setRightPower(0.0)
+
+                EndGame.brakeIsOn = true
+            }
         }
+
     } finally {
-        EndGame.brakeIsExtending = true
-        EndGame.climbIsExtending = false
-        Shooter.setPower(0.0)
-        EndGame.setPower(0.0)
-        withContext(NonCancellable) {
-            delay(0.5)
-        }
-        Intake.extend = false
+        EndGame.brakeIsOn = true
+        EndGame.setLeftPower(0.0)
+        EndGame.setRightPower(0.0)
     }
 }
