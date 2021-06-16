@@ -1,6 +1,5 @@
 package org.team2471.frc2020
 
-import com.revrobotics.SparkMax
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
@@ -10,21 +9,17 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
-import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDConstantFController
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
-import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.round
 import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
-import org.team2471.frc.lib.util.Timer
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
 object Drive : Subsystem("Drive"), SwerveDrive {
 
@@ -323,7 +318,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             driveMotor.config {
                 brakeMode()
                 feedbackCoefficient = 1.0 / 246.0
-                currentLimit(30, 0, 0)
+                currentLimit(30)
                 openLoopRamp(0.15)
 //                burnSettings()
             }

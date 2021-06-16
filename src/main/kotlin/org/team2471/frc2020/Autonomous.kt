@@ -15,6 +15,7 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
 import org.team2471.frc.lib.motion_profiling.Autonomous
+import org.team2471.frc.lib.motion_profiling.Path2D
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
@@ -351,8 +352,18 @@ object AutoChooser {
     suspend fun feederToYeeter() = use(Drive) {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
-            var path = auto["Feeder to Yeeter"]
-            Drive.driveAlongPath(path, true, 0.0, false) {
+             var path = auto["Feeder to Yeeter"]
+
+//            var path = Path2D()
+//            if (Drive.position.y < -29) {
+//                path.addPoint(Drive.position.x, Drive.position.y)
+//               path.addPointAndTangent(5.74, -22.04, 0.0, -1.0)
+//            } else {
+//            path.addPoint(Drive.position.x, Drive.position.y)
+//            path.addPointAndTangent(5.53, -29.86, 0.0, -1.0)
+//            path.addPointAndTangent(5.74, -22.04, 0.0, -1.0)
+//            }
+            Drive.driveAlongPath(path, false, 0.0, false) {
                 OI.driveTranslation.length > 0.0
             }
         }
@@ -361,8 +372,24 @@ object AutoChooser {
     suspend fun yeeterToFeeder() = use(Drive) {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
-            var path = auto["Yeeter to Feeder"]
-            Drive.driveAlongPath(path, true, 0.0, false) {
+            // var path = auto["Yeeter to Feeder"]
+            var path = Path2D()
+            if (Drive.position.y > -29) {
+                path.addPoint(Drive.position.x, Drive.position.y)
+                path.addPointAngleAndMagnitude(4.50, -30.96, 9.5, 5.00)
+                path.addPointAngleAndMagnitude(-0.81, -51.22, -13.6, 1.17)
+
+                path.addEasePoint(0.0,0.0)
+                path.addEasePoint(7.0,1.0)
+            } else {
+                path.addPoint(Drive.position.x, Drive.position.y)
+                path.addPointAndTangent(-0.81, -51.22, 0.0, -1.0)
+
+                path.addEasePoint(0.0,0.0)
+                path.addEasePoint(3.5,1.0)
+            }
+
+            Drive.driveAlongPath(path, false, 0.0, false) {
                 OI.driveTranslation.length > 0.0
             }
         }

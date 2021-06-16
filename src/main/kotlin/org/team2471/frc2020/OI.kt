@@ -47,7 +47,7 @@ object OI {
         get() = driverController.rightTrigger
 
     val operatorLeftTrigger: Double
-        get() = operatorController.leftTrigger
+        get() = operatorController.leftTrigger.deadband(0.1)
 
     val operatorLeftY: Double
         get() = operatorController.leftThumbstickY.deadband(0.2)
@@ -56,7 +56,7 @@ object OI {
         get() = operatorController.leftThumbstickX.deadband(0.2)
 
     val operatorRightTrigger: Double
-        get() = operatorController.rightTrigger
+        get() = operatorController.rightTrigger.deadband(0.1)
 
     val operatorRightX: Double
         get() = operatorController.rightThumbstickX.deadband(0.25)

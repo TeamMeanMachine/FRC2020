@@ -2,17 +2,12 @@ package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
-import edu.wpi.first.wpilibj.SerialPort
 import edu.wpi.first.wpilibj.Solenoid
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import org.team2471.frc.lib.actuators.MotorController
-import org.team2471.frc.lib.actuators.SparkMaxID
-import org.team2471.frc.lib.actuators.TalonID
 import org.team2471.frc.lib.actuators.VictorID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc2020.Solenoids.CONTROL_PANEL
-import java.awt.image.renderable.ContextualRenderedImageFactory
 
 //import org.team2471.frc.lib.actuators.MotorController
 //import org.team2471.frc.lib.actuators.SparkMaxID

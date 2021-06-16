@@ -253,9 +253,9 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         Feeder.setPower(0.0)
         Intake.extend = false
         if (FrontLimelight.hasValidTarget) {
-            val alpha = 0.5
+            val alpha = 0.0
             Drive.position = Drive.position * alpha + FrontLimelight.position * (1.0-alpha)
-            println("Reset odometry to include limelight. Hi.")
+            println("Reset odometry based on limelight. Hi.")
         }
         FrontLimelight.ledEnabled = false
         if(!isAuto) {

@@ -5,7 +5,6 @@ import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher

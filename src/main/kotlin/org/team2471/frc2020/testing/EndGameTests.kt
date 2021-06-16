@@ -9,7 +9,7 @@ import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 
 suspend fun EndGame.climbSolenoidTest() = use(EndGame, Shooter, Intake) {
-    EndGame.brakeIsExtending = false
+    EndGame.brakeIsOn = false
     Intake.extend = true
     delay(2.0)
     Shooter.setPower(0.25)
@@ -20,18 +20,18 @@ suspend fun EndGame.climbSolenoidTest() = use(EndGame, Shooter, Intake) {
 }
 
 suspend fun EndGame.brakeSolenoidTest() = use(EndGame) {
-    EndGame.brakeIsExtending = true
+    EndGame.brakeIsOn = true
     periodic {
-        println(brakeIsExtending)
+        println(brakeIsOn)
     }
 }
 
 suspend fun EndGame.climbTest() = use(EndGame) {
-    EndGame.brakeIsExtending = false
+    EndGame.brakeIsOn = false
     Intake.extend = true
     climbIsExtending = true
     periodic {
         Shooter.setPower(OI.operatorLeftY * 0.5)
-        brakeIsExtending = Math.abs(OI.operatorLeftY) < 0.1
+        brakeIsOn = Math.abs(OI.operatorLeftY) < 0.1
     }
 }
