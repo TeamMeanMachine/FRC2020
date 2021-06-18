@@ -62,7 +62,7 @@ suspend fun intake() = use(Intake, Feeder) {
                 goalT = Double.MAX_VALUE
             }
             if (!Intake.ballIsStaged && !buttonWasPressed) {
-                Feeder.setPower(0.7)
+//                Feeder.setPower(0.7)
 //                print(!Intake.ballIsStaged)
             } else {
                 Feeder.setPower(0.0)

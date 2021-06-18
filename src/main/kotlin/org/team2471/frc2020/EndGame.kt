@@ -25,7 +25,7 @@ object EndGame: Subsystem("EndGame") {
            climbSolenoid.set(value)
         }
 
-    var brakeIsExtending: Boolean
+    var brakeIsOn: Boolean
         get() = !brakeSolenoid.get()
         set(value) {
             brakeSolenoid.set(!value)
@@ -38,7 +38,7 @@ object EndGame: Subsystem("EndGame") {
     override suspend fun default() {
         periodic {
             climbIsExtending = false
-            brakeIsExtending = true
+            brakeIsOn = true
         }
     }
 }

@@ -25,12 +25,12 @@ suspend fun climb() = use(Intake, EndGame, Shooter) {
         })
         EndGame.climbIsExtending = true
         periodic {
-            EndGame.brakeIsExtending = OI.operatorLeftY.absoluteValue < 0.1
+            EndGame.brakeIsOn = OI.operatorLeftY.absoluteValue < 0.1
             Shooter.setPower(OI.operatorLeftY * -0.5)
             EndGame.setPower(OI.operatorRightX)
         }
     } finally {
-        EndGame.brakeIsExtending = true
+        EndGame.brakeIsOn = true
         EndGame.climbIsExtending = false
         Shooter.setPower(0.0)
         EndGame.setPower(0.0)

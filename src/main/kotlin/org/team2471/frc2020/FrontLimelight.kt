@@ -69,8 +69,8 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     val position: Vector2
         get() = Vector2(0.0, 0.0) - Vector2(
-            (distance.asFeet * (heading - xTranslation.degrees).sin()),
-            (distance.asFeet * (heading - xTranslation.degrees).cos())
+            (distance.asFeet * (heading + xTranslation.degrees).sin()),
+            (distance.asFeet * (heading + xTranslation.degrees).cos())
         )
 
     val targetAngle: Angle

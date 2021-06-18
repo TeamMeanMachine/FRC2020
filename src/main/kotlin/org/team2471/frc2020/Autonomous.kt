@@ -377,13 +377,13 @@ object AutoChooser {
             if (Drive.position.y > -29) {
                 path.addPoint(Drive.position.x, Drive.position.y)
                 path.addPointAngleAndMagnitude(4.50, -30.96, 9.5, 5.00)
-                path.addPointAngleAndMagnitude(-0.81, -51.22, -13.6, 1.17)
+                path.addPointAngleAndMagnitude(-02.81, -45.22, -13.6, 1.17)
 
                 path.addEasePoint(0.0,0.0)
                 path.addEasePoint(7.0,1.0)
             } else {
                 path.addPoint(Drive.position.x, Drive.position.y)
-                path.addPointAndTangent(-0.81, -51.22, 0.0, -1.0)
+                path.addPointAndTangent(-02.81, -45.22, 0.0, -1.0)
 
                 path.addEasePoint(0.0,0.0)
                 path.addEasePoint(3.5,1.0)
