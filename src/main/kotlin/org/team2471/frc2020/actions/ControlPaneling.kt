@@ -28,8 +28,6 @@ suspend fun controlPanel1() = use(ControlPanel) {
     }
 }
 
-//testing GitHub. Hi.
-
 //suspend fun controlPanel2() = use(ControlPanel) {
 //    try{
 //          ControlPanel.isExtending = true
