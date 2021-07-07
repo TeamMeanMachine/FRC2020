@@ -127,23 +127,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test() {
-//        Drive.disable()
-//        ControlPanel.test()
-//        Drive.steeringTests()
-//        Drive.driveTests()
-//        Feeder.test()
-//        Intake.solenoidTest()
-//        ControlPanel.motorTest()
-//        ControlPanel.soleniodTest()
-//        Intake.intakeFeedAndShootTest()
-//        EndGame.climbSolenoidTest()
-//        EndGame.brakeSolenoidTest()
-//        EndGame.climbTest()
-//        Shooter.distance2RpmTest()
-//        Shooter.countBallsShotTest()
-//        Shooter.motorTest()
-//        Drive.tuneDrivePositionController()
-//        Shooter.hoodCurveTesting()
+        Shooter.hoodTest()
     }
 
 

@@ -5,6 +5,7 @@ import org.team2471.frc.lib.actuators.SparkMaxID
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.Servo
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.FalconID
@@ -15,10 +16,14 @@ import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.Timer
+import kotlin.math.absoluteValue
 
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(FalconID(Falcons.SHOOTER),FalconID(Falcons.SHOOTER2))
-    private val hoodMotor = MotorController(SparkMaxID(Sparks.HOOD))
+    //private val hoodMotor = MotorController(SparkMaxID(Sparks.HOOD))
+    private val hoodServo1 = Servo(PWMServos.HOOD_SERVO_1)
+    private val hoodServo2 = Servo(PWMServos.HOOD_SERVO_2)
+
 
     private val table = NetworkTableInstance.getDefault().getTable(name)
     val rpmEntry = table.getEntry("RPM")
@@ -39,14 +44,17 @@ object Shooter : Subsystem("Shooter") {
 
     init {
         println("shooter init")
-        hoodMotor.config {
-            brakeMode()
-            currentLimit(30) //20)
-            feedbackCoefficient = 63.0 / 475.0 // deg / tick
-            pid {
-                p(.00005)
-            }
-        }
+//        hoodMotor.config {
+//            brakeMode()
+//            currentLimit(30) //20)
+//            feedbackCoefficient = 63.0 / 475.0 // deg / tick
+//            pid {
+//                p(.00005)
+//            }
+//        }
+
+        hoodServo1.setBounds(2.50, 1.55, 1.50, 1.45, 0.50)
+        hoodServo2.setBounds(2.50, 1.55, 1.50, 1.45, 0.50)
 
         hoodCurve = MotionCurve()
 
@@ -100,7 +108,7 @@ object Shooter : Subsystem("Shooter") {
                 rpmEntry.setDouble(rpm)
                 rpmErrorEntry.setDouble(rpmSetpoint - rpm)
 
-                hoodEntry.setDouble(hoodEncoderPosition)
+               // hoodEntry.setDouble(hoodEncoderPosition)
 
                 if (OI.operatorController.dPad == Controller.Direction.UP) {
                     upPressed = true
@@ -127,7 +135,10 @@ object Shooter : Subsystem("Shooter") {
     }
 
     fun hoodSetPower(power: Double) {
-        hoodMotor.setPercentOutput(power)
+        hoodServo1.setSpeed(-power * 0.99)
+        hoodServo2.setSpeed(power * 0.99)
+//        println("$powerVal")
+        //hoodMotor.setPercentOutput(power)
     }
 
     fun stop() {
@@ -135,18 +146,18 @@ object Shooter : Subsystem("Shooter") {
     }
 
     fun hoodStop() {
-        hoodMotor.stop()
+        //hoodMotor.stop()
     }
 
     var rpm: Double
         get() = shootingMotor.velocity
         set(value) = shootingMotor.setVelocitySetpoint(value)
 
-    var hoodEncoderPosition: Double
-        get() = hoodMotor.position
-        set(value) {
-            hoodMotor.setPositionSetpoint(value.coerceIn(3.0, 60.0))
-        }
+   // var hoodEncoderPosition: Double
+//        get() = hoodMotor.position
+//        set(value) {
+//            hoodMotor.setPositionSetpoint(value.coerceIn(3.0, 60.0))
+//        }
 
     var rpmSetpoint: Double = 0.0
         get() {
@@ -181,22 +192,24 @@ object Shooter : Subsystem("Shooter") {
     }
 
     suspend fun resetHoodEncoder() = use(this) {
-
-        var t = Timer()
-        hoodSetPower(-0.1)
-        t.start()
+        println("HELLO")
+        hoodSetPower(1.0)
+        var lastEncoderPosition = Intake.intakeMotor.position
+        var samePositionCounter = 0
         periodic {
-            if (t.get() > 1.0) {
-                println("Second passed. Hi.")
+            if ((lastEncoderPosition - Intake.intakeMotor.position).absoluteValue < 0.01) {
+                samePositionCounter++
+            } else {
+                samePositionCounter = 0
+            }
+            if (samePositionCounter > 10) {
                 this.stop()
             }
-            if (hoodMotor.current > 10.0 && t.get() > 0.05) {
-                println("Current limit hit. Hi.")
-                this.stop()
-            }
+            lastEncoderPosition = Intake.intakeMotor.position
         }
         hoodSetPower(0.0)
-        hoodMotor.position = 0.0
+        Intake.intakeMotor.position = 66.6
+        println("GOODBYE")
     }
 
     var current = shootingMotor.current
@@ -204,7 +217,7 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-            hoodMotor.stop()
+          //  hoodMotor.stop()
         }
     }
 }

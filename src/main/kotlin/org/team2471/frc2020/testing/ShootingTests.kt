@@ -59,13 +59,15 @@ suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {
 }
 
 suspend fun Shooter.hoodTest() = use(this) {
-    if (OI.operatorController.dPad == Controller.Direction.UP) {
-        hoodSetPower(0.1)
-    } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
-        hoodSetPower(-0.05)
+    periodic {
+        if (OI.operatorController.dPad == Controller.Direction.UP) {
+            hoodSetPower(1.00)
+        } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
+            hoodSetPower(-1.0)
+        } else {
+            hoodSetPower(0.0)
+        }
     }
-    delay(0.5)
-    hoodSetPower(0.0)
 }
 
 suspend fun Shooter.hoodCurveTesting() = use(this) {

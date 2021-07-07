@@ -24,8 +24,13 @@ object Sparks {
 //
 //    const val SHOOTER = 2 //
 //    const val SHOOTER2 = 13 //
-    const val HOOD = 11
+    //const val HOOD = 11
 
+
+}
+object PWMServos {
+    const val HOOD_SERVO_1=0
+    const val HOOD_SERVO_2=1
 }
 
 // Analog Sensors

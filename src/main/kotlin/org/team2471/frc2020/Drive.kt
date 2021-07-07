@@ -31,6 +31,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
 
+    var demoMaxSpeed = 0.4
+
 
     /**
      * Coordinates of modules
@@ -157,6 +159,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
             val zeroGyroEntry = table.getEntry("Zero Gyro")
 
+            val demoMaxSpeedEntry = table.getEntry("Demo Max Speed")
+//            demoMaxSpeedEntry.setDouble(1.0)
+
+
             SmartDashboard.setPersistent("Use Gyro")
             SmartDashboard.setPersistent("Gyro Type")
 
@@ -167,6 +173,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
+
             periodic {
                 val (x, y) = position
                 xEntry.setDouble(x)
@@ -174,7 +181,9 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 headingEntry.setDouble(heading.asDegrees)
                 aimErrorEntry.setDouble(FrontLimelight.aimError)
 
-//                aimPDController.p = aimPEntry.getDouble(0.015)
+                demoMaxSpeed = demoMaxSpeedEntry.getDouble(1.0)
+                //                aimPDController.p = aimPEntry.getDouble(0.015)
+
 //                aimPDController.d = aimDEntry.getDouble(0.005)
 //                printEncoderValues()
             }
@@ -208,8 +217,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 headingSetpoint = direction
 
             drive(
-                OI.driveTranslation,
-                turn,
+                OI.driveTranslation * demoMaxSpeed,
+                turn * demoMaxSpeed,
                 //true,
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
@@ -355,6 +364,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                     setPersistent()
                     setDefaultDouble(0.00075)
                 }
+
             }
 
         }
