@@ -127,7 +127,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test() {
-        Shooter.hoodTest()
+      //  Shooter.hoodTest()
     }
 
 

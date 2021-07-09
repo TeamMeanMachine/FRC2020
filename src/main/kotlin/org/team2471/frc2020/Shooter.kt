@@ -6,9 +6,11 @@ import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Servo
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.FalconID
+import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.input.Controller
@@ -92,7 +94,7 @@ object Shooter : Subsystem("Shooter") {
 //            burnSettings()
         }
         rpmSetpointEntry.setDouble(7000.0)
-        hoodSetpointEntry.setDouble(0.0)
+        hoodSetpointEntry.setDouble(50.0)
         println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
             println("in global scope")
@@ -126,6 +128,11 @@ object Shooter : Subsystem("Shooter") {
                     decrementRpmOffset()
                 }
 
+                if (hoodPDEnable) {
+                    val power = hoodPDController.update(hoodSetpoint - hoodEncoderPosition)
+                    hoodSetPower(power)
+//                    println("hoodSetPoint=$hoodSetpoint  encoderPosition = $hoodEncoderPosition  power = $power")
+                }
             }
         }
     }
@@ -135,8 +142,8 @@ object Shooter : Subsystem("Shooter") {
     }
 
     fun hoodSetPower(power: Double) {
-        hoodServo1.setSpeed(-power * 0.99)
-        hoodServo2.setSpeed(power * 0.99)
+        hoodServo1.setSpeed((-power).coerceIn(-0.99, 0.99))
+        hoodServo2.setSpeed(power.coerceIn(-0.99, 0.99))
 //        println("$powerVal")
         //hoodMotor.setPercentOutput(power)
     }
@@ -153,11 +160,16 @@ object Shooter : Subsystem("Shooter") {
         get() = shootingMotor.velocity
         set(value) = shootingMotor.setVelocitySetpoint(value)
 
-   // var hoodEncoderPosition: Double
-//        get() = hoodMotor.position
-//        set(value) {
-//            hoodMotor.setPositionSetpoint(value.coerceIn(3.0, 60.0))
-//        }
+    var hoodSetpoint = 45.0
+//        get() = hoodSetpointEntry.getDouble(45.0)
+
+    var hoodEncoderPosition: Double
+        get() = Intake.intakeMotor.position
+        set(value) {
+            hoodSetpoint = value.coerceIn(21.0, 66.0)
+        }
+
+    val hoodPDController = PDController(0.5, 0.0)
 
     var rpmSetpoint: Double = 0.0
         get() {
@@ -180,8 +192,7 @@ object Shooter : Subsystem("Shooter") {
             rpmOffsetEntry.setDouble(value)
         }
 
-    var hoodSetpoint: Double = 0.0
-        get() = hoodSetpointEntry.getDouble(0.0)
+    var hoodPDEnable = false
 
     fun incrementRpmOffset() {
         rpmOffset += 20.0
@@ -192,24 +203,25 @@ object Shooter : Subsystem("Shooter") {
     }
 
     suspend fun resetHoodEncoder() = use(this) {
-        println("HELLO")
-        hoodSetPower(1.0)
-        var lastEncoderPosition = Intake.intakeMotor.position
-        var samePositionCounter = 0
-        periodic {
-            if ((lastEncoderPosition - Intake.intakeMotor.position).absoluteValue < 0.01) {
-                samePositionCounter++
-            } else {
-                samePositionCounter = 0
+        if (!hoodPDEnable) {
+            hoodSetPower(1.0)
+            var lastEncoderPosition = Intake.intakeMotor.position
+            var samePositionCounter = 0
+            periodic {
+                if ((lastEncoderPosition - Intake.intakeMotor.position).absoluteValue < 0.01) {
+                    samePositionCounter++
+                } else {
+                    samePositionCounter = 0
+                }
+                if (samePositionCounter > 10) {
+                    this.stop()
+                }
+                lastEncoderPosition = Intake.intakeMotor.position
             }
-            if (samePositionCounter > 10) {
-                this.stop()
-            }
-            lastEncoderPosition = Intake.intakeMotor.position
+            hoodSetPower(0.0)
+            Intake.intakeMotor.position = 66.6
+            hoodPDEnable = true
         }
-        hoodSetPower(0.0)
-        Intake.intakeMotor.position = 66.6
-        println("GOODBYE")
     }
 
     var current = shootingMotor.current
