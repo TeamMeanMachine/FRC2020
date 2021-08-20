@@ -3,6 +3,7 @@ package org.team2471.frc2020.actions
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
+import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.ControlPanel
 import org.team2471.frc2020.EndGame
@@ -15,13 +16,32 @@ suspend fun controlPanel1() = use(ControlPanel) {
             delay(0.5)
         }
         ControlPanel.isExtending = true
-        /*var startingColor = sensor stuff*/
+        delay(1.0)
+        //todo: give time for lining up
+        var startingColor = ControlPanel.getColor()
+        var currentColor = startingColor
+        var previousColor = startingColor
+        var colorCount = 0
         periodic {
-            ControlPanel.setPower(OI.operatorLeftX)
+            ControlPanel.setPower(0.5)
+            currentColor = ControlPanel.getColor()
+            if (currentColor != "") {
+                if (startingColor == "") {
+                    startingColor = currentColor
+                    previousColor = currentColor
+                }
+                if (currentColor != previousColor) {
+                    println("Color changed $previousColor to $currentColor")
+                    if (currentColor == startingColor) {
+                        colorCount++
+                        if (colorCount == 6) {
+                            this.stop()
+                        }
+                    }
+                    previousColor = currentColor
+                }
+            }
         }
-        /*suspendUntil(sensor == startingColor)
-           suspendUntil(sensor == startingColor)
-           suspendUntil(sensor == startingColor)*/
     } finally {
         ControlPanel.isExtending = false
         ControlPanel.setPower(0.0)

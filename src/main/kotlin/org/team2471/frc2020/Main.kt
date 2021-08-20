@@ -63,7 +63,7 @@ object Robot : MeanlibRobot() {
         Feeder.enable()
         Intake.enable()
         EndGame.enable()
-        Tester.enable()
+//        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
         println("ending enable")
     }
@@ -112,7 +112,7 @@ object Robot : MeanlibRobot() {
         Feeder.disable()
         Intake.disable()
         EndGame.disable()
-        Tester.disable()
+//        Tester.disable()
 
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = false

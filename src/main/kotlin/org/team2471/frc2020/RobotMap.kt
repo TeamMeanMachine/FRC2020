@@ -37,7 +37,7 @@ object AnalogSensors {
 
 object Falcons {
     const val FEEDER = 1
-    const val TESTER = 5
+//    const val TESTER = 5
 }
 
  object Solenoids {
