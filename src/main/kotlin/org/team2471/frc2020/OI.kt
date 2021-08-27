@@ -10,10 +10,7 @@ import org.team2471.frc.lib.math.squareWithSign
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.AutoChooser
 import org.team2471.frc2020.Feeder.reverseFeeder
-import org.team2471.frc2020.actions.climb
-import org.team2471.frc2020.actions.controlPanel1
-import org.team2471.frc2020.actions.intake
-import org.team2471.frc2020.actions.shootingMode
+import org.team2471.frc2020.actions.*
 import kotlin.math.roundToInt
 
 //import org.team2471.frc2020.actions.intake
@@ -45,6 +42,9 @@ object OI {
 
     val driveRightTrigger: Double
         get() = driverController.rightTrigger
+
+    val operatorLeftBumper: Boolean
+        get() = operatorController.leftBumper
 
     val operatorLeftTrigger: Double
         get() = operatorController.leftTrigger.deadband(0.1)
@@ -90,7 +90,8 @@ object OI {
 
         //Operator: Justine
         operatorController::rightBumper.toggleWhenTrue { climb() }
-        operatorController::leftBumper.toggleWhenTrue { controlPanel1() }
+        operatorController::a.whenTrue { controlPanel1() }
+        operatorController::b.whenTrue { controlPanel2() }
         ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }
         //        ({ driverController.rightTrigger > 0.1 }).whileTrue { reverseFeeder() }
 //        operatorController::back.toggleWhenTrue { Drive.initializeSteeringMotors() }

@@ -19,9 +19,16 @@ import org.team2471.frc2020.Solenoids.CONTROL_PANEL
 object ControlPanel : Subsystem("Control Panel") {
     private val table = NetworkTableInstance.getDefault().getTable(name)
     val gameColorEntry = table.getEntry("Game Color")
-
     val gameData: String
-        get() = DriverStation.getInstance().gameSpecificMessage
+        get() {
+             return when (DriverStation.getInstance().gameSpecificMessage[0]) {
+                'R' -> "b"
+                'G' -> "y"
+                'B' -> "r"
+                'Y' -> "g"
+                else -> "Error"
+            }
+        }
 
 
     val controlMotor = MotorController(VictorID(Victors.CONTROL_PANEL))
@@ -37,7 +44,6 @@ object ControlPanel : Subsystem("Control Panel") {
 
     var fmsColor: String
         get() = {
-            var gameData = DriverStation.getInstance().gameSpecificMessage;
             if (gameData.isNotEmpty()){
                 when(gameData[0]) {
                     'R' -> "Red"
@@ -67,12 +73,8 @@ object ControlPanel : Subsystem("Control Panel") {
 //
     override suspend fun default() {
         periodic {
+            println("Color read: ${getColor()}. Hi.")
             gameColorEntry.setString(gameData)
-            if(OI.operatorController.y) {
-                sendCommand(ArduinoCommand.SAMPLE)
-                lastColor = readSerial
-                println("Hi")
-            }
 
 //           println("Serial Output: $lastColor")
 //           println("FMS Target Color: $fmsColor")
@@ -80,7 +82,9 @@ object ControlPanel : Subsystem("Control Panel") {
     }
 
     init {
-
+        controlMotor.config {
+            brakeMode()
+        }
     }
 
     fun getColor() : String {
