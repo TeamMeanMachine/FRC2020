@@ -32,6 +32,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
             Shooter.hoodSetpoint = if (FrontLimelight.hasValidTarget) Shooter.hoodCurve.getValue(FrontLimelight.distance.asFeet) else 18.0 // Drive.position.length
+//            Shooter.hoodSetpoint = Shooter.hoodSetpointEntry.getDouble(50.0)
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
                 if (!isAuto && currTime > 0.1) {

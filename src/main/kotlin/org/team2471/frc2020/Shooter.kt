@@ -69,9 +69,10 @@ object Shooter : Subsystem("Shooter") {
 //        hoodCurve.storeValue(25.0, 45.0) //tuned 4/3
 
 
-        hoodCurve.storeValue(18.3, 48.0) //rpm 7000
-        hoodCurve.storeValue(13.5, 45.7)
-        hoodCurve.storeValue(9.0, 37.0)
+        hoodCurve.storeValue(18.3, 68.0) //rpm 7000
+        hoodCurve.storeValue(13.5, 62.0)
+        hoodCurve.storeValue(9.0, 55.0)
+//
 
         var dist = 11.0
         while (dist <= 34.0) {
