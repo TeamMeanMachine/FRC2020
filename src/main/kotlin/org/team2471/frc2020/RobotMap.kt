@@ -4,6 +4,7 @@ package org.team2471.frc2020
 
 object Talons {
     const val INTAKE = 6
+    const val INDEXER = 4
 }
 
 object Victors {
@@ -52,14 +53,14 @@ object Falcons {
     const val STEER_BACKRIGHT = 7
     const val STEER_FRONTRIGHT = 5
 
-    const val FEEDER = 1
+    const val FEEDER = 11
 //    const val TESTER = 5
 
     const val SHOOTER = 14
     const val SHOOTER2 = 15
 
-    const val LEFT_CLIMB = 50
-    const val RIGHT_CLIMB = 51
+    const val LEFT_CLIMB = 1
+    const val RIGHT_CLIMB = 2
 }
 
  object Solenoids {

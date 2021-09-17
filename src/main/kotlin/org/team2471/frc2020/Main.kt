@@ -5,7 +5,7 @@ package org.team2471.frc2020
 
 
 
-import FRC____.BuildConfig
+//import FRC____.BuildConfig
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
@@ -50,16 +50,16 @@ object Robot : MeanlibRobot() {
         }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
 
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        var instant = Instant.ofEpochMilli(BuildConfig.BUILD_TIME)
-        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
-        println(formatter.format(date))
-        println((System.currentTimeMillis() - BuildConfig.BUILD_TIME) / 1000)
-        val deltaSeconds = (System.currentTimeMillis() - BuildConfig.BUILD_TIME) / 1000
-        val isBuildFresh = deltaSeconds < 100
+//        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//        var instant = Instant.ofEpochMilli(BuildConfig.BUILD_TIME)
+//        val date = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+//        println(formatter.format(date))
+//        println((System.currentTimeMillis() - BuildConfig.BUILD_TIME) / 1000)
+//        val deltaSeconds = (System.currentTimeMillis() - BuildConfig.BUILD_TIME) / 1000
+//        val isBuildFresh = deltaSeconds < 100
         val table = NetworkTableInstance.getDefault().getTable("SmartDashboard")
         val freshBuildEntry = table.getEntry("Fresh Build")
-        freshBuildEntry.setBoolean(isBuildFresh)
+//        freshBuildEntry.setBoolean(isBuildFresh)
 //
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
@@ -127,7 +127,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test() {
-      //  Shooter.hoodTest()
+        Shooter.motorTest()
     }
 
 
