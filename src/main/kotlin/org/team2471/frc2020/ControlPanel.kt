@@ -21,12 +21,16 @@ object ControlPanel : Subsystem("Control Panel") {
     val gameColorEntry = table.getEntry("Game Color")
     val gameData: String
         get() {
-             return when (DriverStation.getInstance().gameSpecificMessage[0]) {
-                'R' -> "b"
-                'G' -> "y"
-                'B' -> "r"
-                'Y' -> "g"
-                else -> "Error"
+            return if (DriverStation.getInstance().gameSpecificMessage != null && DriverStation.getInstance().gameSpecificMessage.isNotEmpty()) {
+                when (DriverStation.getInstance().gameSpecificMessage[0]) {
+                    'R' -> "b"
+                    'G' -> "y"
+                    'B' -> "r"
+                    'Y' -> "g"
+                    else -> "Error"
+                }
+            } else {
+                "Error"
             }
         }
 
@@ -59,7 +63,9 @@ object ControlPanel : Subsystem("Control Panel") {
         set(value) {}
 
     var readSerial: String
-        get() = serialPort.readString()
+        get() {
+            return if (serialPort.readString().isNotEmpty()) serialPort.readString() else "Error"
+        }
         set(value) {}
 
     var isExtending: Boolean
@@ -73,7 +79,7 @@ object ControlPanel : Subsystem("Control Panel") {
 //
     override suspend fun default() {
         periodic {
-            println("Color read: ${getColor()}. Hi.")
+       //     println("Color read: ${getColor()}. Hi.")
             gameColorEntry.setString(gameData)
 
 //           println("Serial Output: $lastColor")
@@ -94,16 +100,18 @@ object ControlPanel : Subsystem("Control Panel") {
     }
 
     fun sendCommand(command: ArduinoCommand) {
-        when (command) {
-            ArduinoCommand.CALIBRATE_R -> serialPort.writeString("r")
-            ArduinoCommand.CALIBRATE_G -> serialPort.writeString("g")
-            ArduinoCommand.CALIBRATE_B -> serialPort.writeString("b")
-            ArduinoCommand.CALIBRATE_Y -> serialPort.writeString("y")
-            ArduinoCommand.LED_RED -> serialPort.writeString("R")
-            ArduinoCommand.LED_GREEN -> serialPort.writeString("G")
-            ArduinoCommand.LED_BLUE -> serialPort.writeString("B")
-            ArduinoCommand.LED_YELLOW -> serialPort.writeString("Y")
-            ArduinoCommand.SAMPLE -> serialPort.writeString("?")
+        if (serialPort.readString().isNotEmpty()) {
+            when (command) {
+                ArduinoCommand.CALIBRATE_R -> serialPort.writeString("r")
+                ArduinoCommand.CALIBRATE_G -> serialPort.writeString("g")
+                ArduinoCommand.CALIBRATE_B -> serialPort.writeString("b")
+                ArduinoCommand.CALIBRATE_Y -> serialPort.writeString("y")
+                ArduinoCommand.LED_RED -> serialPort.writeString("R")
+                ArduinoCommand.LED_GREEN -> serialPort.writeString("G")
+                ArduinoCommand.LED_BLUE -> serialPort.writeString("B")
+                ArduinoCommand.LED_YELLOW -> serialPort.writeString("Y")
+                ArduinoCommand.SAMPLE -> serialPort.writeString("?")
+            }
         }
     }
 }
