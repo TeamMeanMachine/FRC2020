@@ -79,8 +79,8 @@ object Robot : MeanlibRobot() {
 //        Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
-        Intake.enable()
-//        EndGame.enable()
+//        Intake.enable()
+        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
         Shooter.resetHoodEncoder()
@@ -127,20 +127,19 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test() {
-        Shooter.motorTest()
     }
 
 
     override suspend fun disable() {
-        Intake.setPower(0.0)
-        Intake.extend = false
+//        Intake.setPower(0.0)
+//        Intake.extend = false
         Drive.disable()
         BackLimelight.disable()
         FrontLimelight.disable()
 //        ControlPanel.disable()
         Feeder.disable()
-        Intake.disable()
-//        EndGame.disable()
+//        Intake.disable()
+        EndGame.disable()
 //        Tester.disable()
         Shooter.disable()
         //bean

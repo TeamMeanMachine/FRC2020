@@ -38,13 +38,8 @@ object Feeder: Subsystem("Feeder") {
 
     fun setPower(power: Double) {
         feederMotor.setPercentOutput(power)
+        indexMotor.setPercentOutput(power / 0.50 * 0.30)
     }
-
-    fun indexSetPower(power: Double) {
-        indexMotor.setPercentOutput(power)
-    }
-
-
 
     suspend fun reverseFeeder() = use(Feeder){
         try {
@@ -64,11 +59,9 @@ object Feeder: Subsystem("Feeder") {
             periodic {
                 if (!Intake.ballIsStaged && !buttonWasPressed) {
                     Feeder.setPower(0.5)
-                    indexSetPower(1.0)
-
 
                 } else {
-                    setPower(0.0)
+                    setPower(0.0) //and everything else worked so you moved on to shooting? idk how you shoot code
                     buttonWasPressed = true
                 }
             }

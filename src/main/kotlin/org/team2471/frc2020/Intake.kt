@@ -26,8 +26,9 @@ object Intake: Subsystem("Intake") {
 
     val INTAKE_POWER = 0.75
 
-    val button = DigitalInput(9)
-
+    val button = DigitalInput(9) //you can check to see if this is the same (where the button is plugged in on the roboRIO the grey thing at the bottom) or you can test it and cross your fingers
+//the hopper/feeder should run until a ball presses the button
+    //is this enough info for a few min?
 
 
 

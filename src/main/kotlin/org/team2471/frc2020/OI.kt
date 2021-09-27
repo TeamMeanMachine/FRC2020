@@ -23,7 +23,7 @@ object OI {
     val operatorController = XboxController(1)
 
     private val deadBandDriver = 0.1
-    private val deadBandOperator = 0.1
+    private val deadBandOperator = 0.2
 
 
     private val driveTranslationX: Double
@@ -51,10 +51,10 @@ object OI {
         get() = operatorController.leftTrigger.deadband(0.1)
 
     val operatorLeftY: Double
-        get() = operatorController.leftThumbstickY.deadband(0.2)
+        get() = operatorController.leftThumbstickY.deadband(deadBandOperator)
 
     val operatorLeftX: Double
-        get() = operatorController.leftThumbstickX.deadband(0.2)
+        get() = operatorController.leftThumbstickX.deadband(deadBandOperator)
 
     val operatorRightTrigger: Double
         get() = operatorController.rightTrigger.deadband(0.1)
@@ -90,7 +90,7 @@ object OI {
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
 
         //Operator: Justine
-        operatorController::rightBumper.toggleWhenTrue { climb() }
+        operatorController::leftBumper.toggleWhenTrue { climb2() }
 //        operatorController::a.whenTrue { controlPanel1() }
 //        operatorController::b.whenTrue { controlPanel2() }
         ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }

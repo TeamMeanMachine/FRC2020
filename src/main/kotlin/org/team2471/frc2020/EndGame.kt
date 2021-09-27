@@ -1,10 +1,13 @@
 package org.team2471.frc2020
 
 import edu.wpi.first.wpilibj.Solenoid
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.FalconID
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
 import org.team2471.frc.lib.actuators.VictorID
+import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import org.team2471.frc2020.Solenoids.BRAKE
@@ -20,7 +23,14 @@ object EndGame: Subsystem("EndGame") {
     private val brakeSolenoid = Solenoid(BRAKE)
 
     init {
-
+        rightClimbMotor.config {
+            inverted(true)
+        }
+//        GlobalScope.launch(MeanlibDispatcher) {
+//            periodic {
+//                Intake.currentEntry.setDouble(Intake.intakeMotor.current)
+//            }
+//        }
     }
 
 
@@ -30,11 +40,8 @@ object EndGame: Subsystem("EndGame") {
             brakeSolenoid.set(!value)
         }
 
-    fun setLeftPower(power: Double) {
+    fun setPower(power: Double) {
         leftClimbMotor.setPercentOutput(power)
-    }
-
-    fun setRightPower(power: Double) {
         rightClimbMotor.setPercentOutput(power)
     }
 
