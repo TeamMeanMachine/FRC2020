@@ -30,7 +30,7 @@ object Intake: Subsystem("Intake") {
 
     init {
         intakeMotor.config {
-            inverted(true)
+            inverted(false)
         }
         GlobalScope.launch(MeanlibDispatcher) {
             periodic {
