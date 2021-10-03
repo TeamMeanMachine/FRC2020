@@ -195,7 +195,7 @@ object AutoChooser {
 //                }, {
 //                    delay(2.0)
                     shootingMode(5)
-                    Intake.setPower(1.0)
+/*                    Intake.setPower(1.0)
                     Intake.extend = true
                     path = auto["03- Intake 3 Cells"]
                     Drive.driveAlongPath(path, false)
@@ -211,7 +211,7 @@ object AutoChooser {
                     Intake.extend = false
                     path = auto["05- Shooting Position"]
                     Drive.driveAlongPath(path, false)
-                    shootingMode(5)
+                    shootingMode(5)*/
                 }
         } finally {
             Shooter.stop()
