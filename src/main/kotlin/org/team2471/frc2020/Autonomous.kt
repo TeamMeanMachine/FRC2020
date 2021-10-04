@@ -179,15 +179,15 @@ object AutoChooser {
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
                 Drive.driveAlongPath(path, true, 0.125)
-                delay(0.25)
+                delay(0.5)
                 Intake.setPower(0.5)
+                path = auto["02- Shooting Position"]
 //                Intake.extend = false
                 parallel ({
                     delay(path.duration * 0.25)
                     val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 }, {
-                    path = auto["02- Shooting Position"]
                     Drive.driveAlongPath(path, false)
                 })
 //                parallel ({
@@ -195,12 +195,12 @@ object AutoChooser {
 //                }, {
 //                    delay(2.0)
                     shootingMode(5)
-/*                    Intake.setPower(1.0)
+                    Intake.setPower(1.0)
                     Intake.extend = true
                     path = auto["03- Intake 3 Cells"]
                     Drive.driveAlongPath(path, false)
 //                })
-                    parallel ({
+                  /*  parallel ({
                         path = auto["04- Intake 2 Cells"]
                         Drive.driveAlongPath(path, false)
                     }, {
@@ -208,10 +208,10 @@ object AutoChooser {
                         Intake.extend = true
                     })
                     Intake.setPower(1.0)
-                    Intake.extend = false
+                    Intake.extend = false */
                     path = auto["05- Shooting Position"]
                     Drive.driveAlongPath(path, false)
-                    shootingMode(5)*/
+                    shootingMode(5)
                 }
         } finally {
             Shooter.stop()
