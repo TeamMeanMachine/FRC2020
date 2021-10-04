@@ -41,26 +41,29 @@ import kotlin.math.pow
 //    }
 //}
 
-suspend fun intake() = use(Intake, Feeder) {
+suspend fun intakeAction()= use(Intake, Feeder) {
+    println("Intake")
     try {
+
         var buttonWasPressed = false
         Intake.extend = true
         Intake.setPower(INTAKE_POWER)
-        var t = Timer()
-        t.start()
-        var goalT = Double.MAX_VALUE
-        var maxCurr = 0.0
-        OI.driverController.rumble = 0.0
+//        var t = Timer()
+//        t.start()
+//        var goalT = Double.MAX_VALUE
+//        var maxCurr = 0.0
+//        OI.driverController.rumble = 0.0
         delay(0.5)
         periodic {
-            if (intakeMotor.current > 12.0) {
-                goalT = t.get() + 0.3
-                maxCurr = max(intakeMotor.current, maxCurr)
-            }
-            if (t.get() > goalT) {
-                maxCurr = 0.0
-                goalT = Double.MAX_VALUE
-            }
+//            if (intakeMotor.current > 12.0) {
+//                goalT = t.get() + 0.3
+//                maxCurr = max(intakeMotor.current, maxCurr)
+//            }
+//            if (t.get() > goalT) {
+//                maxCurr = 0.0
+//                goalT = Double.MAX_VALUE
+//            }
+
             if (!Intake.ballIsStaged && !buttonWasPressed) {
                 Feeder.setPower(0.7)
 //                print(!Intake.ballIsStaged)
@@ -69,9 +72,10 @@ suspend fun intake() = use(Intake, Feeder) {
                 buttonWasPressed = true
             }
 //            println("maxCurr: $maxCurr")
-            OI.driverController.rumble = (maxCurr / 40.0).pow(2.0)
+//            OI.driverController.rumble = (maxCurr / 40.0).pow(2.0)
         }
     } finally {
+        println("bruh")
         Feeder.setPower(0.0)
     }
 }

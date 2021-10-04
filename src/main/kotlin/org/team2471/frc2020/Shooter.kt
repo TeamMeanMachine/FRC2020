@@ -230,7 +230,11 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-          //  hoodMotor.stop()
+
+            hoodSetpoint = if (FrontLimelight.hasValidTarget) hoodCurve.getValue(FrontLimelight.distance.asFeet) else Drive.position.length
+            println("hood setpoint: $hoodSetpoint;      valid target? ${FrontLimelight.hasValidTarget}       length: ${Drive.position.length}")
+
+            //  hoodMotor.stop()
         }
     }
 }

@@ -1,16 +1,12 @@
 package org.team2471.frc2020
 
-import org.team2471.frc.lib.coroutines.periodic
-import org.team2471.frc.lib.coroutines.suspendUntil
 import org.team2471.frc.lib.input.*
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.cube
 import org.team2471.frc.lib.math.deadband
-import org.team2471.frc.lib.math.squareWithSign
 import org.team2471.frc.lib.units.degrees
-import org.team2471.frc2020.AutoChooser
-import org.team2471.frc2020.Feeder.reverseFeeder
 import org.team2471.frc2020.actions.*
+
 //import org.team2471.frc2020.actions.controlPanel1
 import kotlin.math.roundToInt
 
@@ -70,7 +66,9 @@ object OI {
         driverController::back.whenTrue { Drive.zeroGyro() }
         driverController::leftBumper.whenTrue { shootingMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
-        driverController::rightBumper.toggleWhenTrue { intake() }
+        driverController::rightBumper.toggleWhenTrue {
+            intakeAction()
+        }
         ({driverController.dPad==Controller.Direction.UP}).whenTrue {
             println("dPad pressed. Heading before: ${Drive.heading.asDegrees.roundToInt()} Heading Setpoint before: ${Drive.
                 headingSetpoint.asDegrees.roundToInt()}")
@@ -90,7 +88,7 @@ object OI {
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
 
         //Operator: Justine
-        operatorController::leftBumper.toggleWhenTrue { climb2() }
+//        operatorController::leftBumper.toggleWhenTrue { climb2() }
 //        operatorController::a.whenTrue { controlPanel1() }
 //        operatorController::b.whenTrue { controlPanel2() }
         ({ driverController.leftTrigger > 0.1 }).whileTrue { feederStationVision() }

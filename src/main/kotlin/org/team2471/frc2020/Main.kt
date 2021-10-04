@@ -7,6 +7,7 @@ package org.team2471.frc2020
 
 //import FRC____.BuildConfig
 import edu.wpi.first.networktables.NetworkTableInstance
+import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.RobotBase
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.MeanlibRobot
@@ -79,7 +80,7 @@ object Robot : MeanlibRobot() {
 //        Drive.initializeSteeringMotors()
         Shooter.enable()
         Feeder.enable()
-//        Intake.enable()
+        Intake.enable()
         EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
@@ -138,7 +139,7 @@ object Robot : MeanlibRobot() {
         FrontLimelight.disable()
 //        ControlPanel.disable()
         Feeder.disable()
-//        Intake.disable()
+        Intake.disable()
         EndGame.disable()
 //        Tester.disable()
         Shooter.disable()
@@ -149,17 +150,21 @@ object Robot : MeanlibRobot() {
 // bean
 //        Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
+        OI.driverController.rumble = 0.0
 
-//        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-//        val angle1Entry = table.getEntry("Angle 1")
-//        val angle2Entry = table.getEntry("Angle 2")
-//        val angle3Entry = table.getEntry("Angle 3")
-//        val angle4Entry = table.getEntry("Angle 4")
-//
-//        val analogInput0 = AnalogInput(0)
-//        val analogInput1 = AnalogInput(1)
-//        val analogInput2 = AnalogInput(2)
-//        val analogInput3 = AnalogInput(3)
+//        var analogInput0 = Drive.modules[0].angle
+//        var analogInput1 = Drive.modules[1].angle
+//        var analogInput2 = Drive.modules[2].angle
+//        var analogInput3 = Drive.modules[3].angle
+//        println("Analog 0: $analogInput0;     1: $analogInput1;     2: $analogInput2     3: $analogInput3")
+
+//        periodic {
+//            analogInput0 = Drive.modules[0].angle
+//            analogInput1 = Drive.modules[1].angle
+//            analogInput2 = Drive.modules[2].angle
+//            analogInput3 = Drive.modules[3].angle
+//            println("Analog 0: $analogInput0;     1: $analogInput1;     2: $analogInput2     3: $analogInput3")
+//        }
         println("Disable Done")
 
         }

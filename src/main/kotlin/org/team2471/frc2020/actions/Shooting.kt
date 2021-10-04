@@ -31,14 +31,15 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         var turn = 0.0
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
-            Shooter.hoodSetpoint = if (FrontLimelight.hasValidTarget) Shooter.hoodCurve.getValue(FrontLimelight.distance.asFeet) else 18.0 // Drive.position.length
+            Shooter.hoodSetpoint = if (FrontLimelight.hasValidTarget) Shooter.hoodCurve.getValue(FrontLimelight.distance.asFeet) else Drive.position.length
 //            Shooter.hoodSetpoint = Shooter.hoodSetpointEntry.getDouble(50.0)
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
                 if (!isAuto && currTime > 0.1) {
                     OI.driverController.rumble = 0.5
                 }
-                if(isAuto && currTime > 0.1) {
+                if(isAuto && currTime > 2.0) { //currTime > 0.1 is how it would be if we didn't increase it for the hood to go up
+                    println("This delay for the hood to get in place is ugly. It'd be great if you changed this.")
                     this.stop()
                 }
             } else {
@@ -91,16 +92,23 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             var shootingBall = false
             periodic(0.015) {
                 Shooter.rpm = Shooter.rpmSetpoint
-                if(!shootingBall && Shooter.rpm < 0.93 * Shooter.rpmSetpoint) {
-                    ballsShot++
-                    shootingBall = true
-                }
-                if(shootingBall && abs(Shooter.rpmSetpoint - Shooter.rpm) < 0.05 * Shooter.rpmSetpoint) {
-                    shootingBall = false
-                }
-                if(ballsShot > ballsIntaken - 1 || totalT.get() > 3.5) {
+
+                //trying to count balls shot by comparing rpm to offset
+//                if(!shootingBall && Shooter.rpm < 0.93 * Shooter.rpmSetpoint) {
+//                    ballsShot++
+//                    shootingBall = true
+//                }
+//                if(shootingBall && abs(Shooter.rpmSetpoint - Shooter.rpm) < 0.05 * Shooter.rpmSetpoint) {
+//                    shootingBall = false
+//                }
+//                if(ballsShot > ballsIntaken - 1 || totalT.get() > 3.5) {
+//                    this.stop()
+//                }
+
+                if (totalT.get() > 7.0) {
                     this.stop()
                 }
+
                 Drive.drive(
                 Vector2(0.0,0.0),
                 0.0

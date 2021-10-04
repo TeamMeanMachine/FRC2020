@@ -44,6 +44,13 @@ object EndGame: Subsystem("EndGame") {
         leftClimbMotor.setPercentOutput(power)
         rightClimbMotor.setPercentOutput(power)
     }
+    fun setLeftPower(power: Double) {
+        leftClimbMotor.setPercentOutput(power)
+    }
+    fun setRightPower(power: Double) {
+        rightClimbMotor.setPercentOutput(power)
+    }
+
 
     override suspend fun default() {
         periodic {

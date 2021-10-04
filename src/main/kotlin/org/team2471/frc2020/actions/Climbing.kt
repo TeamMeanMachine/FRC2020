@@ -21,7 +21,13 @@ suspend fun climb2() = use(EndGame) {
             if (OI.operatorLeftY.absoluteValue > 0.2) {
                 println("joystick move pls")
                 EndGame.brakeIsOn = false
-                EndGame.setPower(OI.operatorLeftY * 0.6)
+                EndGame.setPower(OI.operatorLeftY * 1.0)
+            } else if (OI.operatorLeftTrigger > 0.1) {
+                EndGame.brakeIsOn = false
+                EndGame.setLeftPower(OI.operatorLeftTrigger * 0.3)
+            } else if (OI.operatorRightTrigger > 0.1) {
+                EndGame.brakeIsOn = false
+                EndGame.setRightPower(OI.operatorRightTrigger * 0.3)
             } else {
                 EndGame.setPower(0.0)
                 EndGame.brakeIsOn = true
