@@ -301,6 +301,8 @@ object AutoChooser {
                 Drive.driveAlongPath(path, false)
                 path = auto["3- Shoot 4 Cells"]
                 Drive.driveAlongPath(path, false)
+                val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
+                Shooter.rpm = rpmSetpoint
                 shootingMode(4)
             }
         } finally {
