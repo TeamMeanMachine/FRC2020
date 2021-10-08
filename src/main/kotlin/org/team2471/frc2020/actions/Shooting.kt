@@ -36,35 +36,34 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
                 if (!isAuto && currTime > 0.1) {
-                    OI.driverController.rumble = 0.5
+                    OI.operatorController.rumble = 0.5
                 }
                 if(isAuto && currTime > 2.0) { //currTime > 0.1 is how it would be if we didn't increase it for the hood to go up
-                    println("This delay for the hood to get in place is ugly. It'd be great if you changed this.")
                     this.stop()
                 }
             } else {
                 t = totalT.get()
                 if(!isAuto) {
-                    OI.driverController.rumble = 0.0
+                    OI.operatorController.rumble = 0.0
                 }
             }
             if(isAuto) {
                 if(totalT.get() > 1.5) this.stop()
             } else {
-                if (OI.operatorController.rightTrigger > 0.1) {
-                    Feeder.setPower(OI.operatorRightTrigger * -0.70)
-                    Intake.setPower(OI.operatorRightTrigger * 0.70)
+                if (OI.driverController.rightTrigger > 0.1) {
+                    Feeder.setPower(OI.driveRightTrigger * -0.70)
+                    Intake.setPower(OI.driveRightTrigger * 0.70)
                     Intake.extend = false
-                } else if (OI.driverController.rightTrigger > 0.1) {
-                    Feeder.setPower(OI.driveRightTrigger * 0.60)
-                    Intake.setPower(OI.driveRightTrigger * 0.80)
+                } else if (OI.operatorController.rightTrigger > 0.1) {
+                    Feeder.setPower(OI.operatorRightTrigger * 0.60)
+                    Intake.setPower(OI.operatorRightTrigger * 0.80)
                     Intake.extend = false
                 } else {
                     Feeder.setPower(0.0)
                     Intake.setPower(0.0)
                     Intake.extend = isCompBotIHateEverything
                 }
-                if (!OI.driverController.leftBumper) {
+                if (!OI.operatorController.leftBumper) {
                     this.stop()
                 }
             }
@@ -117,7 +116,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         }
     } finally {
         val isAuto = DriverStation.getInstance().isAutonomous
-        OI.driverController.rumble = 0.0
+        OI.operatorController.rumble = 0.0
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
         Intake.extend = false

@@ -133,6 +133,7 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
     var prevTime = 0.0
     timer.start()
     BackLimelight.ledEnabled = true
+    // println("Backlimelight should be enabled")
     FrontLimelight.ledEnabled = true
     val rotationPDController = PDController(0.005, 0.0)
     try {
@@ -167,8 +168,13 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
                 OI.driveRotation + turnControl,
                 SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous
             )
+            Intake.defaultReason = "visionTarget set True"
+            Intake.defaultExtend = true
 
-            if(OI.operatorController.rightBumper) this.stop()
+            if(OI.operatorController.rightBumper) {
+                // println("defaultExtend=True from BackLimelight")
+                this.stop()
+            }
         }
     } finally {
         if (FrontLimelight.hasValidTarget) {
