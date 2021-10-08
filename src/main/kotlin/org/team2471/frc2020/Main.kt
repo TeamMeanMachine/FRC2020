@@ -75,7 +75,7 @@ object Robot : MeanlibRobot() {
         println("starting enable")
         Drive.enable()
 //        ControlPanel.enable()
-//        BackLimelight.enable()
+        BackLimelight.enable()
         FrontLimelight.enable()
 //        Drive.initializeSteeringMotors()
         Shooter.enable()

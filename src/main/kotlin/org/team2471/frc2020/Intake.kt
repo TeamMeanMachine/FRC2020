@@ -25,12 +25,12 @@ object Intake: Subsystem("Intake") {
     val currentEntry = table.getEntry("Current")
 
     val INTAKE_POWER = 0.75
-
+ var defaultReason = ""
     val button = DigitalInput(9) //you can check to see if this is the same (where the button is plugged in on the roboRIO the grey thing at the bottom) or you can test it and cross your fingers
 //the hopper/feeder should run until a ball presses the button
     //is this enough info for a few min?
 
-
+var defaultExtend = false
 
     init {
         intakeMotor.config {
@@ -59,7 +59,13 @@ object Intake: Subsystem("Intake") {
 
     override suspend fun default() {
         try {
-            extend = false
+            println("defaultExtend=$defaultExtend $defaultReason")
+            if(OI.operatorController.rightBumper) {
+                defaultExtend = false
+                defaultReason = "default set to false"
+                println("defaultExtend=False From default")
+            }
+            extend = defaultExtend
             delay(1.7)
             //setPower(OI.operatorRightTrigger * 0.7 ) beans put this in a periodic
             println("Motorencoder: ${intakeMotor.position}")

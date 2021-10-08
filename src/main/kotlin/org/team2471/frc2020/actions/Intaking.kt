@@ -44,7 +44,8 @@ import kotlin.math.pow
 suspend fun intakeAction()= use(Intake, Feeder) {
     println("Intake")
     try {
-
+        Intake.defaultReason = "IntakeAction"
+        Intake.defaultExtend = false
         var buttonWasPressed = false
         Intake.extend = true
         Intake.setPower(INTAKE_POWER)

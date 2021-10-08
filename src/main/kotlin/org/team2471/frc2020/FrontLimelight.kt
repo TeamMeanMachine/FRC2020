@@ -108,7 +108,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     var hasValidTarget = false
         get() {
-            println("tv? ${targetValidEntry.getDouble(0.0) == 1.0} ")
+           // println("tv? ${targetValidEntry.getDouble(0.0) == 1.0} ")
             return targetValidEntry.getDouble(0.0) == 1.0
         }
 
