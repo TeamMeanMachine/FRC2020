@@ -10,9 +10,7 @@ import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 
 suspend fun Intake.motorTest() = use(this) {
-    setPower(0.85)
-    delay(10.0)
-    setPower(0.0)
+    setPower(1.0)
 }
 
 suspend fun Intake.solenoidTest() = use(this) {

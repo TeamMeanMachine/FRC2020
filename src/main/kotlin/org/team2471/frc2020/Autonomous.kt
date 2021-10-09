@@ -154,6 +154,7 @@ object AutoChooser {
         try {
             val auto = autonomi["5 Ball Trench Run"]
             if (auto != null) {
+                Intake.extend=true
                 Intake.setPower(Intake.INTAKE_POWER)
                 var path = auto["01- Intake 2 Cells"]
                 Drive.driveAlongPath(path, true)

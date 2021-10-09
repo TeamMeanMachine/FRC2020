@@ -50,7 +50,7 @@ object Shooter : Subsystem("Shooter") {
             feedbackCoefficient = 1.0 / (42.0 * 0.667227)
             inverted(true)
             followersInverted(true)
-            brakeMode()
+//            brakeMode()
             pid {
                 p(0.4e-8) //1.5e-8)
                 i(0.0)//i(0.0)

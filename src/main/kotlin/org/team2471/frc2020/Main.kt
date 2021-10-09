@@ -82,11 +82,7 @@ object Robot : MeanlibRobot() {
 
     override suspend fun test()  {
 //        Drive.disable()
-//        ControlPanel.test()
-//
-        println("ajfslkdjaslk;fjkldsajflkd;sa")
-        Drive.steeringTests()
-        Drive.driveTests()
+        Intake.motorTest()
 //        Feeder.test()
 //        Intake.solenoidTest()
 //        ControlPanel.motorTest()
