@@ -135,7 +135,7 @@ object AutoChooser {
             "5 Ball Trench Run" -> trenchRun5()
 //            "10 Ball Shield Generator" -> shieldGenerator10()
 //            "8 Ball Shield Generator" -> shieldGenerator8()
-//            "8 Ball Trench Run" -> trenchRun8()
+            "8 Ball Trench Run" -> trenchRun8()
             "Carpet Bias Test" -> carpetBiasTest()
             "Helper Paths" -> feederToYeeter()
             "Slalom Auto" -> slalom()
@@ -289,42 +289,38 @@ object AutoChooser {
 //        }
 //    }
 //
-//    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
-//        try {
-//            FrontLimelight.ledEnabled = true
-//            println("Got into Trench Run 8")
-//            val auto = autonomi["8 Ball Trench Run"]
-//            if (true)/*auto != null)*/ {
-//                var path = auto["1- Collect 1 and Shoot 4 Cells"]
-//                Intake.setPower(Intake.INTAKE_POWER)
-//                Intake.extend = true
+    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
+        try {
+            println("Got into Trench Run 8")
+            val auto = autonomi["8 Ball Trench Run"]
+            if (auto != null) {
+                var path = auto["1- Collect 1 and Shoot 4 Cells"]
 //                parallel ({
-//                    Drive.driveAlongPath(path, true)
+                    Drive.driveAlongPath(path, true)
 //                }, {
 //                    delay(path.duration * 0.5)
-//                    val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asFeet)
-//                    Shooter.rpm = rpmSetpoint
+//                    hoodSetpoint = hoodCurve(Drive.position.length)
 //                }/*, {
 //                    delay(1.1 * path.duration)
 //                    Intake.extend = false
 //                */)
-//                shootingMode(4)
-//                Intake.extend = true
-//                path = auto["2- Collect 4 Cells"]
-//                Drive.driveAlongPath(path, false)
-//                path = auto["3- Shoot 4 Cells"]
-//                Drive.driveAlongPath(path, false)
-//                shootingMode(4)
-//            }
-//        } finally {
-//            Shooter.stop()
-//            Shooter.rpmSetpoint = 0.0
-//            Feeder.setPower(0.0)
-//            Intake.extend = false
-//            Intake.setPower(0.0)
-//            FrontLimelight.ledEnabled = false
-//        }
-//    }
+                shootingMode(4)
+                Intake.extend = true
+                path = auto["2- Collect 4 Cells"]
+                Drive.driveAlongPath(path, false)
+                path = auto["3- Shoot 4 Cells"]
+                Drive.driveAlongPath(path, false)
+                shootingMode(4)
+            }
+        } finally {
+            Shooter.stop()
+            Shooter.rpmSetpoint = 0.0
+            Feeder.setPower(0.0)
+            Intake.extend = false
+            Intake.setPower(0.0)
+            FrontLimelight.ledEnabled = false
+        }
+    }
 
     suspend fun carpetBiasTest() = use(Drive) {
         val auto = autonomi["Carpet Bias Test"]
