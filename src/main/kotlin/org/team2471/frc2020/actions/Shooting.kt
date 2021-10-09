@@ -2,6 +2,7 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
@@ -14,7 +15,14 @@ import org.team2471.frc2020.*
 import org.team2471.frc2020.FrontLimelight.aimError
 import kotlin.math.abs
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
+suspend fun prepAutoShots(time: Double = 1.0) = use(Shooter) {
+    delay(0.1)
+    Shooter.prepShotOn = true
+    Shooter.rpm = Shooter.rpmSetpoint
+    delay(time-0.1)
+}
 suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimelight, Intake, Feeder) {
     try {
         println("Got in shootingMode function. Hi.")
@@ -31,7 +39,9 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         var turn = 0.0
         periodic {
             Shooter.rpm = Shooter.rpmSetpoint
-            Shooter.hoodSetpoint = if (FrontLimelight.hasValidTarget) Shooter.hoodCurve.getValue(FrontLimelight.distance.asFeet) else Drive.position.length
+//            println("a = ${Shooter.hoodSetpoint} validTarget=${FrontLimelight.hasValidTarget} lime= ${FrontLimelight.distance.asFeet.roundToInt()} y = ${Drive.position.length.roundToInt()}")
+
+            Shooter.hoodSetpoint = Shooter.hoodCurve.getValue(if (FrontLimelight.hasValidTarget) FrontLimelight.distance.asFeet else Drive.position.length)
 //            Shooter.hoodSetpoint = Shooter.hoodSetpointEntry.getDouble(50.0)
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t

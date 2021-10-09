@@ -162,16 +162,21 @@ object AutoChooser {
             val auto = autonomi["5 Ball Trench Run"]
             if (auto != null) {
 //                Shooter.hoodSetpoint = Drive.position.length
+                //prepAutoShots(1.0)
+                // ended prep auto shots
+                FrontLimelight.ledEnabled = true
                 Intake.setPower(Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
                 Drive.driveAlongPath(path, true)
                 path = auto["02- Shooting Position"]
                 Drive.driveAlongPath(path, false)
+
                 shootingMode(5)
             }
         } finally {
             FrontLimelight.ledEnabled = false
+            Shooter.rpmSetpoint = 0.0
         }
     }
 

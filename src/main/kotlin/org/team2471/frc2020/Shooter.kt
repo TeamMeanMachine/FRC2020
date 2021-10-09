@@ -19,6 +19,7 @@ import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.Timer
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(FalconID(Falcons.SHOOTER),FalconID(Falcons.SHOOTER2))
@@ -86,12 +87,12 @@ object Shooter : Subsystem("Shooter") {
             followersInverted(false)
             brakeMode()
             pid {
-                p(0.8e-5) //1.5e-8)
+                p( 0.8e-4)//0.8e-5)
                 i(0.0)//i(0.0)
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
                 f(0.03696) //0.000045
             }
-            currentLimit(40)
+            currentLimit(65) // 40)
 //            burnSettings()
         }
         rpmSetpointEntry.setDouble(7000.0)
@@ -230,10 +231,11 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-           // println("y = ${Drive.position.y}")
+            println("a = $hoodSetpoint validTarget=${FrontLimelight.hasValidTarget} lime= ${FrontLimelight.distance.asFeet.roundToInt()} y = ${Drive.position.length.roundToInt()}")
             if (Drive.position.y > -30.0) {
-                hoodSetpoint =
-                    if (FrontLimelight.hasValidTarget) hoodCurve.getValue(FrontLimelight.distance.asFeet) else Drive.position.length
+                val distanceTarget =  if (FrontLimelight.hasValidTarget)  FrontLimelight.distance.asFeet else Drive.position.length
+                hoodSetpoint = hoodCurve.getValue(distanceTarget)
+//                if (FrontLimelight.hasValidTarget) hoodCurve.getValue(FrontLimelight.distance.asFeet) else Drive.position.length
                // println("hood setpoint: $hoodSetpoint;      valid target? ${FrontLimelight.hasValidTarget}       length: ${Drive.position.length}")
             } else {
                // println("used default hood value")
