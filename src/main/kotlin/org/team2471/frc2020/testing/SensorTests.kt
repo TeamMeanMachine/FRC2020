@@ -9,12 +9,12 @@ suspend fun Sensors.test() = use(this, Sensors) {
 
     periodic {
         if (OI.operatorController.b)
-            rs232.write(byteArrayOf('r'.toByte()), byteArrayOf('r'.toByte()).size)
+            rs232.write(byteArrayOf('r'.code.toByte()), byteArrayOf('r'.code.toByte()).size)
         if (OI.operatorController.a)
-            rs232.write(byteArrayOf('g'.toByte()), byteArrayOf('g'.toByte()).size)
+            rs232.write(byteArrayOf('g'.code.toByte()), byteArrayOf('g'.code.toByte()).size)
         if (OI.operatorController.x)
-            rs232.write(byteArrayOf('b'.toByte()), byteArrayOf('b'.toByte()).size)
+            rs232.write(byteArrayOf('b'.code.toByte()), byteArrayOf('b'.code.toByte()).size)
         if (OI.operatorController.y)
-            rs232.write(byteArrayOf('y'.toByte()), byteArrayOf('y'.toByte()).size)
+            rs232.write(byteArrayOf('y'.code.toByte()), byteArrayOf('y'.code.toByte()).size)
     }
 }

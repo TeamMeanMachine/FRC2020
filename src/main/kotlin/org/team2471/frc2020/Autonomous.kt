@@ -5,16 +5,11 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.framework.use
-import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion.following.driveAlongPath
 import org.team2471.frc.lib.motion_profiling.Autonomi
-import org.team2471.frc.lib.motion_profiling.Autonomous
 import org.team2471.frc.lib.units.asFeet
 import org.team2471.frc.lib.util.measureTimeFPGA
 import org.team2471.frc2020.actions.*
@@ -322,7 +317,7 @@ object AutoChooser {
         Drive.driveAlongPath(path, false)
         path = auto["04- Forward"]
         Drive.driveAlongPath(path, false)
-        path = auto["05- Backward"]
+        //path = auto["05- Backward"]
     }
 
     suspend fun test8FtStraight() = use(Drive) {

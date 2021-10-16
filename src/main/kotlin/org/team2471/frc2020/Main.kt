@@ -2,6 +2,7 @@
 
 package org.team2471.frc2020
 
+import FRC____.BuildConfig
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DigitalInput
 import edu.wpi.first.wpilibj.DriverStation
@@ -11,6 +12,7 @@ import org.team2471.frc.lib.framework.MeanlibRobot
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc2020.testing.*
 import java.net.NetworkInterface
+import com.github.gmazzo.gradle.plugins.BuildConfigTask
 
 //import org.team2471.frc2020.testing.intakeFeedAndShootTest
 
@@ -43,6 +45,7 @@ object Robot : MeanlibRobot() {
         }
         println("TAKE ME HOOOOOME COUNTRY ROOOOOOOOADS TOOO THE PLAAAAAAACE WHERE I BELOOOOOOOOONG")
 
+        println(BuildConfig.BUILD_TIME)
         Drive.zeroGyro()
         Drive.heading = 0.0.degrees
         AutoChooser

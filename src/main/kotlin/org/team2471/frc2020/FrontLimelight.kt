@@ -3,6 +3,7 @@ package org.team2471.frc2020
 import edu.wpi.first.networktables.NetworkTableEntry
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc2020.Drive.gyro
@@ -19,6 +20,7 @@ import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 
+@OptIn(DelicateCoroutinesApi::class)
 object FrontLimelight : Subsystem("Front Limelight") {
     private val table = NetworkTableInstance.getDefault().getTable("limelight-front")
     private val thresholdTable = table.getSubTable("thresholds")
@@ -75,7 +77,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
     val targetAngle: Angle
         get() {
-            return -gyro!!.angle.degrees + xTranslation.degrees
+            return -gyro.angle.degrees + xTranslation.degrees
         } //verify that this changes? or is reasonablej
 
     val targetPoint
@@ -139,12 +141,12 @@ object FrontLimelight : Subsystem("Front Limelight") {
         heightToDistance.storeValue(9.6, 11.5)
         heightToDistance.storeValue(-4.1, 22.2)
         heightToDistance.storeValue(-20.0, 35.0)
-        var i = -4.1
-        while (i < 22.5) {
-            val tmpDistance = heightToDistance.getValue(i).feet
-            //println("$i, ${tmpDistance.asFeet}")
-            i += 0.5
-        }
+//        var i = -4.1
+//        while (i < 22.5) {
+//            val tmpDistance = heightToDistance.getValue(i).feet
+//            //println("$i, ${tmpDistance.asFeet}")
+//            i += 0.5
+//        }
         GlobalScope.launch(MeanlibDispatcher) {
             periodic {
                 var leftPressed = false
@@ -159,12 +161,12 @@ object FrontLimelight : Subsystem("Front Limelight") {
                 }
 
                 if(OI.operatorController.dPad != Controller.Direction.LEFT && leftPressed) {
-                    leftPressed = false
+                  //  leftPressed = false
                     leftAngleOffset()
                 }
 
                 if(OI.operatorController.dPad != Controller.Direction.RIGHT && rightPressed) {
-                    rightPressed = false
+                  //  rightPressed = false
                     rightAngleOffset()
                 }
             }

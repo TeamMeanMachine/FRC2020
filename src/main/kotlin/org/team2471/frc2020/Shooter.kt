@@ -6,6 +6,7 @@ import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.coroutines.MeanlibDispatcher
@@ -14,6 +15,7 @@ import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.Length
 import org.team2471.frc.lib.units.asFeet
 
+@OptIn(DelicateCoroutinesApi::class)
 object Shooter : Subsystem("Shooter") {
     private val shootingMotor = MotorController(SparkMaxID(Sparks.SHOOTER), SparkMaxID(Sparks.SHOOTER2))
 
@@ -24,7 +26,7 @@ object Shooter : Subsystem("Shooter") {
     val rpmErrorEntry = table.getEntry("RPM Error")
     val rpmOffsetEntry = table.getEntry("RPM Offset")
 
-    lateinit var rpmCurve: MotionCurve
+    var rpmCurve: MotionCurve
 
     var prepShotOn = false
 

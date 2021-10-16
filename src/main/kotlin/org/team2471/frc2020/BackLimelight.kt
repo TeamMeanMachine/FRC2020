@@ -4,14 +4,9 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.team2471.frc2020.Drive.gyro
 import org.team2471.frc2020.Drive.heading
-import org.team2471.frc2020.BackLimelight.rotationD
-import org.team2471.frc2020.BackLimelight.rotationP
 import org.team2471.frc.lib.control.PDController
-import org.team2471.frc.lib.coroutines.MeanlibDispatcher
 import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.Subsystem
@@ -21,10 +16,7 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.MotionCurve
 import org.team2471.frc.lib.units.*
 import org.team2471.frc2020.BackLimelight.area
-import java.util.*
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
+
 
 object BackLimelight : Subsystem("Back Limelight") {
     private val table = NetworkTableInstance.getDefault().getTable("limelight-back")
@@ -62,7 +54,7 @@ object BackLimelight : Subsystem("Back Limelight") {
 
     val targetAngle: Angle
         get() {
-            return -gyro!!.angle.degrees + xTranslation.degrees
+            return -gyro.angle.degrees + xTranslation.degrees
         } //verify that this changes? or is reasonablej
 
 
@@ -105,12 +97,12 @@ object BackLimelight : Subsystem("Back Limelight") {
         heightToDistance.storeValue(9.6, 11.5)
         heightToDistance.storeValue(-4.1, 22.2)
         heightToDistance.storeValue(-20.0, 35.0)
-        var i = -4.1
-        while (i < 22.5) {
-            val tmpDistance = heightToDistance.getValue(i).feet
-            //println("$i, ${tmpDistance.asFeet}")
-            i += 0.5
-        }
+//        var i = -4.1
+//        while (i < 22.5) {
+//            val tmpDistance = heightToDistance.getValue(i).feet
+//            //println("$i, ${tmpDistance.asFeet}")
+//            i += 0.5
+//        }
     }
 
     fun startUp() {
@@ -130,7 +122,7 @@ object BackLimelight : Subsystem("Back Limelight") {
 
 suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, Intake, name = "Vision Drive") {
     val timer = Timer()
-    var prevTime = 0.0
+    //var prevTime = 0.0
     timer.start()
     BackLimelight.ledEnabled = true
     FrontLimelight.ledEnabled = true
@@ -141,7 +133,7 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
         FrontLimelight.pipeline = 1.0
 
         periodic {
-            val t = timer.get()
+            //val t = timer.get()
 
 
             val robotHeading = heading

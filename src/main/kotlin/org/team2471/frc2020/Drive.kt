@@ -1,31 +1,28 @@
 package org.team2471.frc2020
 
-import com.revrobotics.SparkMax
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.ADXRS450_Gyro
 import edu.wpi.first.wpilibj.AnalogInput
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.SparkMaxID
-import org.team2471.frc.lib.actuators.SparkMaxWrapper
 import org.team2471.frc.lib.control.PDConstantFController
 import org.team2471.frc.lib.control.PDController
 import org.team2471.frc.lib.coroutines.*
 import org.team2471.frc.lib.framework.Subsystem
-import org.team2471.frc.lib.framework.use
 import org.team2471.frc.lib.math.Vector2
 import org.team2471.frc.lib.math.round
 import org.team2471.frc.lib.motion.following.SwerveDrive
 import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.motion_profiling.following.SwerveParameters
 import org.team2471.frc.lib.units.*
-import org.team2471.frc.lib.util.Timer
 import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
 
+@OptIn(DelicateCoroutinesApi::class)
 object Drive : Subsystem("Drive"), SwerveDrive {
 
     val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
@@ -68,7 +65,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     override var modules = origModules
 
     //    val gyro: Gyro? = null
-//        val gyro: ADIS16448_IMU? = ADIS16448_IMU()
 //    private var navX: NavxWrapper? = NavxWrapper()
 //    private var analogDevices: ADXRS450_Gyro? = ADXRS450_Gyro()
 //    private var meanGyro : TheBestGyroEver? = TheBestGyroEver()
@@ -80,14 +76,14 @@ object Drive : Subsystem("Drive"), SwerveDrive {
     private var gyroOffset = 0.0.degrees
 
     override var heading: Angle
-        get() = gyroOffset - ((gyro?.angle ?: 0.0).degrees.wrap())
+        get() = gyroOffset - (gyro.angle.degrees.wrap())
         set(value) {
             gyroOffset = value
-            gyro?.reset()
+            gyro.reset()
         }
 
     override val headingRate: AngularVelocity
-        get() = -(gyro?.rate ?: 0.0).degrees.perSecond
+        get() = -gyro.rate.degrees.perSecond
 
     override var velocity = Vector2(0.0, 0.0)
 
@@ -143,16 +139,15 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             val table = NetworkTableInstance.getDefault().getTable(name)
 
             val headingEntry = table.getEntry("Heading")
-
             val xEntry = table.getEntry("X")
             val yEntry = table.getEntry("Y")
 
-            val aimPEntry = table.getEntry("p")
-            val aimDEntry = table.getEntry("d")
+//            val aimPEntry = table.getEntry("p")
+//            val aimDEntry = table.getEntry("d")
             val aimErrorEntry = table.getEntry("Aim Error")
             val useGyroEntry = table.getEntry("Use Gyro")
 
-            val zeroGyroEntry = table.getEntry("Zero Gyro")
+            //val zeroGyroEntry = table.getEntry("Zero Gyro")
 
             SmartDashboard.setPersistent("Use Gyro")
             SmartDashboard.setPersistent("Gyro Type")
@@ -176,15 +171,15 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         }
     }
 
-    fun zeroGyro() = gyro?.reset()
+    fun zeroGyro() = gyro.reset()
 
     
 
     override suspend fun default() {
-        val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
-        val xEntry = limelightTable.getEntry("tx")
-        val angleEntry = limelightTable.getEntry("ts")
-        val table = NetworkTableInstance.getDefault().getTable(name)
+//        val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
+//        val xEntry = limelightTable.getEntry("tx")
+//        val angleEntry = limelightTable.getEntry("ts")
+//        val table = NetworkTableInstance.getDefault().getTable(name)
         periodic {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
@@ -205,8 +200,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 OI.driveTranslation,
                 turn,
                 //true,
-                if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
-                        && !DriverStation.getInstance().isAutonomous else false,
+                SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous,
                 true
             )
         }

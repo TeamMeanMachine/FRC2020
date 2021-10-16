@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation
 import org.team2471.frc.lib.motion_profiling.Path2D
 
 fun Path2D.setPathDefaults() {
-    val tankDriveFudgeFactor = 1.12
+    //val tankDriveFudgeFactor = 1.12
     println(gameData)
     //isMirrored = gameData[1] == 'L' // can't be true because of side to scale
 }
