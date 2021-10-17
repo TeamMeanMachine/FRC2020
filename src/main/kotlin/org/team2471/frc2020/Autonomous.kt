@@ -81,7 +81,7 @@ object AutoChooser {
 
             cacheFile = File("/home/lvuser/autonomi.json")
             if (cacheFile  != null) {
-                autonomi = Autonomi.fromJsonString(cacheFile?.readText())
+                autonomi = Autonomi.fromJsonString(cacheFile?.readText())!!
                 println("Autonomi cache loaded.")
             } else {
                 println("Autonomi failed to load!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! RESTART ROBOT!!!!!!")
@@ -96,9 +96,9 @@ object AutoChooser {
             .getEntry("Autonomi").addListener({ event ->
                 println("Automous change detected")
                 val json = event.value.string
-                if (!json.isEmpty()) {
+                if (json.isNotEmpty()) {
                     val t = measureTimeFPGA {
-                        autonomi = Autonomi.fromJsonString(json)
+                        autonomi = Autonomi.fromJsonString(json) ?: Autonomi()
                     }
                     println("Loaded autonomi in $t seconds")
                     if (cacheFile != null) {
@@ -135,16 +135,18 @@ object AutoChooser {
         SmartDashboard.putString("autoStatus", "complete")
     }
 
-    suspend fun testAuto() {
+    private suspend fun testAuto() {
         val testPath = SmartDashboard.getString("Tests/selected", "no test selected") // testAutoChooser.selected
         if (testPath != null) {
             val testAutonomous = autonomi["Tests"]
-            val path = testAutonomous[testPath]
-            Drive.driveAlongPath(path, true)
+            val path = testAutonomous?.get(testPath)
+            if (path != null) {
+                Drive.driveAlongPath(path, true)
+            }
         }
     }
 
-    suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+    private suspend fun trenchRun5() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             val auto = autonomi["5 Ball Trench Run"]
             if (auto != null) {
@@ -161,17 +163,16 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+    private suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
             val auto = autonomi["10 Ball Shield Generator"]
 //            var auto = autonomi["Red 10 Ball Shield Generator"]
 //            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
-            println(auto == null)
-            if (true){//auto != null) {
+            if (auto != null){
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
                 Intake.extend = true
-                var path = auto["01- Intake 2 Cells"]
+                var path = auto.get("01- Intake 2 Cells")
                 Drive.driveAlongPath(path, true, 0.125)
                 delay(0.25)
                 Intake.setPower(0.5)
@@ -217,15 +218,14 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+    private suspend fun shieldGenerator8() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
             FrontLimelight.ledEnabled = true
-            var additionalTime = 0.5
-            var auto = autonomi["10 Ball Shield Generator"]
+            val additionalTime = 0.5
+            val auto = autonomi["10 Ball Shield Generator"]
 //            var auto = autonomi["Red 10 Ball Shield Generator"]
 //            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
-            println(auto == null)
-            if (true){//auto != null) {
+            if (auto != null) {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
@@ -270,12 +270,12 @@ object AutoChooser {
         }
     }
 
-    suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
+    private suspend fun trenchRun8() = use(Drive, Intake, Shooter, Feeder, FrontLimelight){
         try {
             FrontLimelight.ledEnabled = true
             println("Got into Trench Run 8")
             val auto = autonomi["8 Ball Trench Run"]
-            if (true)/*auto != null)*/ {
+            if (auto != null) {
                 var path = auto["1- Collect 1 and Shoot 4 Cells"]
                 Intake.setPower(Intake.INTAKE_POWER)
                 Intake.extend = true
@@ -309,21 +309,23 @@ object AutoChooser {
 
     suspend fun carpetBiasTest() = use(Drive) {
         val auto = autonomi["Carpet Bias Test"]
-        var path = auto["01- Forward"]
-        Drive.driveAlongPath(path, false)
-        path = auto["02- Backward"]
-        Drive.driveAlongPath(path, false)
-        path = auto["03- Left"]
-        Drive.driveAlongPath(path, false)
-        path = auto["04- Forward"]
-        Drive.driveAlongPath(path, false)
-        //path = auto["05- Backward"]
+        if (auto != null) {
+            var path = auto["01- Forward"]
+            Drive.driveAlongPath(path, false)
+            path = auto["02- Backward"]
+            Drive.driveAlongPath(path, false)
+            path = auto["03- Left"]
+            Drive.driveAlongPath(path, false)
+            path = auto["04- Forward"]
+            Drive.driveAlongPath(path, false)
+            //path = auto["05- Backward"]
+        }
     }
 
     suspend fun test8FtStraight() = use(Drive) {
         val auto = autonomi["Tests"]
         if (auto != null) {
-            var path = auto["8 Foot Straight"]
+            val path = auto["8 Foot Straight"]
             Drive.driveAlongPath(path, true)
         }
     }
@@ -331,7 +333,7 @@ object AutoChooser {
     suspend fun test8FtCircle() = use(Drive) {
         val auto = autonomi["Tests"]
         if (auto != null) {
-            var path = auto["8 Foot Circle"]
+            val path = auto["8 Foot Circle"]
             Drive.driveAlongPath(path, true)
         }
     }
@@ -346,7 +348,7 @@ object AutoChooser {
     suspend fun feederToYeeter() = use(Drive) {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
-            var path = auto["Feeder to Yeeter"]
+            val path = auto["Feeder to Yeeter"]
             Drive.driveAlongPath(path, true, 0.0, false) {
                 OI.driveTranslation.length > 0.0
             }
@@ -356,32 +358,32 @@ object AutoChooser {
     suspend fun yeeterToFeeder() = use(Drive) {
         val auto = autonomi["Helper Paths"]
         if (auto != null) {
-            var path = auto["Yeeter to Feeder"]
+            val path = auto["Yeeter to Feeder"]
             Drive.driveAlongPath(path, true, 0.0, false) {
                 OI.driveTranslation.length > 0.0
             }
         }
     }
 
-    suspend fun slalom() =use(Drive) {
+    private suspend fun slalom() =use(Drive) {
         val auto = autonomi ["Slalom Auto"]
         if (auto != null) {
-            var path = auto ["First Way"]
-            path = path.apply {
-                //addEasePoint(0.0, 0.0)
-                //addEasePointSlopeAndMagnitude(path.duration / 2, 0.5, -0.5, 2.5)
-                //addEasePoint(path.duration, 1.0)
-            }
+            val path = auto ["First Way"]
+//            path = path.apply {
+//                //addEasePoint(0.0, 0.0)
+//                //addEasePointSlopeAndMagnitude(path.duration / 2, 0.5, -0.5, 2.5)
+//                //addEasePoint(path.duration, 1.0)
+//            }
             Drive.driveAlongPath(path, true, 0.0, true) {
                 OI.driveTranslation.length > 0.0
             }
         }
     }
 
-    suspend fun barrelRacingAuto() = use(Drive) {
+    private suspend fun barrelRacingAuto() = use(Drive) {
         val auto = autonomi["Barrel Racing Auto"]
         if (auto != null) {
-            var path = auto["Barrel Racing Path"]
+            val path = auto["Barrel Racing Path"]
             Drive.driveAlongPath(path, true)
         }
     }
