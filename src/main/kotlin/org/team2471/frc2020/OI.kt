@@ -67,6 +67,7 @@ object OI {
     init {
         //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
+        operatorController::back.whenTrue{Shooter.resetRpmOffset()}
         driverController::leftBumper.whenTrue { shootingMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }

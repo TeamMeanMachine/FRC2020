@@ -10,7 +10,7 @@ import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter
 import java.lang.Math.abs
 
-suspend fun Shooter.distance2RpmTest() = use(this, Feeder, FrontLimelight){
+suspend fun Shooter.distance2RpmTest() = use(Shooter, Feeder, FrontLimelight){
     FrontLimelight.ledEnabled = true
     periodic {
         rpm = rpmSetpointEntry.getDouble(0.0)
@@ -24,7 +24,7 @@ suspend fun Shooter.motorTest() = use(Shooter) {
     Shooter.setPower(0.5)
 }
 
-suspend fun Shooter.countBallsShotTest() = use(this, Feeder) {
+suspend fun Shooter.countBallsShotTest() = use(Shooter, Feeder) {
     var rpmSetpoint = 4100.0
     rpm = rpmSetpoint
     val t = Timer()

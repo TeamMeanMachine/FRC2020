@@ -61,14 +61,14 @@ suspend fun intake() = use(Intake, Feeder) {
                 maxCurr = 0.0
                 goalT = Double.MAX_VALUE
             }
-            if (!Intake.ballIsStaged && !buttonWasPressed) {
-//                Feeder.setPower(0.7)
-//                print(!Intake.ballIsStaged)
-            } else {
-                Feeder.setPower(0.0)
-//                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH")
-                buttonWasPressed = true
-            }
+//            if (!Intake.ballIsStaged && !buttonWasPressed) {
+////                Feeder.setPower(0.7)
+////                print(!Intake.ballIsStaged)
+//            } else {
+//                Feeder.setPower(0.0)
+////                print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH")
+//                buttonWasPressed = true
+//            }
 //            println("maxCurr: $maxCurr")
             OI.driverController.rumble = (maxCurr / 40.0).pow(2.0)
         }

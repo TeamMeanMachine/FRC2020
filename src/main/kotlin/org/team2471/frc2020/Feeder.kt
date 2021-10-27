@@ -50,7 +50,16 @@ object Feeder: Subsystem("Feeder") {
 
     override suspend fun default() {
         periodic {
-            setPower(OI.operatorRightTrigger * -0.7)
+            if (OI.operatorRightTrigger > 0.1)  {
+                setPower(OI.operatorRightTrigger * -0.7)
+            } else {
+                if (!Intake.ballIsStaged) {
+                    Feeder.setPower(0.0)
+                } else {
+                    println("ball is staged")
+                    setPower(0.0)
+                }
+            }
         }
     }
 }

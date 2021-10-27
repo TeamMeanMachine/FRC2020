@@ -34,17 +34,17 @@ object Shooter : Subsystem("Shooter") {
 
         rpmCurve.setMarkBeginOrEndKeysToZeroSlope(false)
 
-        rpmCurve.storeValue(11.0, 7680.0) //tuned 3/5
+        rpmCurve.storeValue(11.0, 7680.0) //tuned 10/26/2021
         rpmCurve.storeValue(13.0, 7300.0) //tuned 3/5
         rpmCurve.storeValue(18.0, 6590.0) //tuned 3/5
         rpmCurve.storeValue(26.0, 6540.0) //tuned 3/5
         rpmCurve.storeValue(34.0, 7530.0) //tuned(-ish) 3/5
 
-        var dist = 11.0
-        while (dist <= 34.0) {
-            //println("$dist ${rpmCurve.getValue(dist)}")
-            dist += 0.2
-        }
+//        var dist = 11.0
+//        while (dist <= 34.0) {
+//            //println("$dist ${rpmCurve.getValue(dist)}")
+//            dist += 0.2
+//        }
 
         shootingMotor.config {
             feedbackCoefficient = 1.0 / (42.0 * 0.667227)
@@ -55,17 +55,17 @@ object Shooter : Subsystem("Shooter") {
                 p(0.4e-8) //1.5e-8)
                 i(0.0)//i(0.0)
                 d(0.0)//d(1.5e-3) //1.5e-3  -- we tried 1.5e9 and 1.5e-9, no notable difference  // we printed values at the MotorController and the wrapper
-                f(0.000042) //0.000045
+                f(0.000064) //0.000045
             }
 //            burnSettings()
         }
         rpmSetpointEntry.setDouble(0.0)
-        println("right before globalscope")
+ //       println("right before globalscope")
         GlobalScope.launch(MeanlibDispatcher) {
             println("in global scope")
             var upPressed = false
             var downPressed = false
-            rpmOffset = rpmOffsetEntry.getDouble(1600.0)
+            rpmOffset = rpmOffsetEntry.getDouble(0.0)
 
             periodic {
                 //                print(".")
@@ -77,6 +77,7 @@ object Shooter : Subsystem("Shooter") {
                 } else if (OI.operatorController.dPad == Controller.Direction.DOWN) {
                     downPressed = true
                 }
+
 
                 if(OI.operatorController.dPad != Controller.Direction.UP && upPressed) {
                     upPressed = false
@@ -110,29 +111,36 @@ object Shooter : Subsystem("Shooter") {
 
     var rpmSetpoint: Double = 0.0
         get() {
+//            return rpmSetpointEntry.getDouble(4000.0)
             if (FrontLimelight.hasValidTarget) {
                 val rpm2 = rpmFromDistance(FrontLimelight.distance) + rpmOffset
                 rpmSetpointEntry.setDouble(rpm2)
                 return rpm2
             } else {
-                field = rpmCurve.getValue(20.0) + rpmOffset
+                field = rpmCurve.getValue(19.4) + rpmOffset
                 rpmSetpointEntry.setDouble(field)
                 return field
             }
         }
 
     var rpmOffset: Double = 0.0 //400.0
+        get() {
+            return rpmOffsetEntry.getDouble(0.0)
+        }
         set(value) {
             field = value
             rpmOffsetEntry.setDouble(value)
         }
 
     fun incrementRpmOffset() {
-        rpmOffset += 20.0
+        rpmOffset += 200.0
     }
 
     fun decrementRpmOffset() {
-        rpmOffset -= 20.0
+        rpmOffset -= 200.0
+    }
+    fun resetRpmOffset(){
+        rpmOffset = 0.0
     }
 
     var current = shootingMotor.current

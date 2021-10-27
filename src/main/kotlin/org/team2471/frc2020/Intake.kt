@@ -23,7 +23,7 @@ object Intake: Subsystem("Intake") {
 
     val INTAKE_POWER = 0.75
 
-    val button = DigitalInput(0)
+    val button = DigitalInput(9)
 
 
 

@@ -146,10 +146,10 @@ object FrontLimelight : Subsystem("Front Limelight") {
             i += 0.5
         }
         GlobalScope.launch(MeanlibDispatcher) {
-            periodic {
-                var leftPressed = false
-                var rightPressed = false
 
+            var leftPressed = false
+            var rightPressed = false
+            periodic {
                 if(OI.operatorController.dPad == Controller.Direction.LEFT) {
                     leftPressed = true
                 }
