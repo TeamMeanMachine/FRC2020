@@ -57,7 +57,7 @@ object Feeder: Subsystem("Feeder") {
                     Feeder.setPower(0.0)
                 } else {
                     println("ball is staged")
-                    setPower(0.0)
+                    setPower(0.7)
                 }
             }
         }

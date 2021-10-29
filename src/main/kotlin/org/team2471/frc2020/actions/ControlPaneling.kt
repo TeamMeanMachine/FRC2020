@@ -47,7 +47,7 @@ suspend fun controlPanel1() = use(ControlPanel, EndGame) {
                         previousColor = currentColor
                     }
                 }
-                if (t.get() > 10.0) {
+                if (t.get() > 5.0) {
                     this.stop()
                 }
             }
