@@ -181,6 +181,7 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
             Drive.heading = -FrontLimelight.xTranslation.degrees
         }
 
+        Drive.position = Vector2(-0.44, -50.93)
         Intake.setPower(0.0)
         FrontLimelight.pipeline = 0.0
         BackLimelight.ledEnabled = false

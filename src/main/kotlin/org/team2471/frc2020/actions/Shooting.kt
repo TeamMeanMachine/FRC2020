@@ -41,7 +41,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             Shooter.rpm = Shooter.rpmSetpoint
 //            println("a = ${Shooter.hoodSetpoint} validTarget=${FrontLimelight.hasValidTarget} lime= ${FrontLimelight.distance.asFeet.roundToInt()} y = ${Drive.position.length.roundToInt()}")
 
-            Shooter.hoodSetpoint = Shooter.hoodCurve.getValue(if (FrontLimelight.hasValidTarget) FrontLimelight.distance.asFeet else Drive.position.length)
+            Shooter.hoodSetpoint = Shooter.hoodCurve.getValue(if (FrontLimelight.hasValidTarget) FrontLimelight.distance.asFeet else Drive.position.length) + Shooter.rpmOffset
 //            Shooter.hoodSetpoint = Shooter.hoodSetpointEntry.getDouble(50.0)
             if (abs(Shooter.rpm - Shooter.rpmSetpoint) < 200.0 && FrontLimelight.hasValidTarget && abs(aimError) < 1.5) {
                 currTime = totalT.get() - t
@@ -60,9 +60,9 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             if(isAuto) {
                 if(totalT.get() > 1.5) this.stop()
             } else {
-                if (OI.driverController.rightTrigger > 0.1) {
-                    Feeder.setPower(OI.driveRightTrigger * -0.70)
-                    Intake.setPower(OI.driveRightTrigger * 0.70)
+                if (OI.operatorController.a) {
+                    Feeder.setPower(-0.70)
+                    Intake.setPower(0.70)
                     Intake.extend = false
                 } else if (OI.operatorController.rightTrigger > 0.1) {
                     Feeder.setPower(OI.operatorRightTrigger * 0.60)

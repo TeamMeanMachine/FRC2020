@@ -5,7 +5,6 @@ import org.team2471.frc.lib.coroutines.halt
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
 import org.team2471.frc2020.ControlPanel
-import org.team2471.frc2020.EndGame
 import org.team2471.frc2020.OI
 
 //suspend fun controlPanel1() = use(ControlPanel) {

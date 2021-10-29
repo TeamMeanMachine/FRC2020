@@ -68,7 +68,7 @@ object Robot : MeanlibRobot() {
         FrontLimelight.startUp()
         BackLimelight.startUp()
         BackLimelight.ledEnabled = false
-        FrontLimelight.ledEnabled = true
+        FrontLimelight.ledEnabled = false
     }
 
     override suspend fun enable() {
@@ -81,7 +81,7 @@ object Robot : MeanlibRobot() {
         Shooter.enable()
         Feeder.enable()
         Intake.enable()
-        EndGame.enable()
+//        EndGame.enable()
 //        Tester.enable()
         println("Comp Bot = $isCompBotIHateEverything")
         Shooter.resetHoodEncoder()
@@ -96,38 +96,42 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun teleop() {
-        
+
         println("telop begin")
         Drive.headingSetpoint = Drive.heading
-
-        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
-
-        val angle1Entry = table.getEntry("Angle 1")
-        val angle2Entry = table.getEntry("Angle 2")
-        val angle3Entry = table.getEntry("Angle 3")
-        val angle4Entry = table.getEntry("Angle 4")
-
-        val module0 = (Drive.modules[0] as Drive.Module)
-        val module1 = (Drive.modules[1] as Drive.Module)
-        val module2 = (Drive.modules[2] as Drive.Module)
-        val module3 = (Drive.modules[3] as Drive.Module)
-
-
-        periodic {
-//            Drive.recordOdometry()
-
-            //println(module0.analogAngle)
-//            println("kjaflds;jfklda;sjflk;adsjkl")
-//            println(module0.analogAngle.asDegrees)
-            angle1Entry.setValue(module0.analogAngle.asDegrees)
-            angle2Entry.setValue(module1.analogAngle.asDegrees)
-            angle3Entry.setValue(module2.analogAngle.asDegrees)
-            angle4Entry.setValue(module3.analogAngle.asDegrees)
-        }
+//
+//        val table = NetworkTableInstance.getDefault().getTable(Drive.name)
+//
+//        val angle1Entry = table.getEntry("Angle 1")
+//        val angle2Entry = table.getEntry("Angle 2")
+//        val angle3Entry = table.getEntry("Angle 3")
+//        val angle4Entry = table.getEntry("Angle 4")
+//
+//        val module0 = (Drive.modules[0] as Drive.Module)
+//        val module1 = (Drive.modules[1] as Drive.Module)
+//        val module2 = (Drive.modules[2] as Drive.Module)
+//        val module3 = (Drive.modules[3] as Drive.Module)
+//
+//
+//        periodic {
+////            Drive.recordOdometry()
+//
+//            //println(module0.analogAngle)
+////            println("kjaflds;jfklda;sjflk;adsjkl")
+////            println(module0.analogAngle.asDegrees)
+//            angle1Entry.setValue(module0.analogAngle.asDegrees)
+//            angle2Entry.setValue(module1.analogAngle.asDegrees)
+//            angle3Entry.setValue(module2.analogAngle.asDegrees)
+//            angle4Entry.setValue(module3.analogAngle.asDegrees)
+//        }
 //        }
     }
 
     override suspend fun test() {
+//        Drive.steeringTests()
+//        periodic {
+//            Drive.printEncoderValues()
+//        }
     }
 
 
@@ -140,7 +144,7 @@ object Robot : MeanlibRobot() {
 //        ControlPanel.disable()
         Feeder.disable()
         Intake.disable()
-        EndGame.disable()
+//        EndGame.disable()
 //        Tester.disable()
         Shooter.disable()
         //bean
@@ -152,19 +156,19 @@ object Robot : MeanlibRobot() {
         FrontLimelight.parallaxThresholdEntry.setPersistent()
         OI.driverController.rumble = 0.0
 
-//        var analogInput0 = Drive.modules[0].angle
-//        var analogInput1 = Drive.modules[1].angle
-//        var analogInput2 = Drive.modules[2].angle
-//        var analogInput3 = Drive.modules[3].angle
+        var analogInput0 = Drive.modules[0].angle
+        var analogInput1 = Drive.modules[1].angle
+        var analogInput2 = Drive.modules[2].angle
+        var analogInput3 = Drive.modules[3].angle
 //        println("Analog 0: $analogInput0;     1: $analogInput1;     2: $analogInput2     3: $analogInput3")
 
-//        periodic {
-//            analogInput0 = Drive.modules[0].angle
-//            analogInput1 = Drive.modules[1].angle
-//            analogInput2 = Drive.modules[2].angle
-//            analogInput3 = Drive.modules[3].angle
-//            println("Analog 0: $analogInput0;     1: $analogInput1;     2: $analogInput2     3: $analogInput3")
-//        }
+        periodic {
+            analogInput0 = Drive.modules[0].angle
+            analogInput1 = Drive.modules[1].angle
+            analogInput2 = Drive.modules[2].angle
+            analogInput3 = Drive.modules[3].angle
+            //println("Analog 0: $analogInput0;     1: $analogInput1;     2: $analogInput2     3: $analogInput3")
+        }
         println("Disable Done")
 
         }

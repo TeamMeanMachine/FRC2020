@@ -62,7 +62,6 @@ object OI {
         get() = operatorController.rightThumbstickY.deadband(0.25)
 
     init {
-        //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
 //        driverController::leftBumper.whenTrue { shootingMode() }
         operatorController::leftBumper.whenTrue { shootingMode() }

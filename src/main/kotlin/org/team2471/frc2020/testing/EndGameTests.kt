@@ -3,7 +3,6 @@ package org.team2471.frc2020.testing
 import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
-import org.team2471.frc2020.EndGame
 import org.team2471.frc2020.Intake
 import org.team2471.frc2020.OI
 import org.team2471.frc2020.Shooter

@@ -102,7 +102,7 @@ object Shooter : Subsystem("Shooter") {
             println("in global scope")
             var upPressed = false
             var downPressed = false
-            rpmOffset = rpmOffsetEntry.getDouble(1600.0)
+            rpmOffset = rpmOffsetEntry.getDouble(0.0)
 
             periodic {
 
@@ -197,11 +197,11 @@ object Shooter : Subsystem("Shooter") {
     var hoodPDEnable = false
 
     fun incrementRpmOffset() {
-        rpmOffset += 20.0
+        rpmOffset -= 0.5
     }
 
     fun decrementRpmOffset() {
-        rpmOffset -= 20.0
+        rpmOffset += 0.5
     }
 
     suspend fun resetHoodEncoder() = use(this) {
@@ -231,7 +231,7 @@ object Shooter : Subsystem("Shooter") {
     override suspend fun default() {
         periodic {
             shootingMotor.stop()
-            println("a = $hoodSetpoint validTarget=${FrontLimelight.hasValidTarget} lime= ${FrontLimelight.distance.asFeet.roundToInt()} y = ${Drive.position.length.roundToInt()}")
+//            println("a = $hoodSetpoint validTarget=${FrontLimelight.hasValidTarget} lime= ${FrontLimelight.distance.asFeet.roundToInt()} y = ${Drive.position.length.roundToInt()}")
             if (Drive.position.y > -30.0) {
                 val distanceTarget =  if (FrontLimelight.hasValidTarget)  FrontLimelight.distance.asFeet else Drive.position.length
                 hoodSetpoint = hoodCurve.getValue(distanceTarget)

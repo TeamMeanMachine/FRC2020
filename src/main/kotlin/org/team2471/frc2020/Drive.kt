@@ -208,7 +208,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = aimPDController.update(FrontLimelight.aimError)
                 println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
-//            printEncoderValues()
+            //printEncoderValues()
 
             val direction = OI.driverController.povDirection
             if (direction==270.0.degrees)
@@ -231,7 +231,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         for (moduleCount in 0..3) {
             val lampreyAngle = round((modules[moduleCount] as Module).analogAngle.asDegrees, 1)
             val falconAngle = round((modules[moduleCount] as Module).angle.asDegrees, 1)
-            print("$moduleCount=$lampreyAngle; $falconAngle; ${round((lampreyAngle-falconAngle).degrees.wrap().asDegrees, 1)}               ")
+            val lampreyVoltage = round((modules[moduleCount] as Module).lampreyEncoder,2)
+            val moduleOffset = modules[moduleCount].angleOffset
+            val hasAnalogAngle = modules[moduleCount]
+            print("$moduleCount = $falconAngle               ")
+            //print("$moduleCount=$lampreyAngle; $lampreyVoltage     |       ") // ${round((lampreyAngle-falconAngle).degrees.wrap().asDegrees, 1)}               ")
         }
         println("Hi.")
     }
@@ -292,10 +296,11 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         override val angle: Angle
             get() = turnMotor.position.degrees
 
-        private val analogAngleInput = AnalogInput(analogAnglePort)
+        private val analogAngleInput : AnalogInput = AnalogInput(analogAnglePort)
 
+        private val maxAnalogVolt = 3.25
         val analogAngle: Angle
-            get() = ((((analogAngleInput.voltage - 0.01) / 3.25) * 360.0).degrees + angleOffset).wrap()
+            get() = angleOffset // ((((analogAngleInput.voltage - 0.01) / 3.25) * 360.0).degrees + angleOffset).wrap()
 
         val lampreyEncoder: Double
             get() = analogAngleInput.voltage
