@@ -68,6 +68,7 @@ object AutoChooser {
         setDefaultOption("Tests", "testAuto")
         addOption("5 Ball Trench Run", "trenchRun5")
         addOption("10 Ball Shield Generator", "shieldGenerator10")
+        addOption("9 Ball Shield Generator - Shorter", "shieldGenerator9")
         addOption("8 Ball Shield Generator", "shieldGenerator8")
         addOption("8 Ball Trench Run", "trenchRun8")
         addOption("Carpet Bias Test", "carpetBiasTest")
@@ -129,7 +130,8 @@ object AutoChooser {
         when (selAuto) {
             "Tests" -> testAuto()
             "5 Ball Trench Run" -> trenchRun5()
-            "10 Ball Shield Generator" -> shieldGenerator10()
+            "10 Ball Shield Generator" -> shieldGenerator10(false)
+            "9 Ball Shield Generator - Shorter" -> shieldGenerator10(true)
             "8 Ball Shield Generator" -> shieldGenerator8()
             "8 Ball Trench Run" -> trenchRun8()
             "Carpet Bias Test" -> carpetBiasTest()
@@ -168,10 +170,12 @@ object AutoChooser {
         }
     }
 
-    suspend fun shieldGenerator10() = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
+    suspend fun shieldGenerator10(isShorter: Boolean = true) = use(Drive, Shooter, Intake, Feeder, FrontLimelight) {
         try {
+            println("Auto is starting")
             FrontLimelight.ledEnabled = true
             val auto = autonomi["10 Ball Shield Generator"]
+            println("Auto is loaded")
 //            var auto = autonomi["Red 10 Ball Shield Generator"]
 //            if (!redSide) auto = autonomi["Blue 10 Ball Shield Generator"]
             println(auto == null)
@@ -179,41 +183,32 @@ object AutoChooser {
                 Intake.setPower(1.0) //Intake.INTAKE_POWER)
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
-                Drive.driveAlongPath(path, true, 0.125)
-                delay(0.5)
-                Intake.setPower(0.5)
-                path = auto["02- Shooting Position"]
-//                Intake.extend = false
+                    Drive.driveAlongPath(path, true, 0.125)
+                var pathName = if (isShorter) {"08- Shooting Position"} else {"02- Shooting Position"}
+                path = auto[pathName]
                 parallel ({
                     delay(path.duration * 0.25)
                     val rpmSetpoint = Shooter.rpmCurve.getValue(FrontLimelight.distance.asInches)
                     Shooter.rpm = rpmSetpoint
                 }, {
                     Drive.driveAlongPath(path, false)
+                }, {
+                    delay(0.25)
+                    Intake.extend = false
                 })
-//                parallel ({
-//                    shootingMode(7)
-//                }, {
-//                    delay(2.0)
-                    shootingMode(5)
-                    Intake.setPower(1.0)
-                    Intake.extend = true
-                    path = auto["03- Intake 3 Cells"]
-                    Drive.driveAlongPath(path, false)
-//                })
-                  /*  parallel ({
-                        path = auto["04- Intake 2 Cells"]
-                        Drive.driveAlongPath(path, false)
-                    }, {
-                        delay(path.duration * 0.9)
-                        Intake.extend = true
-                    })
-                    Intake.setPower(1.0)
-                    Intake.extend = false */
-                    path = auto["05- Shooting Position"]
-                    Drive.driveAlongPath(path, false)
-                    shootingMode(5)
-                }
+                println("begin shooting")
+                shootingMode(5)
+                println("end shooting")
+                Intake.setPower(1.0)
+                Intake.extend = true
+                delay(0.2)
+                pathName = if (isShorter) {"07- Intake 4 Cells"} else {"03- Intake 3 Cells"}
+                path = auto[pathName]
+                Drive.driveAlongPath(path, false)
+                path = auto["05- Shooting Position"]
+                Drive.driveAlongPath(path, false)
+                shootingMode(5)
+            }
         } finally {
             Shooter.stop()
             Shooter.rpmSetpoint = 0.0

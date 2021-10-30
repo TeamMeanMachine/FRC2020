@@ -169,6 +169,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
             }
         }
+        println("drive init complete")
     }
 
     fun zeroGyro() = gyro?.reset()
@@ -186,7 +187,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 turn = OI.driveRotation
             } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
                 turn = aimPDController.update(FrontLimelight.aimError)
-                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
+//                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
 //            printEncoderValues()
 

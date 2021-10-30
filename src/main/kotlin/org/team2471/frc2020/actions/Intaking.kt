@@ -43,16 +43,16 @@ import kotlin.math.pow
 
 suspend fun intake() = use(Intake, Feeder) {
     try {
-        var buttonWasPressed = false
         Intake.extend = true
         Intake.setPower(INTAKE_POWER)
-        var t = Timer()
+        val t = Timer()
         t.start()
         var goalT = Double.MAX_VALUE
         var maxCurr = 0.0
         OI.driverController.rumble = 0.0
         delay(0.5)
         periodic {
+            Feeder.manageFeedPower()
             if (intakeMotor.current > 12.0) {
                 goalT = t.get() + 0.3
                 maxCurr = max(intakeMotor.current, maxCurr)

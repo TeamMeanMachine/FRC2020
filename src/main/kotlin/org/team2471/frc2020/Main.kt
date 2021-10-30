@@ -50,6 +50,11 @@ object Robot : MeanlibRobot() {
         BackLimelight.startUp()
         BackLimelight.ledEnabled = false
         FrontLimelight.ledEnabled = true
+        ControlPanel
+        Shooter
+        Feeder
+        Intake
+        println("init complete")
     }
 
     override suspend fun enable() {
@@ -70,9 +75,10 @@ object Robot : MeanlibRobot() {
 
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
-        Drive.brakeMode()
         println("entered auto")
+        Drive.brakeMode()
         AutoChooser.autonomous()
+        println("exiting auto")
     }
 
     override suspend fun teleop() {
