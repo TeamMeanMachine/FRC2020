@@ -2,6 +2,7 @@ package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DigitalInput
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -19,7 +20,7 @@ import org.team2471.frc2020.Talons
 
 object Intake: Subsystem("Intake") {
     val intakeMotor = MotorController(TalonID(Talons.INTAKE))
-    private val extensionSolenoid = Solenoid(INTAKE)
+    private val extensionSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, INTAKE)
 
     private val table = NetworkTableInstance.getDefault().getTable(Intake.name)
     val currentEntry = table.getEntry("Current")

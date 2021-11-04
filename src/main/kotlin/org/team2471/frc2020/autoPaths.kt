@@ -10,7 +10,7 @@ fun Path2D.setPathDefaults() {
     //isMirrored = gameData[1] == 'L' // can't be true because of side to scale
 }
 
-val gameData get() = DriverStation.getInstance().gameSpecificMessage
+val gameData get() = DriverStation.getGameSpecificMessage()
 
 val centerToScale = Path2D().apply {
     setPathDefaults()

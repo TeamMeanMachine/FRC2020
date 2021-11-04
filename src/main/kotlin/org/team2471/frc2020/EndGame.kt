@@ -1,5 +1,6 @@
 package org.team2471.frc2020
 
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.Solenoid
 import org.team2471.frc.lib.actuators.MotorController
 import org.team2471.frc.lib.actuators.TalonID
@@ -12,8 +13,8 @@ import org.team2471.frc2020.Solenoids.CLIMB
 object EndGame: Subsystem("EndGame") {
     val balanceMotor = MotorController(VictorID(Victors.BALANCE))
 
-    private val climbSolenoid = Solenoid(CLIMB)
-    private val brakeSolenoid = Solenoid(BRAKE)
+    private val climbSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, CLIMB)
+    private val brakeSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, BRAKE)
 
     init {
 

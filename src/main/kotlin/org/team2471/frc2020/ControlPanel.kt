@@ -2,6 +2,7 @@ package org.team2471.frc2020
 
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.DriverStation
+import edu.wpi.first.wpilibj.PneumaticsModuleType
 import edu.wpi.first.wpilibj.SerialPort
 import edu.wpi.first.wpilibj.Solenoid
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
@@ -25,12 +26,12 @@ object ControlPanel : Subsystem("Control Panel") {
     val gameColorEntry = table.getEntry("Game Color")
 
     val gameData: String
-        get() = DriverStation.getInstance().gameSpecificMessage
+        get() = DriverStation.getGameSpecificMessage()
 
 
     val controlMotor = MotorController(VictorID(Victors.CONTROL_PANEL))
 
-    private val extensionSolenoid = Solenoid(CONTROL_PANEL)
+    private val extensionSolenoid = Solenoid(PneumaticsModuleType.CTREPCM, CONTROL_PANEL)
 
 //    val serialPort = SerialPort(9600, SerialPort.Port.kUSB)
 

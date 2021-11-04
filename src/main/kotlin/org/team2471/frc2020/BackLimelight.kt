@@ -157,7 +157,7 @@ suspend fun feederStationVision() = use(Drive, FrontLimelight, BackLimelight, In
             Drive.drive(
                 OI.driveTranslation - translationControl,
                 OI.driveRotation + turnControl,
-                SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.getInstance().isAutonomous
+                SmartDashboard.getBoolean("Use Gyro", true) && !DriverStation.isAutonomous()
             )
 
             if(OI.operatorController.rightBumper) this.stop()

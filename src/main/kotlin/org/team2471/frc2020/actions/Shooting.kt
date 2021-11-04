@@ -159,7 +159,7 @@ import kotlin.math.absoluteValue
 
 suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimelight, Intake, Feeder) {
     try {
-        val isAuto = DriverStation.getInstance().isAutonomous
+        val isAuto = DriverStation.isAutonomous()
         Intake.setPower(0.0)
         Shooter.prepShotOn = true
         Intake.extend = isCompBotIHateEverything
@@ -247,7 +247,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             }
         }
     } finally {
-        val isAuto = DriverStation.getInstance().isAutonomous
+        val isAuto = DriverStation.isAutonomous()
         OI.driverController.rumble = 0.0
         Shooter.prepShotOn = false
         Feeder.setPower(0.0)
