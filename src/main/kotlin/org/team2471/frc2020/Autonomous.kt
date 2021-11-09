@@ -184,7 +184,7 @@ object AutoChooser {
                 Intake.extend = true
                 var path = auto["01- Intake 2 Cells"]
                     Drive.driveAlongPath(path, true, 0.125)
-                var pathName = if (isShorter) {"08- Shooting Position"} else {"02- Shooting Position"}
+                var pathName = if (isShorter) {"08- Shooting Position"} else {"02 - Shooting Position"}
                 path = auto[pathName]
                 parallel ({
                     delay(path.duration * 0.25)

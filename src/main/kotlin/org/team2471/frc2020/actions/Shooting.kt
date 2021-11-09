@@ -237,7 +237,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                     ballsShot++
                     println("Ball was shot. Total: $ballsShot")
                 }
-                if(ballsShot >= ballsIntaken || totalT.get() > 5.0) {
+                if(ballsShot >= ballsIntaken || totalT.get() > 4.0) {
                     this.stop()
                 }
                 lastPressStatus = pressStatus
