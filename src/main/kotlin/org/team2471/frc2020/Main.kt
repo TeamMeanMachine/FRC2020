@@ -149,8 +149,8 @@ object Robot : MeanlibRobot() {
         Shooter.disable()
         //bean
 
-        BackLimelight.ledEnabled = false
-        FrontLimelight.ledEnabled = false
+        BackLimelight.ledEnabled = true
+        FrontLimelight.ledEnabled = true
 // bean
 //        Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()

@@ -100,7 +100,6 @@ object AutoChooser {
             DriverStation.reportError("Autonomi cache could not be found", false)
             autonomi = Autonomi()
         }
-        println("In Auto Init. Before AddListener. Hi.")
         NetworkTableInstance.getDefault()
             .getTable("PathVisualizer")
             .getEntry("Autonomi").addListener({ event ->

@@ -114,7 +114,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
 //                    this.stop()
 //                }
 
-                if (totalT.get() > 7.0) {
+                if (totalT.get() > 5.0) {
                     this.stop()
                 }
 

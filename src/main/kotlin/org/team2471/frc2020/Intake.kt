@@ -68,7 +68,7 @@ var defaultExtend = false
             extend = defaultExtend
             delay(1.7)
             //setPower(OI.operatorRightTrigger * 0.7 ) beans put this in a periodic
-            println("Motorencoder: ${intakeMotor.position}")
+//            println("Motorencoder: ${intakeMotor.position}")
 
         } finally {
             extend = false
