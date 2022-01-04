@@ -25,6 +25,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
 
+    var demoMaxSpeed = 1.0
+
 
     /**
      * Coordinates of modules
@@ -152,6 +154,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             SmartDashboard.setPersistent("Use Gyro")
             SmartDashboard.setPersistent("Gyro Type")
 
+            val demoMaxSpeedEntry = table.getEntry("Demo Max Speed")
+
             useGyroEntry.setBoolean(true)
             navXGyroEntry.setBoolean(isCompBotIHateEverything)
 
@@ -167,6 +171,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
 
+                demoMaxSpeed = demoMaxSpeedEntry.getDouble(1.0)
             }
         }
         println("drive init complete")
@@ -198,8 +203,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 headingSetpoint = direction
 
             drive(
-                OI.driveTranslation,
-                turn,
+                OI.driveTranslation/* * demoMaxSpeed*/,
+                turn/* * demoMaxSpeed*/,
                 //true,
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
@@ -218,7 +223,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
         for (moduleCount in 0..3) {
             val module = (modules[moduleCount] as Module)
             module.turnMotor.setRawOffset(module.analogAngle)
-            println("Module: $moduleCount analogAngle: ${module.analogAngle}")
+           // println("Module: $moduleCount analogAngle: ${module.analogAngle}")
         }
     }
 
