@@ -54,7 +54,7 @@ object Feeder: Subsystem("Feeder") {
             if (Intake.ballIsStaged) {
                 Feeder.setPower(0.0)
             } else {
-                setPower(0.3)
+                setPower(0.0)  //demo mode disabled power. was 0.3
             }
         }
     }
