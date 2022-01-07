@@ -200,10 +200,12 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             drive(
                 OI.driveTranslation,
                 turn,
-                //true,
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
-                true
+                false,
+                Vector2(0.0,0.0),
+                0.0,
+                0.0
             )
         }
     }

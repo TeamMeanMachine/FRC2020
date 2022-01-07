@@ -39,7 +39,7 @@ object ControlPanel : Subsystem("Control Panel") {
 
     private val extensionSolenoid = Solenoid(CONTROL_PANEL)
 
-    val serialPort = SerialPort(9600, SerialPort.Port.kUSB1)
+//    val serialPort = SerialPort(9600, SerialPort.Port.kUSB1)
 
     fun setPower(power: Double) {
         controlMotor.setPercentOutput(power)
@@ -62,18 +62,19 @@ object ControlPanel : Subsystem("Control Panel") {
         }.toString()
         set(value) {}
 
+/*
     var readSerial: String
         get() {
             return if (serialPort.readString().isNotEmpty()) serialPort.readString() else "Error"
         }
         set(value) {}
-
+*/
     var isExtending: Boolean
         get() = extensionSolenoid.get()
         set(value) {
             extensionSolenoid.set(value)
         }
-
+/*
     var lastColor = ""
 
 //
@@ -92,13 +93,14 @@ object ControlPanel : Subsystem("Control Panel") {
             brakeMode()
         }
     }
-
+*/
     fun getColor() : String {
-        sendCommand(ArduinoCommand.SAMPLE)
-        lastColor = readSerial
-        return lastColor
+//        sendCommand(ArduinoCommand.SAMPLE)
+//        lastColor = readSerial
+//        return lastColor
+        return "Red"
     }
-
+/*
     fun sendCommand(command: ArduinoCommand) {
         if (serialPort.readString().isNotEmpty()) {
             when (command) {
@@ -114,4 +116,5 @@ object ControlPanel : Subsystem("Control Panel") {
             }
         }
     }
+*/
 }

@@ -138,7 +138,7 @@ object Robot : MeanlibRobot() {
         periodic {
 //            Drive.recordOdometry()
 
-            println("Module 0 Angle: module0.analogAngle")
+//            println("Module 0 Angle: module0.analogAngle")
             angle1Entry.setValue(module0.analogAngle.asDegrees)
             angle2Entry.setValue(module1.analogAngle.asDegrees)
             angle3Entry.setValue(module2.analogAngle.asDegrees)
