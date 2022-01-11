@@ -211,7 +211,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 false,
                 Vector2(0.0,0.0),
                 0.0,
-                0.0
+                0.0 // 0.1  Bryce's smoothing  0.0 to turn it off
             )
         }
     }
