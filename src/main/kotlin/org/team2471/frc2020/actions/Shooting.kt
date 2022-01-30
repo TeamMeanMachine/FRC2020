@@ -255,7 +255,7 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             Drive.position = Drive.position * alpha + FrontLimelight.position * (1.0-alpha)
             println("Reset odometry based on limelight. Hi.")
         }
-        FrontLimelight.ledEnabled = false
+//        FrontLimelight.ledEnabled = false
         if(isAuto) {
             delay(0.1)
         } else {

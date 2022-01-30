@@ -133,7 +133,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
     init {
-        ledEnabled = false
+//        ledEnabled = false
         heightToDistance.storeValue(33.0, 3.0)
         heightToDistance.storeValue(22.0, 7.2)
         heightToDistance.storeValue(9.6, 11.5)
@@ -179,7 +179,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
         parallaxThresholdEntry = table.getEntry("Parallax Threshold")
         parallaxThresholdEntry.setDouble(parallaxThresholdEntry.getDouble(1.0))
 
-        ledEnabled = false
+//        ledEnabled = false
 
         GlobalScope.launch(MeanlibDispatcher) {
             periodic {
@@ -207,7 +207,7 @@ object FrontLimelight : Subsystem("Front Limelight") {
 
 
     override suspend fun default() {
-        ledEnabled = false
+//        ledEnabled = false
         halt()
     }
 

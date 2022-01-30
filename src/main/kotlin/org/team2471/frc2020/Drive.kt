@@ -159,7 +159,6 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             useGyroEntry.setBoolean(true)
             navXGyroEntry.setBoolean(isCompBotIHateEverything)
 
-
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
             periodic {
@@ -179,18 +178,19 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     fun zeroGyro() = gyro?.reset()
 
-    
-
     override suspend fun default() {
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
+        val autoAimEntry = table.getEntry("Auto Aim")
+        //autoAimEntry.setBoolean(false)  // delete this once the entry exists
+
         periodic {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+            } else if (FrontLimelight.hasValidTarget && (Shooter.prepShotOn || autoAimEntry.getBoolean(false))) {
                 turn = aimPDController.update(FrontLimelight.aimError)
 //                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
