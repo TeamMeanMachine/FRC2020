@@ -25,6 +25,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 
     val navXGyroEntry = NetworkTableInstance.getDefault().getTable(name).getEntry("NavX Gyro")
 
+    var demoMaxSpeed = 1.0
+
 
     /**
      * Coordinates of modules
@@ -152,9 +154,10 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             SmartDashboard.setPersistent("Use Gyro")
             SmartDashboard.setPersistent("Gyro Type")
 
+            val demoMaxSpeedEntry = table.getEntry("Demo Max Speed")
+
             useGyroEntry.setBoolean(true)
             navXGyroEntry.setBoolean(isCompBotIHateEverything)
-
 
 //            aimPEntry.setDouble(0.015)
 //            aimDEntry.setDouble(0.005)
@@ -167,26 +170,29 @@ object Drive : Subsystem("Drive"), SwerveDrive {
 //                aimPDController.p = aimPEntry.getDouble(0.015)
 //                aimPDController.d = aimDEntry.getDouble(0.005)
 
+                demoMaxSpeed = demoMaxSpeedEntry.getDouble(1.0)
             }
         }
+        println("drive init complete")
     }
 
     fun zeroGyro() = gyro?.reset()
-
-    
 
     override suspend fun default() {
         val limelightTable = NetworkTableInstance.getDefault().getTable("limelight-front")
         val xEntry = limelightTable.getEntry("tx")
         val angleEntry = limelightTable.getEntry("ts")
         val table = NetworkTableInstance.getDefault().getTable(name)
+        val autoAimEntry = table.getEntry("Auto Aim")
+        //autoAimEntry.setBoolean(false)  // delete this once the entry exists
+
         periodic {
             var turn = 0.0
             if (OI.driveRotation.absoluteValue > 0.001) {
                 turn = OI.driveRotation
-            } else if (FrontLimelight.hasValidTarget && Shooter.prepShotOn) {
+            } else if (FrontLimelight.hasValidTarget && (Shooter.prepShotOn || autoAimEntry.getBoolean(false))) {
                 turn = aimPDController.update(FrontLimelight.aimError)
-                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
+//                println("FrontLimeLightAimError=${FrontLimelight.aimError}")
             }
 //            printEncoderValues()
 
@@ -197,12 +203,15 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 headingSetpoint = direction
 
             drive(
-                OI.driveTranslation,
-                turn,
+                OI.driveTranslation/* * demoMaxSpeed*/,
+                turn/* * demoMaxSpeed*/,
                 //true,
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
-                true
+                false,
+                Vector2(0.0,0.0),
+                0.0,
+                0.0 // 0.1  Bryce's smoothing  0.0 to turn it off
             )
         }
     }

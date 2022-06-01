@@ -48,8 +48,13 @@ object Robot : MeanlibRobot() {
         AutoChooser
         FrontLimelight.startUp()
         BackLimelight.startUp()
-        BackLimelight.ledEnabled = false
+        BackLimelight.ledEnabled = true
         FrontLimelight.ledEnabled = true
+        ControlPanel
+        Shooter
+        Feeder
+        Intake
+        println("init complete")
     }
 
     override suspend fun enable() {
@@ -70,9 +75,10 @@ object Robot : MeanlibRobot() {
 
     override suspend fun autonomous() {
 //        Drive.zeroGyro()
-        Drive.brakeMode()
         println("entered auto")
+        Drive.brakeMode()
         AutoChooser.autonomous()
+        println("exiting auto")
     }
 
     override suspend fun teleop() {
@@ -81,6 +87,7 @@ object Robot : MeanlibRobot() {
     }
 
     override suspend fun test()  {
+        Drive.steeringTests()
 //        Drive.disable()
 //        Intake.motorTest()
 //        Feeder.test()
@@ -91,7 +98,7 @@ object Robot : MeanlibRobot() {
 //        EndGame.climbSolenoidTest()
 //        EndGame.brakeSolenoidTest()
 //        EndGame.climbTest()
-        Shooter.distance2RpmTest()
+//        Shooter.distance2RpmTest()
 //        Shooter.countBallsShotTest()
 //        Shooter.motorTest()
 //        Drive.tuneDrivePositionController()
@@ -111,8 +118,8 @@ object Robot : MeanlibRobot() {
         EndGame.disable()
 //        Tester.disable()
 
-        BackLimelight.ledEnabled = false
-        FrontLimelight.ledEnabled = false
+//        BackLimelight.ledEnabled = false
+//        FrontLimelight.ledEnabled = false
 
         Shooter.rpmOffsetEntry.setPersistent()
         FrontLimelight.parallaxThresholdEntry.setPersistent()
@@ -131,7 +138,7 @@ object Robot : MeanlibRobot() {
         periodic {
 //            Drive.recordOdometry()
 
-            //println(module0.analogAngle)
+//            println("Module 0 Angle: module0.analogAngle")
             angle1Entry.setValue(module0.analogAngle.asDegrees)
             angle2Entry.setValue(module1.analogAngle.asDegrees)
             angle3Entry.setValue(module2.analogAngle.asDegrees)

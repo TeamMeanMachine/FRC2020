@@ -67,7 +67,7 @@ object OI {
     init {
         //Driver: Owen
         driverController::back.whenTrue { Drive.zeroGyro() }
-        operatorController::back.whenTrue{Shooter.resetRpmOffset()}
+       // operatorController::back.whenTrue{Shooter.resetRpmOffset()}
         driverController::leftBumper.whenTrue { shootingMode() }
 //        ({driverController.leftTrigger > 0.1}).whileTrue { shootMode() }
         driverController::rightBumper.toggleWhenTrue { intake() }
@@ -90,6 +90,7 @@ object OI {
 //        driverController::b.whenTrue { FrontLimelight.pipeline = 0.0 }
 
         //Operator: Justine
+        operatorController::back.whenTrue { Drive.initializeSteeringMotors() }
         operatorController::rightBumper.toggleWhenTrue { climb() }
         operatorController::a.whenTrue { controlPanel1() }
         operatorController::b.whenTrue { controlPanel2() }

@@ -2,6 +2,7 @@ package org.team2471.frc2020.actions
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
+import org.team2471.frc.lib.coroutines.delay
 import org.team2471.frc.lib.coroutines.parallel
 import org.team2471.frc.lib.coroutines.periodic
 import org.team2471.frc.lib.framework.use
@@ -162,8 +163,8 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
         val isAuto = DriverStation.getInstance().isAutonomous
         Intake.setPower(0.0)
         Shooter.prepShotOn = true
-        Intake.extend = isCompBotIHateEverything
-        Intake.setPower(Intake.INTAKE_POWER)
+//        Intake.extend = isCompBotIHateEverything
+//        Intake.setPower(Intake.INTAKE_POWER)
         val totalT = Timer()
         totalT.start()
         var t = totalT.get()
@@ -227,23 +228,20 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             Feeder.setPower(Feeder.FEED_POWER)
             Intake.extend = false
             var ballsShot = 0
-            var shootingBall = false
+            var lastPressStatus = Intake.ballIsStaged
+            var pressStatus = true
             periodic(0.015) {
+                pressStatus = Intake.ballIsStaged
                 Shooter.rpm = Shooter.rpmSetpoint
-                if(!shootingBall && Shooter.rpm < 0.93 * Shooter.rpmSetpoint) {
+                if(lastPressStatus && !pressStatus) {
                     ballsShot++
-                    shootingBall = true
+                    println("Ball was shot. Total: $ballsShot")
                 }
-                if(shootingBall && abs(Shooter.rpmSetpoint - Shooter.rpm) < 0.05 * Shooter.rpmSetpoint) {
-                    shootingBall = false
-                }
-                if(ballsShot > ballsIntaken - 1 || totalT.get() > 3.5) {
+                if(ballsShot >= ballsIntaken || totalT.get() > 4.0) {
                     this.stop()
                 }
-                Drive.drive(
-                Vector2(0.0,0.0),
-                0.0
-            )
+                lastPressStatus = pressStatus
+                Drive.drive(Vector2(0.0,0.0), 0.0)
             }
         }
     } finally {
@@ -257,8 +255,10 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
             Drive.position = Drive.position * alpha + FrontLimelight.position * (1.0-alpha)
             println("Reset odometry based on limelight. Hi.")
         }
-        FrontLimelight.ledEnabled = false
-        if(!isAuto) {
+//        FrontLimelight.ledEnabled = false
+        if(isAuto) {
+            delay(0.1)
+        } else {
             Shooter.rpm = 0.0
             Intake.setPower(0.0)
         }
