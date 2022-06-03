@@ -155,6 +155,7 @@ object Drive : Subsystem("Drive"), SwerveDrive {
             SmartDashboard.setPersistent("Gyro Type")
 
             val demoMaxSpeedEntry = table.getEntry("Demo Max Speed")
+            if (!demoMaxSpeedEntry.exists()) demoMaxSpeedEntry.setDouble(1.0)
 
             useGyroEntry.setBoolean(true)
             navXGyroEntry.setBoolean(isCompBotIHateEverything)
@@ -203,8 +204,8 @@ object Drive : Subsystem("Drive"), SwerveDrive {
                 headingSetpoint = direction
 
             drive(
-                OI.driveTranslation/* * demoMaxSpeed*/,
-                turn/* * demoMaxSpeed*/,
+                OI.driveTranslation * demoMaxSpeed,
+                turn * demoMaxSpeed,
                 //true,
                 if (Drive.gyro != null) SmartDashboard.getBoolean("Use Gyro", true)
                         && !DriverStation.getInstance().isAutonomous else false,
