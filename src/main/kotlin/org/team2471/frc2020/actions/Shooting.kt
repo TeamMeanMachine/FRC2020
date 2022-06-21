@@ -11,6 +11,7 @@ import org.team2471.frc.lib.motion.following.drive
 import org.team2471.frc.lib.units.degrees
 import org.team2471.frc.lib.util.Timer
 import org.team2471.frc2020.*
+import org.team2471.frc2020.Drive.demoMaxSpeed
 import org.team2471.frc2020.FrontLimelight.aimError
 import kotlin.math.abs
 import kotlin.math.absoluteValue
@@ -219,8 +220,8 @@ suspend fun shootingMode(ballsIntaken: Int = 5) = use(Drive, Shooter, FrontLimel
                 if (direction != -1.0.degrees) Drive.headingSetpoint = direction
             }
             Drive.drive(
-                if(isAuto) Vector2(0.0,0.0) else OI.driveTranslation,
-                turn,
+                if(isAuto) Vector2(0.0,0.0) else OI.driveTranslation * demoMaxSpeed,
+                turn * demoMaxSpeed,
                 !isAuto
             )
         }

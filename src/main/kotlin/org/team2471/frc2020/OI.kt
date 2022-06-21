@@ -76,8 +76,8 @@ object OI {
                 headingSetpoint.asDegrees.roundToInt()}")
             Drive.headingSetpoint = 0.0.degrees
         }
-        driverController::a.whenTrue { AutoChooser.yeeterToFeeder() } //no path yet
-        driverController::b.whenTrue { AutoChooser.feederToYeeter() }
+//        driverController::a.whenTrue { AutoChooser.yeeterToFeeder() } //no path yet
+//        driverController::b.whenTrue { AutoChooser.feederToYeeter() }
 //        driverController::start.whenTrue {
 //            Drive.disable()
 //            Drive.resetDriveMotors()
